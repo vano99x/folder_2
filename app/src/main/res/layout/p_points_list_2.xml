@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+	android:id="@id/PagePointsList" 
+	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	
+	<TextView
+		android:id="@id/PagePointsList_HeadTextView_Id"
+		android:text="@string/msg_select_control_point"
+		android:textSize="10.0pt" android:textStyle="bold" android:textColor="#fff"
+		android:gravity="center_horizontal" android:paddingTop="20.0px"
+		android:layout_width="fill_parent" android:layout_height="60.0px"
+	/>
+
+	<TextView
+		android:id="@id/PagePointsList_EmptyListTextView_Id"
+		android:text="@string/message_empty_list"
+		android:textSize="12.0pt" android:textStyle="bold" android:textColor="#fff"
+		android:gravity="center" android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:singleLine="false" android:layout_x="0.0px" android:layout_y="250.0px"
+	/>
+
+
+<!--//
+				<TextView
+					android:id="@id/txtName" 
+					android:text="first" 
+					android:textSize="9.0pt" android:textStyle="bold" android:textColor="#ff000000"
+					android:layout_width="wrap_content" android:layout_height="wrap_content" android:singleLine="true"
+				/>
+			<Button
+				android:id="@id/button_start"
+				android:background="@drawable/button_start"
+				android:text="button_start"
+				android:textSize="12.0pt" android:textColor="#fff7fbfc"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_margin="12.0dip" android:layout_x="42.0px" android:layout_y="590.0px"
+			/>
+//-->
+		<ListView 
+			android:id="@id/PagePointsList_ListView_Id" 
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+</AbsoluteLayout>

@@ -1,0 +1,348 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\Tvl.Java.1.0.0-alpha001\build\Tvl.Java.props" Condition="Exists('packages\Tvl.Java.1.0.0-alpha001\build\Tvl.Java.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>ac126af6-63c4-4176-8d8b-05e288969649</ProjectGuid>
+    <OutputType>jar</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ConsoleApplication1</RootNamespace>
+    <AssemblyName>ConsoleApplication1</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <Name>ConsoleApplication1</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <SourceRelease>Default</SourceRelease>
+    <TargetRelease>Default</TargetRelease>
+    <TargetVM>Hotspot</TargetVM>
+    <SourceEncoding />
+    <DebugSymbols>All</DebugSymbols>
+    <SpecificDebugSymbols />
+    <ShowWarnings>True</ShowWarnings>
+    <ShowAllWarnings>True</ShowAllWarnings>
+    <TreatWarningsAsErrors>None</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildArgs />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <SourceRelease>Default</SourceRelease>
+    <TargetRelease>Default</TargetRelease>
+    <TargetVM>Hotspot</TargetVM>
+    <SourceEncoding />
+    <DebugSymbols>Default</DebugSymbols>
+    <SpecificDebugSymbols />
+    <ShowWarnings>True</ShowWarnings>
+    <ShowAllWarnings>True</ShowAllWarnings>
+    <TreatWarningsAsErrors>None</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildArgs />
+  </PropertyGroup>
+  <ItemGroup>
+    <SourceFolder Include="src\main\java\" />
+    <None Include="**\*.*" Exclude="bin\**\*.*;obj\**\*.*;out\**\*.*;*.user;*.javaproj;*.vspscc;*.vsscc;*.vssscc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\src\main\java\ta\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\lib\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\lib\BroadcastReceiver\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\lib\Common\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\lib\Controls\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\lib\DatePicker\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\lib\tabui\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\Tabs\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\Tabs\CheckinList\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\Tabs\FacilityInfo\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\Tabs\PersonelInfo\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\Tabs\PointsList\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\Tabs\Settings\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\timeattendance\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\timeattendance\Models\">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="app\src\main\java\ta\timeattendance\Services\">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="app\src\main\java\ta\Database\Checkin.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Database\CheckinSender.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Database\DbConnector.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Database\EntityBase.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Database\FacilityInfoEntity.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Database\Personel.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Database\PersonelPoint.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Database\Point.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Database\SettingSv.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\BackgroundFunc.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\BackgroundFuncHelper.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\BroadcastReceiver\ScreenReceiver.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\BroadcastReceiver\Test1.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\BroadcastReceiver\UpdateReceiver.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Common\CommonHelper.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Common\DateTime.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Controls\LoadingProgressBar.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Controls\LoadingProgressBarAdapter.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Controls\PanelButton.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Controls\SvBox.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Controls\WrapperCtrl.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\DateHelper.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\DatePicker\aaa.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\DatePicker\aaa2.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\DatePicker\CustomDatePickerControl.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\DatePicker\MyDatePicker.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\DatePicker\SelectedDateEventArgs.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Event.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\Event_old.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\HttpHelper.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\IMessageReceiver.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\NFCHelper.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\NfcThread.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\operator.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\RunnableWithArgs.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\tabui\Tab.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\TALog.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\test1.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\UIHelper.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\lib\UpdateManager.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\CheckinList\CheckinAdapter.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\CheckinList\CheckinAdapter2.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\CheckinList\CheckinAdapter3.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\CheckinList\CheckinFilter.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\CheckinList\ISendChekinService.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\CheckinList\SendChekinService.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\CheckinList\TabCheckinList.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\FacilityInfo\FacilityInfoAdapter.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\FacilityInfo\FacilityInfoFilter.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\FacilityInfo\TabFacilityInfo.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\PersonelInfo\TabPersonelInfo.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\PointsList\ListPointsAdapter.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\PointsList\TabPointsList.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\Settings\CheckpointAdapter.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\Settings\CurrentVersionServices.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\Settings\ICurrentVersionServices.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\Tabs\Settings\TabSettings.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\ExceptionActivity.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\MainActivity.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\MainActivityProxy.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\MainEngine.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\MainEngine_Temp.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Mode.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\Bootstrapper.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\IBaseModel.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\IPointModel.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\ISettingSvModel.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\ISupervisorModel.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\PointModel.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\SettingSvModel.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\SupervisorModel.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Models\TypeItem.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\PersonelListAdapter.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Services\AppService.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\Services\IAppService.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\TabModeSelection.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\TabPersonelList.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\TabPin.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\TabReference.java">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\src\main\java\ta\timeattendance\TabWait.java">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="packages\Tvl.Java.1.0.0-alpha001\build\Tvl.Java.targets" Condition="Exists('packages\Tvl.Java.1.0.0-alpha001\build\Tvl.Java.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

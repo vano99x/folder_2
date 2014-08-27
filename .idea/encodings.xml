@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Database/EntityBase.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Database/FacilityInfoEntity.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Database/SettingSv.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/CheckinList/CheckinAdapter.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/CheckinList/CheckinAdapter2.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/CheckinList/CheckinAdapter3.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/CheckinList/ISendChekinService.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/CheckinList/SendChekinService.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/CheckinList/TabCheckinList.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/FacilityInfo/FacilityInfoAdapter.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/FacilityInfo/FacilityInfoFilter.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/FacilityInfo/TabFacilityInfo.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/Settings/CheckpointAdapter.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/Settings/CurrentVersionServices.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/Settings/ICurrentVersionServices.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/Tabs/Settings/TabSettings.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/BackgroundFunc.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/BackgroundFuncHelper.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/BroadcastReceiver/ScreenReceiver.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/BroadcastReceiver/Test1.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/BroadcastReceiver/UpdateReceiver.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Common/CommonHelper.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Common/DateTime.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Controls/LoadingProgressBar.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Controls/LoadingProgressBarAdapter.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Controls/PanelButton.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Controls/SvBox.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Controls/WrapperCtrl.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/DateHelper.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/DatePicker/CustomDatePickerControl.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/DatePicker/MyDatePicker.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/DatePicker/SelectedDateEventArgs.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/DatePicker/aaa.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/DatePicker/aaa2.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Event.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/Event_old.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/HttpHelper.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/IMessageReceiver.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/NFCHelper.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/NfcThread.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/RunnableWithArgs.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/UIHelper.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/UpdateManager.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/operator.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/lib/test1.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/ExceptionActivity.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/MainActivityProxy.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/MainEngine_Temp.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/Bootstrapper.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/IBaseModel.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/IPointModel.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/ISettingSvModel.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/ISupervisorModel.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/PointModel.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/SettingSvModel.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/SupervisorModel.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Models/TypeItem.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Services/AppService.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/Services/IAppService.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/ta/timeattendance/TabReference.java" charset="windows-1251" />
+  </component>
+</project>
+

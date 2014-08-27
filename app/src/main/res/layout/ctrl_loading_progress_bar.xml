@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/LoadingProgressBar_RootId"
+	android:background="#9f2d58"
+	android:layout_width="wrap_content" android:layout_height="wrap_content"
+>
+	<!--//   @color/eee   afaaaa   android:background="#00f"   android:orientation="horizontal"//-->
+	<LinearLayout android:layout_width="25.0dip" android:layout_height="25.0dip">
+	</LinearLayout>
+	<LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<TextView
+			android:id="@id/LoadingProgressBar_Title" 
+			android:text="..."
+			
+			android:textSize="9.0pt" android:textColor="#f5c210" android:gravity="center_horizontal"
+			android:layout_width="fill_parent" android:layout_height="wrap_content" />
+		<ListView
+			android:id="@id/LoadingProgressBar_ListView"
+			android:layout_width="230.0dip" android:layout_height="190.0dip" />
+	</LinearLayout>
+</RelativeLayout>

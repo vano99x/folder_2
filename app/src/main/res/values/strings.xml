@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Time Check</string>
+	
+    <string name="temp_text_big">тест длинное название даже очень очень очень очень</string>
+    <string name="checkin_btn_text">Чекин</string>
+    <string name="action_settings">Settings</string>
+
+
+	<string name="StartBtn_Text">Отслеживание</string>
+	<string name="SyncBtn_Text">Синхронизация</string>
+	<string name="CheckinListBtn_Text">Список событий</string>
+	<string name="ReferenceBtn_Text">Справка</string>
+	<string name="UpdateBtn_Text">Обновление</string>
+	<string name="FacilityInfoBtn_Text">Оперативная обстановка</string>
+	
+    <string name="lable_wait_mode">Приложите телефон</string>
+    <string name="lable_data_transmission">"Пожалуйста,
+ подождите"</string>
+    <string name="lable_go_on_patrolling">"Продолжайте
+патрулирование"</string>
+    <string name="lable_error_reading_lable">"Повторите
+операцию"</string>
+    <string name="lable_error_connection">"Проверьте
+параметры сети"</string>
+    <string name="lable_no_lable" />
+    <string name="message_wait_mode">Устройство в режиме ожидания</string>
+    <string name="message_data_transmissing">Данные передаются на сервер</string>
+    <string name="message_data_transmissed">Данные переданы на сервер</string>
+    <string name="message_error_reading_lable">Неверная метка</string>
+    <string name="message_personel_data">Данные сотрудника</string>
+    <string name="message_error_connection">Не удаётся установить соединение</string>
+    <string name="message_empty_list">Список точек пуст</string>
+    <string name="message_empty_personel_list">Фамилия не найдена</string>
+    <string name="msg_select_control_point">Выберите место</string>
+    <string name="msg_select_mode">Выберите режим</string>
+    <string name="msg_enter_lastname">Введите фамилию</string>
+    <string name="lable_to_time">У вас осталось:</string>
+    <string name="lable_start">Старт</string>
+    <string name="lable_next_point">Следующая метка:</string>
+    <string name="lable_finish_route">Маршрут завершен!</string>
+    <string name="lable_start_work">Начало работы</string>
+    <string name="lable_end_work">Окончание работы</string>
+    <string name="lable_check">Проверка</string>
+    <string name="lable_back">Назад</string>
+    <string name="lable_search">Ручной ввод</string>
+	
+    <string name="mode_check_result">Проверка</string>
+    <string name="mode_check">Проверка</string>
+	
+    <string name="mode_start_result">Приход отслежен</string>
+    <string name="mode_start">Приход</string>
+	
+    <string name="mode_end_result">Уход зафиксирован</string>
+    <string name="mode_end">Уход</string>
+	
+    <string name="mode_pause">Перерыв</string>
+
+	<string name="Reference_Text_Id">
+		<![CDATA[<html><body>
+<p><font color="red" size="12">Добавление менеджера.</font></p>
+<p><font color="red" size="12pt">Добавление менеджера.</font></p>
+<p><font color="red" size="12px">Добавление менеджера.</font></p>
+<p><font color="red" size="200%">Добавление менеджера.</font></p>
+
+<p> &nbsp;&nbsp;&nbsp; <font color="red">
+	Text with markup for <strong>bold</strong> and <em>italic</em> text.</font></p>
+<p> &nbsp;&nbsp;&nbsp; <font color="red">
+	There is also support for a <tt>teletype-style</tt> font. But no use for the <code>code</code> tag!</font></p>
+	  
+      </body></html>]]></string>
+
+	<string name="Reference_Text_Id2">
+		<![CDATA[<html>
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		</head>
+		<body>
+		<p><font color="red" size="200%">Добавление менеджера.</font></p>
+		You scored <b>192</b> points.
+		</body></html>]]></string>
+
+	<string name="Reference_Text_Id3">
+		<![CDATA[<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>aaa</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
+	<script type="text/javascript" src="/js/jquery-1.4.1.js"></script>
+	<link  href="/admin/side_block/template/css.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	
+	<script src="/admin/side_block/view/adminpanel.js" type="text/javascript"></script>
+
+	<form class="adminPanel" method="post">
+		<a class="btnmetro" 
+			style="background:#f5c210; display:block;"
+			href="/admin/admin.php">
+			Main
+		</a>
+		<div onclick="javascript: window.AdminPanel.OnSubmit('display');" 
+			class="btnmetro" 
+			style="background:#8c2b90;"
+			href="#">
+			Show all
+		</div>
+		<div onclick="javascript: window.AdminPanel.OnSubmit('add');" 
+			class="btnmetro" 
+			style="background:#4b83c4;"
+			href="#">
+			Add
+		</div>
+		<input type="hidden" name="action"       class="action"       value="" />
+		<input type="hidden" name="current_item" class="current_item" value="" />
+		<div style="clear:left;"> </div>
+	</form>
+
+<div class="block_list">
+ 
+<div class="block">
+	<div onclick="javascript: window.AdminPanel.OnEdit(  jQuery(this));" class="select" data="36"> 36&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Контакты</div> 
+	<div onclick="javascript: window.AdminPanel.OnRemove(jQuery(this));" class="remove" data="36"> remove </div>
+	<div style="clear:left;"> </div>
+</div>
+ 
+<div class="block">
+	<div onclick="javascript: window.AdminPanel.OnEdit(  jQuery(this));" class="select" data="38"> 38&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;footer</div> 
+	<div onclick="javascript: window.AdminPanel.OnRemove(jQuery(this));" class="remove" data="38"> remove </div>
+	<div style="clear:left;"> </div>
+</div>
+ 
+<div class="block">
+	<div onclick="javascript: window.AdminPanel.OnEdit(  jQuery(this));" class="select" data="39"> 39&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Предложение дня</div> 
+	<div onclick="javascript: window.AdminPanel.OnRemove(jQuery(this));" class="remove" data="39"> remove </div>
+	<div style="clear:left;"> </div>
+</div>
+
+</div>
+	
+</body>
+</html>
+]]></string>
+
+</resources>

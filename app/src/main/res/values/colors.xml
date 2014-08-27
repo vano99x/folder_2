@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="reddivider">#FF0000</color>
+	<color name="afaaaa">#afaaaa</color>
+	<color name="eee">#eee</color>
+	<color name="backW8">#312f30</color>
+	<color name="pin_edit_ctrl_style_focused">#fff</color><!--//A8DBA8//-->
+	<color name="fff">#fff</color>
+</resources>

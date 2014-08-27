@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<item type="id" name="list" />
+	
+	<item type="id" name="main_layout" />
+	<item type="id" name="page_pin" />
+	<item type="id" name="PagePin" />
+	<item type="id" name="pin_edit" />
+	<item type="id" name="continue_button" />
+
+	<item type="id" name="ExceptionActivity_TextView" />
+	
+	<item type="id" name="PageModeSelection" />
+	<item type="id" name="PageModeSelection_start_button" />
+	<item type="id" name="PageModeSelection_end_button" />
+	<item type="id" name="PageModeSelection_check_button" />
+	<item type="id" name="PageModeSelection_pause_button" />
+	
+	
+	<item type="id" name="PageWait" />
+	<item type="id" name="iconMode" />
+	<item type="id" name="mode" />
+	<item type="id" name="icon_4" />
+	<item type="id" name="up_lable" />
+	<item type="id" name="hand" />
+	<item type="id" name="waves_animation" />
+	<item type="id" name="PageWait_back_button" />
+	<item type="id" name="PageWait_select_button" />
+	<item type="id" name="wait_waves" />
+	
+	
+	<item type="id" name="PageDataTransmition" />
+	<item type="id" name="loading_spinner" />
+	<item type="id" name="icon_2" />
+	<item type="id" name="message" />
+	
+	
+	<item type="id" name="PageErrorReading" />
+	<item type="id" name="waiting_spinner" />
+	
+	
+	<item type="id" name="PageErrorConnection" />
+	<item type="id" name="wait_animation" />
+	<item type="id" name="wait_animation_list" />
+	
+	
+	<item type="id" name="PagePersonelInfo" />
+	<item type="id" name="PagePersonelInfo_LayoutRoot" />
+	<item type="id" name="PagePersonelInfo_DismissImageView_Id" />
+	<item type="id" name="block_exit_tracked" />
+	<item type="id" name="PagePersonelInfo_PhotoImageView_Id" />
+	<item type="id" name="last_name" />
+	<item type="id" name="name" />
+	<item type="id" name="third_name" />
+	<item type="id" name="hex_number_card" />
+	
+	
+	<item type="id" name="PagePersonelList" />
+	<item type="id" name="PagePersonelList_ListView_Id" />
+	<item type="id" name="lable_empty_list" />
+	<item type="id" name="txt_lastname" />
+	<item type="id" name="SearchButton_Id" />
+	<item type="id" name="PersonelListItem_Id" />
+	
+	
+	<item type="id" name="Reference_Id" />
+	<item type="id" name="Reference_TextView_Id" />
+	
+	
+	<item type="id" name="PageSync" />
+	
+	<item type="id" name="item" />
+	
+	<item type="id" name="checkin_list" />
+	
+	<item type="id" name="PageCheckinList" />
+	<item type="id" name="PageCheckinList_ListView_Id" />
+	<item type="id" name="PageCheckinList_SendTextView_Id" />
+	<item type="id" name="PageCheckinList_SendErrorTextView_Id" />
+	<item type="id" name="PageCheckinList_NotSendTextView_Id" />
+	<item type="id" name="checkin_btn_filter_left" />
+	<item type="id" name="checkin_btn_filter_right" />
+	<item type="id" name="checkin_input_filter" />
+	<item type="id" name="CheckinListItem_RootId" />
+	<item type="id" name="CheckinListItem_TextId" />
+	<item type="id" name="CheckinListItem_StateId" />
+
+	<item type="id" name="MyDatePickerView_RootId" />
+	<item type="id" name="DatePicker" />
+	<item type="id" name="MyDatePickerView_OkId" />
+	<item type="id" name="MyDatePickerView_CancelId" />
+
+	<item type="id" name="SvBox_RootId" />
+	<item type="id" name="SvBox_Point" />
+	<!--//<item type="id" name="SvBox_NameBlockId" />//-->
+	<item type="id" name="SvBox_LastName" />
+	<item type="id" name="SvBox_Name" />
+	<item type="id" name="SvBox_ThirdName" />
+	
+	<item type="id" name="PnBtn_RootId" />
+	<item type="id" name="PnBtn_SyncBtn_Id" />
+	<item type="id" name="PnBtn_SyncImg_Id" />
+	<item type="id" name="PnBtn_CheckinListBtn_Id" />
+	<item type="id" name="PnBtn_SettingsBtn_Id" />
+	<item type="id" name="PnBtn_FacilityInfoBtn_Id" />
+	<item type="id" name="PnBtn_ReferenceBtn_Id" />
+
+	<item type="id" name="LoadingProgressBar_RootId" />
+	<item type="id" name="LoadingProgressBar_Title" />
+	<item type="id" name="LoadingProgressBar_ListView" />
+	<item type="id" name="LoadingProgressBar_ListView_Item_RootId" />
+	<item type="id" name="LoadingProgressBar_ListView_Item_Text" />
+	
+	<item type="id" name="FacilityInfo_RootId" />
+	<item type="id" name="FacilityInfo_FilterLeftBtn_Id" />
+	<item type="id" name="FacilityInfo_FilterRightBtn_Id" />
+	<item type="id" name="FacilityInfo_ClientName_Id" />
+	<item type="id" name="FacilityInfo_ListView_Id" />
+	<item type="id" name="FacilityInfoItem_FacilityName_Id" />
+	<item type="id" name="FacilityInfoItem_RequestCount_Id" />
+	<item type="id" name="FacilityInfoItem_GrantedCount_Id" />
+	<item type="id" name="FacilityInfoItem_HoursWorked_Id" />
+	<item type="id" name="FacilityInfoItem_FinesSum_Id" />
+	<item type="id" name="FacilityInfoItem_BonusesSum_Id" />
+	
+	<item type="id" name="Settings_RootId" />
+	<!--//<item type="id" name="Settings_ListView_Id" />//-->
+	<!--//<item type="id" name="Settings_ReferenceBtn_Id" />//-->
+	<item type="id" name="Settings_UpdateBtn_Id" />
+	<item type="id" name="Settings_PointsListBtn_Id" />
+	<item type="id" name="Settings_CurrentVersionTextView_Id" />
+
+
+	<item type="id" name="PagePointsList" />
+	<item type="id" name="PagePointsList_ListView_Id" />
+	<item type="id" name="PagePointsList_HeadTextView_Id" />
+	<item type="id" name="PagePointsList_EmptyListTextView_Id" />
+	<item type="id" name="route_block" />
+	<item type="id" name="txtName" />
+	<item type="id" name="checkin_btn" />
+	<item type="id" name="PointsListItem_Id" />
+	
+</resources>
+

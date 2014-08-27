@@ -1,0 +1,178 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+
+	<style name="myScroll">
+		<item name="android:scrollbarSize">50.0dip</item>
+	</style>
+	
+	<style name="up_lable_style">
+		<item name="android:textAppearance">?android:textAppearanceMedium</item>
+		<item name="android:textSize">23.0dip</item>
+		<item name="android:textStyle">normal</item>
+		<item name="android:gravity">center_horizontal</item>
+		<item name="android:paddingTop">30.0dip</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:text">Medium Text</item>
+		<item name="android:layout_alignParentTop">true</item>
+		
+		<item name="android:shadowColor">#000</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">3</item>
+	</style>
+
+	<style name="message_style2">
+		<item name="android:textAppearance">?android:textAppearanceMedium</item>
+		<item name="android:typeface">normal</item>
+		<item name="android:layout_alignParentBottom">true</item>
+	</style>
+
+
+
+	<style name="CommonText">
+		<item name="android:textSize">9.0pt</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">#fff</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	
+	<style name="TitleShadow1">
+		<item name="android:shadowColor">#000</item>
+		<item name="android:shadowDx">0</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">3</item>
+	</style>
+
+	
+	
+	<style name="WrapperButtonStyle1">
+		<item name="android:background">@drawable/button_mode</item>
+		<item name="android:paddingTop">15.0dip</item>
+		<item name="android:paddingBottom">15.0dip</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="ImageButtonStyle1">
+		<!--//<item name="android:layout_centerVertical">true</item>
+		<item name="android:layout_marginLeft">20.0dip</item>
+		<item name="android:layout_centerInParent">true</item>
+		<item name="android:layout_alignParentBottom">true</item>//-->
+		<item name="android:layout_centerHorizontal">true</item>
+		<!--//<item name="android:layout_centerVertical">true</item>//-->
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="CommonButtonStyle1">
+		<!--//<item name="android:layout_centerVertical">true</item>
+		<item name="android:layout_alignParentBottom">true</item>//-->
+		<item name="android:layout_marginLeft">55.0dip</item>
+		<item name="android:textSize">9.0pt</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">#737678</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	
+	
+	
+	<style name="WrapperButtonStyle2">
+		<item name="android:background">@drawable/button_mode</item>
+		<item name="android:paddingLeft">25.0dip</item>
+		<item name="android:paddingTop">17.0dip</item>
+		<item name="android:paddingBottom">17.0dip</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="ImageButtonStyle2">
+		<item name="android:layout_centerVertical">true</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="CommonButtonStyle2">
+		<item name="android:layout_centerInParent">true</item>
+		<item name="android:textSize">9.0pt</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">#737678</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	
+	
+	
+	<style name="FacilityInfo_ListView_Style">
+		<item name="android:scrollbarSize">50.0dip</item>
+		<item name="android:background">#312f30</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="FacilityInfoRow">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="FacilityInfoColumn1">
+		<item name="android:maxLines">2</item>
+		<item name="android:singleLine">false</item>
+		<item name="android:textColor">#fff</item>
+		<item name="android:textSize">7.0pt</item>
+		<item name="android:typeface">sans</item>
+		<item name="android:gravity">center_vertical</item>
+		
+		<item name="android:paddingTop">2.0px</item>
+		<item name="android:paddingRight">10.0px</item>
+		<item name="android:paddingBottom">0.0px</item>
+		<item name="android:paddingLeft">10.0px</item>
+		
+		<item name="android:layout_width">wrap_content</item>
+		<!--//60.0dip//-->
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	
+	
+	
+	<!--//<style name="PnBtn_Button_Style">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:background">@drawable/style_button_2</item>
+		<item name="android:textColor">#f5c210</item>
+		<item name="android:paddingLeft">3.0dip</item>
+		<item name="android:paddingRight">3.0dip</item>
+	</style>//-->
+	<style name="PnBtn_B2">
+		<!--//<item name="android:layout_width">62.0dip</item>//-->
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:orientation">horizontal</item>
+		<!--//<item name="android:background">#f00</item>//-->
+	</style>
+	<style name="PnBtn_B2_Img">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<!--//<style name="PnBtn_Space_Style">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_weight">1</item>
+	</style>//-->
+
+</resources>
