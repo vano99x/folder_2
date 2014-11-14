@@ -19,20 +19,26 @@ public abstract class Tab
 		//rootView - view of main activity
 		//paramInt1 - view
 		//paramInt2 - id in attached view
-	public Tab(Context mainActivity, ViewGroup rootView, int paramInt1, int paramInt2)
+	public Tab(Context mainActivity, ViewGroup rootView, int i1, int i2, int indexPosition)
 	{
 		this.context = mainActivity;
-		this.parent  = rootView;
-		
-		//try{
-			this.tabView = LayoutInflater.from(mainActivity).inflate( paramInt1, this.parent, true);
-		//}catch(Exception e){
-		//int aaa = 9;
-		//int aaa2 = aaa-2; Exception ex = e;
-		//}
-		
-		this.root    = ((ViewGroup)rootView.findViewById(paramInt2));
+		this.parent  = rootView;//rootView.bringChildToFront();
+
+		if(indexPosition == -1)
+		{
+			this.tabView = LayoutInflater.from(mainActivity).inflate( i1, this.parent, true);
+		}else{
+			this.tabView = LayoutInflater.from(mainActivity).inflate( i1, this.parent, false);
+			this.parent.addView(this.tabView,indexPosition);
+		}
+
+		this.root    = ((ViewGroup)rootView.findViewById(i2));
 	}
+	public Tab(Context mainActivity, ViewGroup rootView, int i1, int i2)
+	{
+		this(mainActivity, rootView, i1, i2, -1);
+	}
+
 	public void Clear()
 	{
 		this.Hide();
@@ -43,16 +49,6 @@ public abstract class Tab
 		this.context = null;
 	}
 
-	public void Show()
-	{
-		this.root.setVisibility(View.VISIBLE);
-	}
-
-	public void Hide()
-	{
-		this.root.setVisibility(View.GONE);
-	}
-
 	public ViewGroup getRoot()
 	{
 		return this.root;
@@ -60,6 +56,21 @@ public abstract class Tab
 	public ViewGroup getParent()
 	{
 		return this.parent;
+	}
+
+	public void Show()
+	{
+		Tab.Show(this.root);
+	}
+	public void Hide()
+	{
+		Tab.Hide(this.root);
+	}
+	public boolean IsShow()
+	{
+		int aaa = this.root.getVisibility();
+		boolean bbb = aaa == View.VISIBLE;
+		return bbb;
 	}
 
 
@@ -76,8 +87,8 @@ public abstract class Tab
 	{
 		if(Tab.IsShow(ctrl)) {
 			ctrl.setVisibility(View.GONE);
-			int aaa = ctrl.getVisibility();
-			int aaa2 = aaa-2;
+			//int aaa = ctrl.getVisibility();
+			//int aaa2 = aaa-2;
 		}
 	}
 	public static boolean IsShow(View ctrl)

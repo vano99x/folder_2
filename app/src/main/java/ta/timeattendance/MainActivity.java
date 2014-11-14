@@ -17,6 +17,7 @@ import ta.Database.*;
 import ta.timeattendance.Models.*;
 import ta.timeattendance.Services.*;
 import ta.timeattendance.R;
+import ta.ui.NotificationMessage.INotificationMessageService;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -32,7 +33,7 @@ public class MainActivity
 
 	private IAppService __appService;
 	private ISupervisorModel __svModel;
-	private NfcThread _nfcThread;
+	//private NfcThread _nfcThread;
 	public  android.nfc.Tag __tagFromIntent;
 
 	private boolean _isRunning;
@@ -139,43 +140,6 @@ public class MainActivity
 		}*/
 	}
 
-	/*final Lock _lock = new ReentrantLock();
-	private static final String TAG = "MyActivity";
-    private Runnable newRunable()
-	{
-        return new Runnable()
-		{
-            @Override
-            public void run()
-			{
-                //do {
-                    try
-					{
-                        if( MainActivity.this._lock.tryLock() )//500, TimeUnit.MILLISECONDS
-						{
-                            try {
- 
-                                Log.println(Log.ASSERT,TAG, "locked thread " + Thread.currentThread().getName());
- 
-                                Thread.sleep(1000);
- 
-                            } finally {
-                                MainActivity.this._lock.unlock();
-                                Log.println(Log.ASSERT,TAG, "unlocked locked thread " + Thread.currentThread().getName());
- 
-                            }
-                        } else {
-                            Log.println(Log.ASSERT,TAG, "unable to lock thread " + Thread.currentThread().getName() + " will re try again");
-                        }
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                //} while (true);
-            }
-        };
-    }*/
-
 	void _2()
 	{
 		//try{
@@ -197,52 +161,8 @@ public class MainActivity
 		int aaa2 = 9 - 2;
 	}
 
-	//=============================================================================================
-	//       ctor
-	public MainActivity(MainActivityProxy fa)
+	void _3()
 	{
-		this.Nulling();
-
-		//
-		final MainActivityProxy faForEx = fa;
-		//Thread.setDefaultUncaughtExceptionHandler(
-		//java.lang.Process.this.
-		Thread.currentThread().setUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler()
-		{
-			@Override
-			public void uncaughtException(Thread thread, Throwable ex)
-			{
-				int aaa = 9;
-				int aaa2 = aaa-2;
-
-				//try{ Thread.sleep(500L); }catch(InterruptedException e){  }
-				//java.lang.StackTraceElement[] st = ex.getStackTrace();
-				//StackTraceElement first = st[0];
-				//String type1 = first.getClassName();
-				//ta.lib.Common.CommonHelper.GetExceptionName();
-				//Class type2 = ex.getClass();
-				String msg = ex.getMessage();
-
-				//try{
-				Intent intent;
-				intent = new Intent("ru.startandroid.intent.action.showdate");
-				intent.putExtra("Message", msg );
-				faForEx.startActivity(intent);
-
-				int p = android.os.Process.myPid();
-				android.os.Process.killProcess(p);
-				//}catch(Exception e){
-				//	Exception ex2 = e;
-				//}
-			}
-		});/**/
-		//
-
-		this.set_FragmentActivity( fa );
-		MainActivityProxy context = this.get_FragmentActivity();
-
-		// 3 Db
-		DbConnector.CreateInstance( context );
 		try{
 		//DbConnector.getInstance().exec("DROP TABLE IF EXISTS Checkin");
 		//DbConnector.getInstance(this).exec("DROP TABLE IF EXISTS Personel");
@@ -251,11 +171,49 @@ public class MainActivity
 		}catch(Exception e){
 			Exception ex = e;
 		}
+	}
+
+	//=============================================================================================
+	//       ctor
+	public MainActivity(MainActivityProxy fa)
+	{
+        MainActivityProxy.ma = this;
+		this.Nulling();
+
+		final MainActivityProxy faForEx = fa;
+		//Thread.setDefaultUncaughtExceptionHandler(
+		//java.lang.Process.this.
+
+		Thread.currentThread().setUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler()
+		//Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler()
+		{
+			@Override public void uncaughtException(Thread thread, Throwable ex)
+			{
+				//java.lang.StackTraceElement[] st = ex.getStackTrace();
+				//StackTraceElement first = st[0];
+				//String type1 = first.getClassName();
+				String msg = ex.getMessage();
+
+				Intent intent = new Intent("ru.startandroid.intent.action.showdate");
+				intent.putExtra("Message", msg );
+				faForEx.startActivity(intent);
+
+				int p = android.os.Process.myPid();
+				android.os.Process.killProcess(p);
+			}
+		});
+
+		this.set_FragmentActivity( fa );
+		MainActivityProxy context = this.get_FragmentActivity();
+
+		// 3 Db
+		DbConnector.CreateInstance( context );
 		
 		// 1 context
 		context.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
 		context.setContentView(R.layout.main);
-		this.rootView = ((ViewGroup)context.findViewById(R.id.main_layout));
+		ViewGroup mainRoot = ((ViewGroup)context.findViewById(R.id.Main_RootId));
+		this.rootView =      ((ViewGroup)context.findViewById(R.id.Main_Frame_Id));
 		
 		//ViewGroup view = (ViewGroup)context.getWindow().getDecorView();
 
@@ -265,11 +223,13 @@ public class MainActivity
 		this.mEngine = MainEngine.getInstance();
 
 		// 4 UI
-		UIHelper.CreateInstance( context, this.rootView );
+		UIHelper.CreateInstance( context, mainRoot, this.rootView );
 		//int paddingTop = UIHelper.Instance().tabPin.getRoot().getPaddingTop();
 
-		this._nfcThread = new NfcThread(this, this.mEngine);
-		this.mEngine.SaveCheckinCompleteEvent.Add(get_onSaveCheckin_Handler());
+		//this._nfcThread = new NfcThread(this, this.mEngine);
+		Bootstrapper.Resolve( INfcEventService.class ).Start(this);
+		Bootstrapper.Resolve( INotificationMessageService.class ).Run();
+		//this.mEngine.SaveCheckinCompleteEvent.Add(get_onSaveCheckin_Handler());
 
 		Bootstrapper.Init();
 		this.__appService = Bootstrapper.Resolve( IAppService.class );
@@ -280,7 +240,8 @@ public class MainActivity
 	}
 	public void MainActivity_Clear()
 	{
-		this._nfcThread.Stop();
+		//this._nfcThread.Stop();
+		this.__appService.ClearingRunEvent();
 
 		// 4 UI
 		UIHelper.Instance().UIHelper_Clear();
@@ -312,7 +273,7 @@ public class MainActivity
 		this.mEngine = null;
 		this.rootView = null;
 
-		this._nfcThread = null;
+		//this._nfcThread = null;
 		this.__tagFromIntent = null;
 
 		this._isRunning = false;
@@ -332,7 +293,7 @@ public class MainActivity
 		if( this._isRunning == false )
 		{
 			this._isRunning = true;
-			if(this.__svModel.get_CurrentSuperviser() == null){
+			if(this.__svModel.get_CurrentSupervisor() == null){
 				UIHelper.Instance().switchState(State.PIN);
 				//UIHelper.Instance().switchState(State.PERSONEL_INFO);
 			}else{
@@ -356,6 +317,7 @@ public class MainActivity
 				NFCHelper.Instance().Clear(); NFCHelper.DeleteInstance();
 			}
 			this.__appService.ClosingRunEvent();
+			this.__appService.LogoutClearingRunEvent();
 		}
 	}
 	
@@ -381,17 +343,26 @@ public class MainActivity
 
 	//=============================================================================================
 	//       Event Handler
-	private onSaveChkn get_onSaveCheckin_Handler() { onSaveChkn o = new onSaveChkn(); o.arg1 = this; return o; }
-	class onSaveChkn extends RunnableWithArgs<Object,Boolean> { public void run()
+	//private onSaveChkn get_onSaveCheckin_Handler() { onSaveChkn o = new onSaveChkn(); o.arg1 = this; return o; }
+	//class onSaveChkn extends RunnableWithArgs<Object,Boolean> { public void run()
+	//{
+	//	MainActivity      _this   = (MainActivity)this.arg1;
+	//	MainActivityProxy context = _this.get_FragmentActivity();
+	//	boolean           result  = this.result;
+
+	//	context.NfcNotBusy();
+	//}}
+
+
+
+	//=============================================================================================
+	//*      static
+	public static MainActivityProxy get_FragmentActivityStatic()
 	{
-		MainActivity      _this   = (MainActivity)this.arg1;
-		MainActivityProxy context = _this.get_FragmentActivity();
-		boolean           result  = this.result;
+		return MainActivityProxy.ma.get_FragmentActivity();
+	}
 
-		context.NfcNotBusy();
-	}}
 
-	
 
 	//=============================================================================================
 	//*      properties
@@ -457,16 +428,20 @@ public void onConfigurationChanged(Configuration newConfig)
 	{
 		NULL(              "NULL",               0),
 		PIN(               "PIN",                1),
-		//FLAG_MAIN_MENU(         "FLAG_MAIN_MENU",          2),
-		FLAG_POINTS_LIST(       "FLAG_POINTS_LIST",        3),
-		MODE_SELECTION(    "MODE_SELECTION",     4),
-		WAIT_MODE(         "WAIT_MODE",          5),
-		PERSONEL_LIST_MODE("PERSONEL_LIST_MODE", 6),
-		PERSONEL_INFO(     "PERSONEL_INFO",      7),
-		CHECKIN_LIST(      "CHECKIN_LIST",       8),
-		REFERENCE(      "REFERENCE",       9),
-		FACILITY_INFO(      "FACILITY_INFO",       10),
-		FLAG_SETTINGS(      "FLAG_SETTINGS",       15);
+		FLAG_POINTS_LIST(  "FLAG_POINTS_LIST",   2),
+		MODE_SELECTION(    "MODE_SELECTION",     3),
+		WAIT_MODE(         "WAIT_MODE",          4),
+		PERSONEL_LIST_MODE("PERSONEL_LIST_MODE", 5),
+		PERSONEL_INFO(     "PERSONEL_INFO",      6),
+		CHECKIN_LIST(      "CHECKIN_LIST",       7),
+		REFERENCE(         "REFERENCE",          8),
+		FACILITY_INFO(     "FACILITY_INFO",      9),
+		FLAG_SETTINGS(     "FLAG_SETTINGS",      11),
+		FLAG_CATEGORY(     "FLAG_CATEGORY",      12),
+		FLAG_TEMPLATE(     "FLAG_TEMPLATE",      13),
+		SESSION_FLAG(      "SESSION_FLAG",       14),
+		ATTACH_NFC_FLAG(   "ATTACH_NFC_FLAG",    15);
+
 		//DATA_TRANSMISSION("DATA_TRANSMISSION", 4), //ERROR_READING_LABLE("ERROR_READING_LABLE", 5),
 		//ERROR_CONNECTION("ERROR_CONNECTION", 6), //FINISH("FINISH", 7), //SYNC("SYNC", 12),
 

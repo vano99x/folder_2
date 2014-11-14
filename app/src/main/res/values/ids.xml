@@ -4,10 +4,12 @@
 	<item type="id" name="list" />
 	
 	<item type="id" name="main_layout" />
-	<item type="id" name="page_pin" />
-	<item type="id" name="PagePin" />
-	<item type="id" name="pin_edit" />
-	<item type="id" name="continue_button" />
+	<item type="id" name="Main_RootId" />
+	<item type="id" name="Main_Frame_Id" />
+	
+	<item type="id" name="Pin_RootId" />
+	<item type="id" name="Pin_EditText_Id" />
+	<item type="id" name="Pin_ButtonOk_Id" />
 
 	<item type="id" name="ExceptionActivity_TextView" />
 	
@@ -56,12 +58,17 @@
 	<item type="id" name="hex_number_card" />
 	
 	
-	<item type="id" name="PagePersonelList" />
-	<item type="id" name="PagePersonelList_ListView_Id" />
+	<item type="id" name="PersonelList_RootId" />
+	<item type="id" name="PersonelList_ListView_Id" />
 	<item type="id" name="lable_empty_list" />
-	<item type="id" name="txt_lastname" />
+	<item type="id" name="PersonelList_EditText_Id" />
 	<item type="id" name="SearchButton_Id" />
-	<item type="id" name="PersonelListItem_Id" />
+	<item type="id" name="PersonelList_Item_TagId" />
+	<item type="id" name="PersonelList_Item_RootId" />
+	<item type="id" name="PersonelList_Item_FirstName_Id" />
+	<item type="id" name="PersonelList_Item_LastName_Id" />
+	<item type="id" name="PersonelList_Item_ThirdName_Id" />
+	<item type="id" name="PersonelList_Item_WorkerId_Id" />
 	
 	
 	<item type="id" name="Reference_Id" />
@@ -91,9 +98,14 @@
 	<item type="id" name="MyDatePickerView_OkId" />
 	<item type="id" name="MyDatePickerView_CancelId" />
 
+	<item type="id" name="NotificationMessage_RootId" />
+	<item type="id" name="NotificationMessage_TextId" />
+	<item type="id" name="NotificationMessage_OkId" />
+
 	<item type="id" name="SvBox_RootId" />
+	<item type="id" name="SvBox_CategoryTemplate_View_Id" />
+	<item type="id" name="SvBox_CategoryTemplate_TextView_Id" />
 	<item type="id" name="SvBox_Point" />
-	<!--//<item type="id" name="SvBox_NameBlockId" />//-->
 	<item type="id" name="SvBox_LastName" />
 	<item type="id" name="SvBox_Name" />
 	<item type="id" name="SvBox_ThirdName" />
@@ -105,6 +117,9 @@
 	<item type="id" name="PnBtn_SettingsBtn_Id" />
 	<item type="id" name="PnBtn_FacilityInfoBtn_Id" />
 	<item type="id" name="PnBtn_ReferenceBtn_Id" />
+	<item type="id" name="PnBtn_ArrivalOk_Id" />
+	<item type="id" name="PnBtn_DepartureOk_Id" />
+	<item type="id" name="PnBtn_DepartureMiss_Id" />
 
 	<item type="id" name="LoadingProgressBar_RootId" />
 	<item type="id" name="LoadingProgressBar_Title" />
@@ -123,13 +138,45 @@
 	<item type="id" name="FacilityInfoItem_HoursWorked_Id" />
 	<item type="id" name="FacilityInfoItem_FinesSum_Id" />
 	<item type="id" name="FacilityInfoItem_BonusesSum_Id" />
-	
+
 	<item type="id" name="Settings_RootId" />
 	<!--//<item type="id" name="Settings_ListView_Id" />//-->
-	<!--//<item type="id" name="Settings_ReferenceBtn_Id" />//-->
 	<item type="id" name="Settings_UpdateBtn_Id" />
 	<item type="id" name="Settings_PointsListBtn_Id" />
+	<item type="id" name="Settings_AttachNFC_Btn_Id" />
 	<item type="id" name="Settings_CurrentVersionTextView_Id" />
+
+	<item type="id" name="Category_RootId" />
+	<item type="id" name="Category_HeadTextView_Id" />
+	<item type="id" name="Category_EmptyListTextView_Id" />
+	<item type="id" name="Category_ListView_Id" />
+	<item type="id" name="Category_Item_TagId" />
+
+	<item type="id" name="Template_RootId" />
+	<item type="id" name="Template_HeadTextView_Id" />
+	<item type="id" name="Template_EmptyListTextView_Id" />
+	<item type="id" name="Template_ListView_Id" />
+	<item type="id" name="Template_Item_TagId" />
+
+
+	<item type="id" name="Session_RootId" />
+	<item type="id" name="Session_LeftFilterBtn_Id" />
+	<item type="id" name="Session_RightFilterBtn_Id" />
+	<!--//<item type="id" name="Session_Head_Id" />//-->
+	<item type="id" name="Session_EmptyList_Id" />
+	<item type="id" name="Session_ListView_Id" />
+	<!--//<item type="id" name="Session_Item_TagId" />//-->
+
+	<item type="id" name="Session_ListItem_RootId" />
+	<item type="id" name="Session_ListItem_Date_Id" />
+	<item type="id" name="Session_ListItem_FirstName_Id" />
+	<item type="id" name="Session_ListItem_LastName_Id" />
+	<item type="id" name="Session_ListItem_ThirdName_Id" />
+	<item type="id" name="Session_ListItem_PointName_Id" />
+	<item type="id" name="Session_ListItem_CategoryName_Id" />
+	<item type="id" name="Session_ListItem_Start_Id" />
+	<item type="id" name="Session_ListItem_End_Id" />
+	<item type="id" name="Session_ListItem_Tpl_Id" />
 
 
 	<item type="id" name="PagePointsList" />
@@ -140,6 +187,14 @@
 	<item type="id" name="txtName" />
 	<item type="id" name="checkin_btn" />
 	<item type="id" name="PointsListItem_Id" />
-	
+
+	<item type="id" name="AttachNFC_RootId" />
+	<item type="id" name="AttachNFC_FirstName_Id" />
+	<item type="id" name="AttachNFC_LastName_Id" />
+	<item type="id" name="AttachNFC_ThirdName_Id" />
+	<item type="id" name="AttachNFC_NfcTagValue_Id" />
+	<item type="id" name="AttachNFC_Save_Id" />
+	<item type="id" name="AttachNFC_Discard_Id" />
+
 </resources>
 

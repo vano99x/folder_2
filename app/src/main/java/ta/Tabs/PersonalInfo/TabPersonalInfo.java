@@ -1,4 +1,4 @@
-package ta.Tabs.PersonelInfo;
+package ta.Tabs.PersonalInfo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,12 +19,13 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import ta.lib.*;
 import ta.timeattendance.*;
+import ta.timeattendance.MainActivity.State;
 import ta.timeattendance.Models.*;
 import ta.timeattendance.Services.*;
 import ta.Tabs.CheckinList.*;
 import ta.timeattendance.R;
 
-public class TabPersonelInfo extends Tab implements View.OnClickListener
+public class TabPersonalInfo extends Tab implements View.OnClickListener
 {
 	private LinearLayout _layoutRoot;
 	private View _dismissImageView;
@@ -43,10 +44,11 @@ public class TabPersonelInfo extends Tab implements View.OnClickListener
 	public boolean IsShowCheckiedWorker;
 	public boolean __isResized;
 
-	private IAppService __appService;
-	private ISendChekinService __sendChekinService;
+	//private IAppService      __appService;
+	private ISupervisorModel __svModel;
+	private IChekinService   __chekinService;
 
-	public TabPersonelInfo(Context paramContext, ViewGroup paramViewGroup, int paramInt1, int paramInt2)
+	public TabPersonalInfo(Context paramContext, ViewGroup paramViewGroup, int paramInt1, int paramInt2)
 	{
 		super(paramContext, paramViewGroup, paramInt1, paramInt2);
 		this.IsShowCheckiedWorker = false;
@@ -77,7 +79,9 @@ public class TabPersonelInfo extends Tab implements View.OnClickListener
 		//this.__appService = Bootstrapper.Resolve( IAppService.class );
 		//this.__appService.get_GotFocus().Add(get_onGotFocus());
 
-		this.__sendChekinService = Bootstrapper.Resolve( ISendChekinService.class );
+		this.__svModel = Bootstrapper.Resolve( ISupervisorModel.class );
+		this.__chekinService = Bootstrapper.Resolve( IChekinService.class );
+		this.__chekinService.add_SaveCheckinComplete(get_onSaveCheckin());
 
 		//this.vto = this.root.getViewTreeObserver();
 		//this.vto = this._photoImageView.getViewTreeObserver();
@@ -89,6 +93,21 @@ public class TabPersonelInfo extends Tab implements View.OnClickListener
 
 	//*********************************************************************************************
 	//**     Event Handler
+	//private RunnableWithArgs get_onSaveCheckin() { return new RunnableWithArgs<Object,Boolean>(this){ public void run()
+	//{
+	//}};}
+	private temp1 get_onSaveCheckin() { temp1 o = new temp1(); o.arg1 = this; return o; }
+	private static class temp1 extends RunnableWithArgs<Object,Boolean> { public void run()
+	{
+		TabPersonalInfo _this = (TabPersonalInfo)this.arg1;
+		if(_this.IsShow())
+		{
+			//TabPersonalInfo pi = ((TabPersonalInfo)UIHelper.Instance().get_TabConteiner().GetByEnum(State.PERSONEL_INFO).Tab);
+			//pi.IsShowCheckiedWorker = true;
+			_this.UpdateData();
+		}
+	}}
+
 	//private       onGF get_onGotFocus() { onGF o = new onGF(); o.arg1 = this; return o; }
 	//private class onGF extends RunnableWithArgs<Object,Object> { public void run()
 	//{
@@ -98,7 +117,7 @@ public class TabPersonelInfo extends Tab implements View.OnClickListener
 	private       onGll get_onGlobalLayoutListener() { onGll o = new onGll(); o.arg1 = this; return o; }
 	private class onGll implements OnGlobalLayoutListener { Object arg1; public void onGlobalLayout()
 	{
-		TabPersonelInfo _this = (TabPersonelInfo)this.arg1;
+		TabPersonalInfo _this = (TabPersonalInfo)this.arg1;
 		if( ! _this.__isResized){
 			_this.ResizeFoto();
 		}
@@ -116,7 +135,7 @@ public class TabPersonelInfo extends Tab implements View.OnClickListener
 	{
 		super.Show();
 		UpdateData();
-		this.__sendChekinService.SendCheckin();
+		this.__chekinService.SendCheckin();
 
 		if(this.vto == null || !(this.vto.isAlive()))
 		{
@@ -169,7 +188,15 @@ public class TabPersonelInfo extends Tab implements View.OnClickListener
 	public void UpdateData()
 	{
 		MainEngine engine = MainEngine.getInstance();
-		Personel p = engine.get_CurrentWorker();
+		//Personel p = engine.get_CurrentWorker();
+		Personel p;
+
+		if(IsShowCheckiedWorker){
+			p = this.__svModel.get_WorkerAppliedNFC();
+		}else{
+			p = this.__svModel.get_SelectedWorker();
+		}
+
 		if( p == null || p.Id == -1 ) {
 			return;
 		}
@@ -282,7 +309,8 @@ public class TabPersonelInfo extends Tab implements View.OnClickListener
 					int aaa2 = aaa-9;
 				break;}
 				case R.id.checkin_btn:{
-					engine.SaveCheckin();
+					//engine.SaveCheckin();
+					this.__svModel.SaveWorkerCheckin(   this.__svModel.get_SelectedWorker()   );
 				break;}
 			}
 		}

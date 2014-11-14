@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/Category_RootId"
+	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+	<TextView
+		android:id="@id/Category_HeadTextView_Id"
+		android:text="@string/category_caption"
+		android:textSize="10.0pt" 
+		android:textStyle="bold" 
+		android:textColor="#fff"
+		android:gravity="center_horizontal" android:paddingTop="20.0px"
+		android:layout_width="fill_parent" android:layout_height="60.0px"
+	/>
+
+	<TextView
+		android:id="@id/Category_EmptyListTextView_Id"
+		android:text="@string/category_list_empty"
+		android:textSize="12.0pt" 
+		android:textStyle="bold" 
+		android:textColor="#fff"
+		android:gravity="center" 
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:singleLine="false" 
+		android:layout_x="0.0px" android:layout_y="250.0px"
+	/>
+
+
+	<ListView
+		android:id="@id/Category_ListView_Id"
+		android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+</AbsoluteLayout>

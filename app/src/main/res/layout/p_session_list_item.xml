@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/Session_ListItem_RootId"
+	android:orientation="horizontal"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+>
+
+<!--//
+<TextView android:id="@id/Session_ListItem_Date_Id" android:maxWidth="45.0dip" android:text="Дата" style="@style/SessItem"/>
+//-->
+
+<LinearLayout android:maxWidth="140.0dip" android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+	<TextView android:id="@id/Session_ListItem_Start_Id" android:text="от" android:singleLine="true" style="@style/SessItem"/>
+	<TextView android:id="@id/Session_ListItem_End_Id" android:text="до" android:singleLine="true" style="@style/SessItem"
+		android:layout_gravity="right" />
+</LinearLayout>
+
+
+<LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+	<TextView android:id="@id/Session_ListItem_FirstName_Id" android:text="FirstName" android:singleLine="true" style="@style/SessItem"/>
+	<TextView android:id="@id/Session_ListItem_LastName_Id" android:text="LastName" android:singleLine="true" style="@style/SessItem"/>
+</LinearLayout>
+	<!--<TextView android:id="@id/Session_ListItem_ThirdName_Id" android:text="Дата" style="@style/SessItem"/>-->
+
+
+	<TextView android:id="@id/Session_ListItem_PointName_Id" android:text="Дата" style="@style/SessItem"/>
+	<TextView android:id="@id/Session_ListItem_CategoryName_Id" android:text="Дата" style="@style/SessItem"/>
+	<TextView android:id="@id/Session_ListItem_Tpl_Id" android:text="Дата" style="@style/SessItem"/>
+
+</LinearLayout>

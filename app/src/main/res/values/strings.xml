@@ -50,11 +50,14 @@
 	
     <string name="mode_start_result">Приход отслежен</string>
     <string name="mode_start">Приход</string>
-	
+
     <string name="mode_end_result">Уход зафиксирован</string>
     <string name="mode_end">Уход</string>
-	
+
     <string name="mode_pause">Перерыв</string>
+
+	<string name="category_caption">Выберите категорию</string>
+	<string name="category_list_empty">Список категорий пуст</string>
 
 	<string name="Reference_Text_Id">
 		<![CDATA[<html><body>

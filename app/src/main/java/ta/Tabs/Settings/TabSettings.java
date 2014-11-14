@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import ta.Tabs.PersonalList.IPersonalListModel;
 import ta.lib.*;
 import ta.lib.Common.*;
 import ta.lib.DatePicker.MyDatePicker;
@@ -15,7 +17,7 @@ import ta.lib.tabui.Tab;
 import ta.timeattendance.*;
 import ta.timeattendance.Models.*;
 import ta.Database.*;
-import ta.Tabs.Settings.CurrentVersionServices.CurrentVersionLoadedEventClass;
+//import ta.Tabs.Settings.CurrentVersionServices.CurrentVersionLoadedEventClass;
 import ta.timeattendance.R;
 
 public class TabSettings extends Tab implements View.OnClickListener
@@ -46,10 +48,14 @@ public class TabSettings extends Tab implements View.OnClickListener
 		View pointsListBtn = this.root.findViewById(R.id.Settings_PointsListBtn_Id);
 		pointsListBtn.setOnClickListener(this);
 		pointsListBtn.setTag(new Object[]{R.id.Settings_PointsListBtn_Id});
+		
+		View attachNFC_Btn = this.root.findViewById(R.id.Settings_AttachNFC_Btn_Id);
+		attachNFC_Btn.setOnClickListener(this);
+		attachNFC_Btn.setTag(new Object[]{R.id.Settings_AttachNFC_Btn_Id});
 
 		_labelCurrentVersion = (TextView)this.root.findViewById(R.id.Settings_CurrentVersionTextView_Id);
 		this.__currentVersionServices = Bootstrapper.Resolve( ICurrentVersionServices.class );
-		this.__currentVersionServices.get_CurrentVersionLoaded().Add(get_onCurrentVersionLoaded());
+		this.__currentVersionServices.set_CurrentVersionLoaded(get_onCurrentVersionLoaded());
 	}
 
 	//*********************************************************************************************
@@ -60,6 +66,26 @@ public class TabSettings extends Tab implements View.OnClickListener
 		TabSettings _this = (TabSettings)this.arg1;
 		_this._labelCurrentVersion.setText( this.arg );
 	}}
+
+
+
+	//*********************************************************************************************
+	//**     private func
+	private void LoadAndShowCurrentVersion()
+	{
+		this.__currentVersionServices.LoadCurrentVersionNumber();
+	}
+
+
+	//*********************************************************************************************
+	//**     Code behind override
+	public void Show()
+	{
+		super.Show();
+		//___old___//Point [] pointArr   = Point.getBySuperviser( superviser.Id, this.context);
+		LoadAndShowCurrentVersion();
+	}
+
 
 
 	//*********************************************************************************************
@@ -90,25 +116,15 @@ public class TabSettings extends Tab implements View.OnClickListener
 	{
 		UIHelper.Instance().switchState(MainActivity.State.FLAG_POINTS_LIST);
 	}
-
-
-
-	//*********************************************************************************************
-	//**     private func
-	private void LoadAndShowCurrentVersion()
+	private void attachNFC_Click()
 	{
-		this.__currentVersionServices.LoadCurrentVersionNumber();
+		IPersonalListModel plm = Bootstrapper.Resolve(IPersonalListModel.class);
+		plm.set_CallerView(MainActivity.State.ATTACH_NFC_FLAG);
+
+		UIHelper.Instance().switchState(MainActivity.State.PERSONEL_LIST_MODE);
 	}
 
 
-	//*********************************************************************************************
-	//**     Code behind override
-	public void Show()
-	{
-		super.Show();
-		//___old___//Point [] pointArr   = Point.getBySuperviser( superviser.Id, this.context);
-		LoadAndShowCurrentVersion();
-	}
 
 	public void onClick(View paramView)
 	{
@@ -129,9 +145,9 @@ public class TabSettings extends Tab implements View.OnClickListener
 				case R.id.Settings_PointsListBtn_Id:{
 					pointsListBtn_Click();
 				break;}
-				//case R.id.PointsListItem_Id:{
-				//	PointsListItem_Selected((Point)arr[1]);
-				//break;}
+				case R.id.Settings_AttachNFC_Btn_Id:{
+					attachNFC_Click();
+				break;}
 			}
 		}
 	}

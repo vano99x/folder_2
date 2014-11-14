@@ -32,9 +32,11 @@ public class CurrentVersionServices implements ICurrentVersionServices
 
 
 
-	class CurrentVersionLoadedEventClass extends Event<String,Boolean> {}
-	private CurrentVersionLoadedEventClass CurrentVersionLoaded;
-	public CurrentVersionLoadedEventClass get_CurrentVersionLoaded(){ return this.CurrentVersionLoaded; }
+	private class   CurrentVersionLoadedEventClass extends Event<String,Boolean> {}
+	private         CurrentVersionLoadedEventClass CurrentVersionLoaded;
+	public void set_CurrentVersionLoaded(RunnableWithArgs runnable){
+		this.CurrentVersionLoaded.Add(runnable);
+	}
 
 
 

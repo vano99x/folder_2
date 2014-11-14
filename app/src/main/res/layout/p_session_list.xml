@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@id/Session_RootId"
+	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+
+
+<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+	<LinearLayout style="@style/FilterBtn_Wrap2">
+		<LinearLayout style="@style/FilterBtn_Wrap1">
+			<Button android:id="@id/Session_LeftFilterBtn_Id" android:text="Начальная дата" style="@style/FilterBtn" />
+		</LinearLayout>
+	</LinearLayout>
+	<LinearLayout style="@style/FilterBtn_Wrap2">
+		<LinearLayout style="@style/FilterBtn_Wrap1">
+			<Button android:id="@id/Session_RightFilterBtn_Id" android:text="Конечная дата" style="@style/FilterBtn"/>
+		</LinearLayout>
+	</LinearLayout>
+</LinearLayout>
+
+	<TextView
+		android:id="@id/Session_EmptyList_Id"
+		android:text="Список сессий пуст"
+		android:textSize="12.0pt"
+		android:textStyle="bold"
+		android:textColor="#fff"
+		android:gravity="center"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:singleLine="false"
+		android:layout_x="0.0px" android:layout_y="250.0px"
+	/>
+
+
+	<!--android:background="#f00"-->
+	<ListView
+		android:id="@id/Session_ListView_Id"
+		android:background="#312f30"
+		android:divider="#0f0"
+		android:dividerHeight="1.0dip"
+		android:layout_width="fill_parent" android:layout_height="wrap_content" />
+
+</LinearLayout>

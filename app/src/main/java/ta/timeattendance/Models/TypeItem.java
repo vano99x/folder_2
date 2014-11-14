@@ -30,9 +30,11 @@ public class TypeItem
 					_obj = (IBaseModel)type.newInstance();
 				}
 				catch(java.lang.IllegalAccessException e){
-					Exception ex = e;
+					//Exception ex = e;
+					throw new RuntimeException( e.getMessage() );
 				}catch(java.lang.InstantiationException e){
-					Exception ex = e;
+					//Exception ex = e;
+					throw new RuntimeException( e.getMessage() );
 				}
 			}
 			else if(_obj.get_IsClearDependencies())

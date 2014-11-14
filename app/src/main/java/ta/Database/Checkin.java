@@ -11,36 +11,27 @@ import java.util.Calendar;
 import java.util.ArrayList;
 import java.lang.CharSequence;
 
-public class Checkin //extends EntityBase
+import ta.Entity.IDateSortable2;
+import ta.lib.Common.DateTime;
+//import ta.lib.DB.IDateSortable;
+
+public class Checkin extends EntityBase implements IDateSortable2
 {
-	//public static final String COLUMN_CARDID = "CardId";
-	//public static final String COLUMN_DATETIME = "DateTime";
-	//public static final String COLUMN_ID = "Id";
-	//public static final String COLUMN_MODE = "Mode";
-	//public static final String COLUMN_POINTID = "PointId";
-	//public static final String COLUMN_SUPERVISERID = "SuperviserId";
-	//public static final int NUM_COLUMN_CARDID = 2;
-	//public static final int NUM_COLUMN_DATETIME = 5;
-	//public static final int NUM_COLUMN_ID = 0;
-	//public static final int NUM_COLUMN_MODE = 3;
-	//public static final int NUM_COLUMN_POINTID = 4;
-	//public static final int NUM_COLUMN_SUPERVISERID = 1;
-	//public static final String TABLE_NAME = "Checkin";
+	public int CheckinId; // AUTOINCREMENT
 
-	public int CheckinId;
-
-	public int SupervicerId;
-	public int WorkerId;
-	public String CardId;
-	//public boolean IsSupervisor;
-	public int Mode;
-	public int PointId;
-	public String DateTime;
+	public int		SupervicerId;			//sv
+	public int		WorkerId;				//w
+	public String	CardId;					//w
+	public int		Mode;					//mode
+	public int		PointId;				//p
+	public int		DateTime;				//currentTime(Millis) - second
+	public int		CategoryId;				//c
+	public int		TemplateId;				//t
 	public boolean IsCheckinExistOnServer;
-	//public int StateCheckinOnServer;
 
 	public Checkin()
 	{
+		Init();
 	}
 
 	public Checkin(
@@ -48,27 +39,41 @@ public class Checkin //extends EntityBase
 		int    workerId, 
 		String cardIdStr, 
 		//boolean isSupervisor,
-		int    paramInt2, 
-		int    paramInt3, 
-		String dt
+		int    mode, 
+		int    pointId, 
+		int dt,
+		int    cat,
+		int    tplId
 		//,boolean isCheckinExistOnServer
 		)
 	{
 		this.SupervicerId = svId;
 		this.WorkerId     = workerId;
 		this.CardId       = cardIdStr;
-		//this.IsSupervisor       = isSupervisor;
-		this.Mode         = paramInt2;
-		this.PointId      = paramInt3;
+		this.Mode         = mode;
+		this.PointId      = pointId;
 		this.DateTime     = dt;
+		this.CategoryId   = cat;
+		this.TemplateId   = tplId;
 		//this.IsCheckinExistOnServer     = isCheckinExistOnServer;
 		this.__stateCheckinOnServer = -1;
+
+		Init();
 	}
+
+	private void Init()
+	{
+		TableName = "Checkin";
+		KeyField = "CheckinId";
+		Fields = new String[]{						 "SupervicerId","WorkerId","CardId","Mode","PointId","DateTime","CategoryId","TemplateId"};
+	}
+	public Object[] get_Values(){return new Object[]{ SupervicerId,  WorkerId,  CardId,  Mode,  PointId,  DateTime,  CategoryId,  TemplateId };}
+	public Object   get_KeyValue(){return			  CheckinId;}
 
 
 
 	//*********************************************************************************************
-	//*      public static
+	//**     Local DB
 	public static Checkin [] GetAllCheckin( Context context)
 	{
 		DbConnector db = DbConnector.getInstance();
@@ -130,7 +135,7 @@ public class Checkin //extends EntityBase
 		long resSave  = -2;
 
 		result  = Checkin.delete( ch.CheckinId, context);
-		resSave = ch.save( context );
+		resSave = ch.save(  );
 
 		int aaa = 9;
 	}
@@ -139,14 +144,14 @@ public class Checkin //extends EntityBase
 
 	//*********************************************************************************************
 	//*      private static
-	private static Checkin getCheckin(Cursor cursor)
-	{
-		if(!cursor.isAfterLast())
-		{
-			return FromCursor(cursor);
-		}
-		return null;
-	}
+	//private static Checkin getCheckin(Cursor cursor)
+	//{
+	//	if(!cursor.isAfterLast())
+	//	{
+	//		return FromCursor(cursor);
+	//	}
+	//	return null;
+	//}
 	private static Checkin FromCursor(Cursor cursor)
 	{
 		Checkin ch = new Checkin();
@@ -178,7 +183,8 @@ public class Checkin //extends EntityBase
 
 		index = cursor.getColumnIndex("DateTime");
 		if(index != -1)
-		ch.DateTime     = cursor.getString(index);
+		//ch.DateTime     = cursor.getString(index);
+		ch.DateTime     = cursor.getInt(index);
 
 		index = cursor.getColumnIndex("IsCheckinExistOnServer");
 		if(index != -1){
@@ -198,7 +204,8 @@ public class Checkin //extends EntityBase
 	private static ArrayList<Checkin> getCheckinList(Cursor cursor)
 	{
 		ArrayList list = new ArrayList();
-		if (!cursor.isAfterLast())
+		//if (!cursor.isAfterLast())
+		if(cursor.moveToNext())
 		{
 			do
 			{
@@ -251,25 +258,26 @@ public class Checkin //extends EntityBase
 	{
 		if( this._dateObj == null )
 		{
-			long l = Long.parseLong(this.DateTime);
+			//long l = Long.parseLong(this.DateTime);
+			long l = this.DateTime;
 			this._dateObj = new Date( l );
 		}
 		return this._dateObj;
 	}
-	private Calendar _calendarObj;
+	// IDateSortable
+	private Calendar __calendarObj;
 	public Calendar get_CalendarObj()
 	{
-		if( this._calendarObj == null )
+		if( this.__calendarObj == null )
 		{
-			long l = Long.parseLong(this.DateTime);
-			this._calendarObj = Calendar.getInstance();
-			this._calendarObj.setTimeInMillis( l );
+			int sec = this.DateTime;
+			this.__calendarObj = ta.lib.Common.DateTime.GetCalendarFromUnixSecond(sec);
 		}
-		return this._calendarObj;
+		return this.__calendarObj;
 	}
 
 	//public long save(Context paramContext, boolean isCheckinExistOnServer)
-	public long save(Context context)
+	public long save()
 	{
 		DbConnector db = DbConnector.getInstance();
 		ContentValues cv = new ContentValues();

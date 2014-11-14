@@ -18,6 +18,7 @@ import ta.timeattendance.*;
 import ta.Tabs.CheckinList.*;
 import ta.Tabs.FacilityInfo.*;
 import ta.Tabs.Settings.*;
+import ta.Tabs.PersonalList.*;
 
 import ta.timeattendance.MainActivityProxy;
 import ta.lib.tabui.Tab;
@@ -25,8 +26,12 @@ import ta.lib.Controls.*;
 import ta.timeattendance.MainActivity;
 import ta.timeattendance.MainActivity.State;
 import ta.lib.RunnableWithArgs;
-import ta.Tabs.PersonelInfo.TabPersonelInfo;
+import ta.Tabs.PersonalInfo.TabPersonalInfo;
 import ta.Tabs.PointsList.TabPointsList;
+import ta.Tabs.CategoryList.TabCategoryList;
+import ta.Tabs.TemplateList.TabTemplateList;
+import ta.Tabs.SessionList.TabSessionList;
+import ta.Tabs.AttachNFC.TabAttachNFC;
 
 import android.support.v4.app.FragmentActivity;
 
@@ -42,19 +47,21 @@ public class UIHelper implements IMessageReceiver
 
 	public  SvBox           svBox;
 	//public  WrapperCtrl<PanelButton> panelButton;
-	public  TabPin           tabPin;
 	//public  TabMainMenu      tabMainMenu;
-	public  TabReference      tabReference;
-	private TabPointsList    tabPointsList;
-	private TabModeSelection tabModeSelection;
-	private TabWait          tabWait;
-	public  TabPersonelInfo  tabPersonelInfo;
-	public  TabPersonelList  tabPersonelList;
-	private TabCheckinList   tabCheckinList;
-	public  TabFacilityInfo  tabFacilityInfo;
-	public  TabSettings      tabSettings;
 
-	private TabItem[]         __tabItemArray;
+	//private TabPin           tabPin;
+	//private TabReference      tabReference;
+	//private TabPointsList    tabPointsList;
+	//private TabModeSelection tabModeSelection;
+	//private TabWait          tabWait;
+	//private TabPersonelInfo  tabPersonelInfo;
+	//private TabPersonelList  tabPersonelList;
+	//private TabCheckinList   tabCheckinList;
+	//private TabFacilityInfo  tabFacilityInfo;
+	//private TabSettings      tabSettings;
+	//private TabCategoryList      tabCategoryList;
+	//private TabTemplateList      tabTemplateList;
+
 	//private HttpMessage       _myRunnable;
 	private ProgressDialog    mProgress;
 	//private final Object _lockObj = new Object();
@@ -68,10 +75,10 @@ public class UIHelper implements IMessageReceiver
 	{
 		return UIHelper.__instance;
 	}
-	public static void CreateInstance( ta.timeattendance.MainActivityProxy context, ViewGroup root)
+	public static void CreateInstance( ta.timeattendance.MainActivityProxy context, ViewGroup root, ViewGroup frame)
 	{
 		UIHelper.__instance = null;
-		UIHelper.__instance = new UIHelper(context,root);
+		UIHelper.__instance = new UIHelper(context,root,frame);
 	}
 	public static void DeleteInstance()
 	{
@@ -80,75 +87,168 @@ public class UIHelper implements IMessageReceiver
 
 	//*********************************************************************************************
 	//       ctor
-	private UIHelper( ta.timeattendance.MainActivityProxy context, ViewGroup root)
+	private UIHelper( ta.timeattendance.MainActivityProxy context, ViewGroup root, ViewGroup frame)
 	{
 		this.Nulling();
 
 		this.context = context;
-		this.rootView = root;
+		ViewGroup contentView = root;
+		this.rootView = frame;
 		MainActivity.get_RespondHandler(); // create handler
 
 		//*****************************************************************************************
-		//this.svBox = new SvBox( this.context, this.rootView);
-		//this.svBox = new PanelButton( this.context, this.rootView);
-		//this.panelButton = 
-			new PanelButton( this.context, this.rootView, R.layout.panel_button, R.id.PnBtn_RootId, this);
 
-		this.tabPin             = new TabPin(            this.context, this.rootView, R.layout._1_pin,                 R.id.PagePin);
-		this.tabReference        = new TabReference(       this.context, this.rootView, R.layout._5_reference,              R.id.Reference_Id);
-		this.tabPointsList      = new TabPointsList(     this.context, this.rootView, R.layout.p_points_list_2,       R.id.PagePointsList);
-		this.tabCheckinList     = new TabCheckinList(    this.context, this.rootView, R.layout._4_checkin_list,        R.id.PageCheckinList);
-		this.tabModeSelection   = new TabModeSelection(  this.context, this.rootView, R.layout.page_mode_selection,    R.id.PageModeSelection);
-		this.tabWait            = new TabWait(           this.context, this.rootView, R.layout.page_wait2,             R.id.PageWait);
-		//this.tabDataTransmition = new TabDataTransmition(this.context, this.rootView, R.layout.page_data_transmition2, R.id.PageDataTransmition);
-		//this.tabErrorReading    = new TabErrorReading(   this.context, this.rootView, R.layout.page_error_reading,     R.id.PageErrorReading);
-		//this.tabErrorConnection = new TabErrorConnection(this.context, this.rootView, R.layout.page_error_connection,  R.id.PageErrorConnection);
-		this.tabPersonelInfo    = new TabPersonelInfo(   this.context, this.rootView, R.layout.page_personel_info,     R.id.PagePersonelInfo);
-		this.tabPersonelList    = new TabPersonelList(   this.context, this.rootView, R.layout.page_personel_list,     R.id.PagePersonelList);
-		//this.tabSync            = new TabSync(           this.context, this.rootView, R.layout.page_sync,              R.id.PageSync);
-		this.tabFacilityInfo    = new TabFacilityInfo(   this.context, this.rootView, R.layout.p_facility_info,        R.id.FacilityInfo_RootId);
-		this.tabSettings        = new TabSettings(       this.context, this.rootView, R.layout.p_settings,             R.id.Settings_RootId);
-
+		new PanelButton( this.context, contentView, R.layout.panel_button, R.id.PnBtn_RootId, this);
 		this.svBox = new SvBox( this.context, this.rootView, this);
+
+		TabItem[] arr = {
+		new TabItem(State.PIN.ordinal(),
+			new TabPin(            this.context, this.rootView, R.layout._1_pin,                 R.id.Pin_RootId)
+		),
+		new TabItem(State.REFERENCE.ordinal(),
+			new TabReference(      this.context, this.rootView, R.layout._5_reference,              R.id.Reference_Id)
+		),
+		new TabItem(State.FLAG_POINTS_LIST.ordinal(),
+			new TabPointsList(     this.context, this.rootView, R.layout.p_points_list_2,       R.id.PagePointsList)
+		),
+		new TabItem(State.CHECKIN_LIST.ordinal(),
+			new TabCheckinList(    this.context, this.rootView, R.layout._4_checkin_list,        R.id.PageCheckinList)
+		),
+		new TabItem(State.MODE_SELECTION.ordinal(),
+			new TabModeSelection(  this.context, this.rootView, R.layout.page_mode_selection,    R.id.PageModeSelection)
+		),
+		new TabItem(State.WAIT_MODE.ordinal(),
+			new TabWait(           this.context, this.rootView, R.layout.page_wait2,             R.id.PageWait)
+		),
+		new TabItem(State.PERSONEL_INFO.ordinal(),
+			new TabPersonalInfo(   this.context, this.rootView, R.layout.page_personel_info,     R.id.PagePersonelInfo)
+		),
+		new TabItem(State.PERSONEL_LIST_MODE.ordinal(),
+			new TabPersonalList(   this.context, this.rootView, R.layout.p_personel_list,     R.id.PersonelList_RootId)
+		),
+		new TabItem(State.FACILITY_INFO.ordinal(),
+			new TabFacilityInfo(   this.context, this.rootView, R.layout.p_facility_info,        R.id.FacilityInfo_RootId)
+		),
+		new TabItem(State.FLAG_SETTINGS.ordinal(),
+			new TabSettings(       this.context, this.rootView, R.layout.p_settings,             R.id.Settings_RootId)
+		),
+		new TabItem(State.FLAG_CATEGORY.ordinal(),
+			new TabCategoryList(   this.context, this.rootView, R.layout.p_category_list,        R.id.Category_RootId)
+		),
+		new TabItem(State.FLAG_TEMPLATE.ordinal(),
+			new TabTemplateList(   this.context, this.rootView, R.layout.p_template_list,        R.id.Template_RootId)
+		),
+		new TabItem(State.SESSION_FLAG.ordinal(),
+			new TabSessionList(    this.context, this.rootView, R.layout.p_session_list,        R.id.Session_RootId)
+		),
+		new TabItem(State.ATTACH_NFC_FLAG.ordinal(),
+			new TabAttachNFC(    this.context, this.rootView, R.layout.p_attach_nfc,        R.id.AttachNFC_RootId)
+		)
+		};
+
+		this.__tabConteiner = new TabConteiner(arr);
 		this.SetToDefaultState();
 	}
+	
+	private TabConteiner __tabConteiner;
+	public TabConteiner get_TabConteiner()
+	{
+		return __tabConteiner;
+	}
+
+	public static class TabConteiner
+	{
+		private TabItem[] _items;
+		public TabConteiner(TabItem[] arr)
+		{
+			_items = arr;
+		}
+
+		public TabItem GetByEnum(State state)
+		{
+			TabItem res  = null;
+			int intState = state.ordinal();
+			int count    = _items.length;
+			for( int i = 0; i < count; i++)
+			{
+				if(_items[i].StateInt == intState)
+				{
+					res = _items[i];
+				}
+			}
+			return res;
+		}
+		public void HideExceptCurrentAndShowCurrent(State state)
+		{
+			int intState = state.ordinal();
+			int count    = _items.length;
+			int indexTab = -1;
+			for( int i = 0; i < count; i++)
+			{
+				if( _items[i].StateInt != intState && _items[i].Tab.IsShow())
+				{
+					_items[i].Tab.Hide();
+				}
+				if(_items[i].StateInt == intState)
+				{
+					indexTab = i;
+				}
+			}
+			if(indexTab != -1)
+			{
+				_items[indexTab].Tab.Show();
+			}
+		}
+		public void Hide()
+		{
+			int count = _items.length;
+			for( int i = 0; i < count; i++)
+			{
+				_items[i].Tab.Hide();
+			}
+		}
+		public void Clear()
+		{
+			int count = _items.length;
+			for( int i = 0; i < count; i++)
+			{
+				_items[i].Tab.Clear();
+			}
+		}
+	}
+	
+	public static class TabItem 
+	{
+		public TabItem(int stateInt, Tab tab){ StateInt = stateInt; Tab = tab;}
+		public int StateInt;
+		public Tab Tab;
+	}
+
 	public void UIHelper_Clear()
 	{
-		//panelButton.Clear();
-		tabPin.Clear();
-		//tabMainMenu.Clear();
-		tabReference.Clear();
-		tabPointsList.Clear();
-		tabModeSelection.Clear();
-		tabWait.Clear();
-		tabPersonelInfo.Clear();
-		tabPersonelList.Clear();
-		tabCheckinList.Clear();
-		tabFacilityInfo.Clear();
-		tabSettings.Clear();
+		get_TabConteiner().Clear();
 
 		this.Nulling();
 	}
 	private void Nulling()
 	{
-		//panelButton = null;
-		tabPin = null;
-		//tabMainMenu = null;
-		tabReference = null;
-		tabPointsList = null;
-		tabModeSelection = null;
-		tabWait = null;
-		tabPersonelInfo = null;
-		tabPersonelList = null;
-		tabCheckinList = null;
-		tabFacilityInfo = null;
-		tabSettings = null;
+		//tabPin = null;
+		//tabReference = null;
+		//tabPointsList = null;
+		//tabModeSelection = null;
+		//tabWait = null;
+		//tabPersonelInfo = null;
+		//tabPersonelList = null;
+		//tabCheckinList = null;
+		//tabFacilityInfo = null;
+		//tabSettings = null;
+		//tabCategoryList = null;
+		//tabTemplateList = null;
 
 		this.context = null;
 		this.rootView = null;
 		this.currentState = State.NULL;
 
-		this.__tabItemArray = null;
 		//this._myRunnable = null;
 		this.mProgress = null;
 		this.serverRunnable = null;
@@ -163,44 +263,11 @@ public class UIHelper implements IMessageReceiver
 	{
 		this.currentState = State.NULL;
 		this.HideAll();
-
-		int sizeInDp = 53;
-		float scale = this.context.getResources().getDisplayMetrics().density;
-		int dpAsPixels = (int) (sizeInDp*scale + 0.5f);
-
-		TabItem[] myArray = get_TabItemArray();
-		int count = myArray.length;
-		for( int i = 0; i < count; i++)
-		{
-			ViewGroup viewGroup = myArray[i].Tab.getRoot();
-			viewGroup.setPadding(0, dpAsPixels, 0, 0);
-			//ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) viewGroup.getLayoutParams();
-			//mlp.setMargins(0, 20, 0, 0);
-		}
 	}
 	public void HideAll()
 	{
-		//this.panelButton.Hide();
-		this.tabPin.Hide();
-		this.tabModeSelection.Hide();
-		this.tabPointsList.Hide();
-		this.tabWait.Hide();
-		//this.tabDataTransmition.hide();
-		//this.tabErrorReading.hide();
-		//this.tabErrorConnection.hide();
-		this.tabPersonelInfo.Hide();
-		this.tabPersonelList.Hide();
-		//this.tabMainMenu.Hide();
-		this.tabReference.Hide();
-		//this.tabSync.hide();
-		this.tabCheckinList.Hide();
-		this.tabFacilityInfo.Hide();
-		this.tabSettings.Hide();
+		get_TabConteiner().Hide();
 	}
-
-	
-	//*********************************************************************************************
-	//       properties
 
 
 
@@ -217,118 +284,67 @@ public class UIHelper implements IMessageReceiver
 	}
 
 
-	
-	class TabItem 
+	public void switchState(State state)
 	{
-		public TabItem(int stateInt, Tab tab){ StateInt = stateInt; Tab = tab;}
-		public int StateInt;
-		public Tab Tab;
-	}
+		try {
 
-	private TabItem[] get_TabItemArray()
-	{
-		if(__tabItemArray == null)
-		{
-			int intPin               = State.PIN.ordinal();
-			//int intMenu              = State.FLAG_MAIN_MENU.ordinal();
-			int intPointsList        = State.FLAG_POINTS_LIST.ordinal();
-			int intSelection         = State.MODE_SELECTION.ordinal();
-			int intWaitMode          = State.WAIT_MODE.ordinal();
-			int intPersonelListMode  = State.PERSONEL_LIST_MODE.ordinal();
-			int intPersonelInfo      = State.PERSONEL_INFO.ordinal();
-			int intCHECKIN_LIST      = State.CHECKIN_LIST.ordinal();
-			int intReference          = State.REFERENCE.ordinal();
-			int intFACILITY_INFO      = State.FACILITY_INFO.ordinal();
-			int intFLAG_SETTINGS      = State.FLAG_SETTINGS.ordinal();
-
-			__tabItemArray = new TabItem[] { 
-				new TabItem(intPin,          tabPin),
-				//new TabItem(intMenu,             tabMainMenu),
-				new TabItem(intPointsList,   tabPointsList),
-				new TabItem(intSelection,        tabModeSelection),
-				new TabItem(intWaitMode,     tabWait),
-				new TabItem(intPersonelListMode, tabPersonelList),
-				new TabItem(intPersonelInfo, tabPersonelInfo), 
-				new TabItem(intCHECKIN_LIST, tabCheckinList), 
-				new TabItem(intReference, tabReference), 
-				new TabItem(intFACILITY_INFO, tabFacilityInfo),
-				new TabItem(intFLAG_SETTINGS, tabSettings)
-			};
-		}
-		return __tabItemArray;
-	}
-	public void switchState(State paramState)
-	{	try {
-
-		//TALog.Log("switchState = " + paramState);
-		this.currentState = paramState;
-
-		int intParamState = paramState.ordinal();
-
-		int intPin              = State.PIN.ordinal();
-		//int intMenu             = State.FLAG_MAIN_MENU.ordinal();
-		int intPointsList       = State.FLAG_POINTS_LIST.ordinal();
-		int intSelection        = State.MODE_SELECTION.ordinal();
-		int intWaitMode         = State.WAIT_MODE.ordinal();
-		int intPersonelListMode = State.PERSONEL_LIST_MODE.ordinal();
-		int intPersonelInfo     = State.PERSONEL_INFO.ordinal();
-		int intCHECKIN_LIST     = State.CHECKIN_LIST.ordinal();
-		int intReference        = State.REFERENCE.ordinal();
-		int intFACILITY_INFO    = State.FACILITY_INFO.ordinal();
-		int intFLAG_SETTINGS    = State.FLAG_SETTINGS.ordinal();
-
-		TabItem[] myArray = get_TabItemArray();
-
-		int count = myArray.length;
-		for( int i = 0; i < count; i++)
-		{
-			if(
-				myArray[i].StateInt != intParamState && 
-				myArray[i].Tab.getRoot().getVisibility() == View.VISIBLE)
-			{
-				myArray[i].Tab.Hide();
-			}
-		}
-
-		if(     intParamState == intPin) {
-			this.tabPin.Show(); // bool2
-		}
-		//else if(intParamState == intMenu) {
-		//	this.tabMainMenu.Show();
-		//}
-		else if(intParamState == intReference) {
-			this.tabReference.Show();
-		}
-		else if(intParamState == intPointsList) {
-			this.tabPointsList.Show();
-		}
-		else if(intParamState == intSelection) {
-			this.tabModeSelection.Show();
-		}
-		else if(intParamState == intWaitMode) {
-			this.tabWait.Show();
-		}
-		else if(intParamState == intPersonelListMode) {
-			this.tabPersonelList.Show();
-		}
-		else if(intParamState == intPersonelInfo) {
-			this.tabPersonelInfo.Show();
-		}
-		else if(intParamState == intCHECKIN_LIST) {
-			this.tabCheckinList.Show();
-		}
-		else if(intParamState == intFACILITY_INFO) {
-			this.tabFacilityInfo.Show();
-		}
-		else if(intParamState == intFLAG_SETTINGS) {
-			this.tabSettings.Show();
-		}
-
+		this.currentState = state;
+		get_TabConteiner().HideExceptCurrentAndShowCurrent(state);
 		this.__currentStateChanged.RunEvent( this.currentState );
 
 		} catch(Exception e) {
 			Exception ex = e;
 		}
+
+		//int intPin              = State.PIN.ordinal();
+		//int intPointsList       = State.FLAG_POINTS_LIST.ordinal();
+		//int intSelection        = State.MODE_SELECTION.ordinal();
+		//int intWaitMode         = State.WAIT_MODE.ordinal();
+		//int intPersonelListMode = State.PERSONEL_LIST_MODE.ordinal();
+		//int intPersonelInfo     = State.PERSONEL_INFO.ordinal();
+		//int intCHECKIN_LIST     = State.CHECKIN_LIST.ordinal();
+		//int intReference        = State.REFERENCE.ordinal();
+		//int intFACILITY_INFO    = State.FACILITY_INFO.ordinal();
+		//int intFLAG_SETTINGS    = State.FLAG_SETTINGS.ordinal();
+		//int intFLAG_CATEGORY    = State.FLAG_CATEGORY.ordinal();
+		//int intFLAG_TEMPLATE    = State.FLAG_TEMPLATE.ordinal();
+
+		//if(     intParamState == intPin) {
+		//	this.tabPin.Show();
+		//}
+		//else if(intParamState == intReference) {
+		//	this.tabReference.Show();
+		//}
+		//else if(intParamState == intPointsList) {
+		//	this.tabPointsList.Show();
+		//}
+		//else if(intParamState == intSelection) {
+		//	this.tabModeSelection.Show();
+		//}
+		//else if(intParamState == intWaitMode) {
+		//	this.tabWait.Show();
+		//}
+		//else if(intParamState == intPersonelListMode) {
+		//	this.tabPersonelList.Show();
+		//}
+		//else if(intParamState == intPersonelInfo) {
+		//	this.tabPersonelInfo.Show();
+		//}
+		//else if(intParamState == intCHECKIN_LIST) {
+		//	this.tabCheckinList.Show();
+		//}
+		//else if(intParamState == intFACILITY_INFO) {
+		//	this.tabFacilityInfo.Show();
+		//}
+		//else if(intParamState == intFLAG_SETTINGS) {
+		//	this.tabSettings.Show();
+		//}
+		//else if(intParamState == intFLAG_CATEGORY) {
+		//	this.tabCategoryList.Show();
+		//}
+		//else if(intParamState == intFLAG_TEMPLATE) {
+		//	this.tabTemplateList.Show();
+		//}
 	}
 
 	public void onBackPressed()
@@ -338,7 +354,7 @@ public class UIHelper implements IMessageReceiver
 		switch(state)
 		{
 			case PIN:
-			case MODE_SELECTION:{ //case FLAG_MAIN_MENU:{
+			case MODE_SELECTION:{
 				Builder b = new android.app.AlertDialog.Builder(this.context);
 				MainActivityProxy ma = (MainActivityProxy)this.context;
 
@@ -351,7 +367,7 @@ public class UIHelper implements IMessageReceiver
 			case CHECKIN_LIST:
 			case REFERENCE:
 			case FACILITY_INFO:{
-				switchState(State.MODE_SELECTION);//switchState(State.FLAG_MAIN_MENU);
+				switchState(State.MODE_SELECTION);
 			break;}
 
 			case WAIT_MODE:{
@@ -360,14 +376,18 @@ public class UIHelper implements IMessageReceiver
 			case PERSONEL_LIST_MODE:{
 				switchState(State.MODE_SELECTION);
 			break;}
-			case FLAG_SETTINGS:{
-				switchState(State.MODE_SELECTION);
-			break;}
 			case FLAG_POINTS_LIST:{
 				switchState(State.FLAG_SETTINGS);
 			break;}
 			case PERSONEL_INFO:{
 				switchState(State.WAIT_MODE);
+			break;}
+			case FLAG_SETTINGS:
+			case FLAG_CATEGORY:
+			case FLAG_TEMPLATE:
+			case SESSION_FLAG:
+			case ATTACH_NFC_FLAG:{
+				switchState(State.MODE_SELECTION);
 			break;}
 		}
 	}
@@ -385,7 +405,7 @@ public class UIHelper implements IMessageReceiver
 		LoadNewVersionFailed, LoadNewVersionSuccess, CanNotCreateFileForLoading,
 		NfcDisabled,
 		FacilityInfoRequestOk, FacilityInfoRequestError,
-		CheckpointNotSelect; }
+		CheckpointNotSelect, CategoryNotSelect, TemplateNotSelect; }
 	private HttpMessage get_HttpMessage(Act act)
 	{
 		return this.get_HttpMessage( act, null, -1);
@@ -495,6 +515,12 @@ public class UIHelper implements IMessageReceiver
 					break;}
 					case CheckpointNotSelect:{
 						_ui.Toast("Выберите точку в настройках!" );
+					break;}
+					case CategoryNotSelect:{
+						_ui.Toast("Выберите категорию в настройках!" );
+					break;}
+					case TemplateNotSelect:{
+						_ui.Toast("Выберите шаблон в настройках!" );
 					break;}
 				}
 			}
@@ -657,25 +683,27 @@ public class UIHelper implements IMessageReceiver
 	//       MessageBox
 	//************************************************************************************************
 	public void MessageBoxInUIThread(String message, 
-		android.content.DialogInterface.OnClickListener onClickOk, android.content.DialogInterface.OnClickListener onClickNo)
+		android.content.DialogInterface.OnClickListener onClickOk, 
+		android.content.DialogInterface.OnClickListener onClickNo)
 	{
 		WaitUpdateUI(get_MessageBox(message,onClickOk,onClickNo));
 	}
 	public messageBox get_MessageBox(String message, 
-		android.content.DialogInterface.OnClickListener onClickOk, android.content.DialogInterface.OnClickListener onClickNo)
+		android.content.DialogInterface.OnClickListener onClickOk, 
+		android.content.DialogInterface.OnClickListener onClickNo)
 	{
-	    messageBox m = new messageBox();
-	    m.arg1 = this.context;
-	    m.arg2 = message;
-	    m.arg3 = onClickOk;
-	    m.arg4 = onClickNo;
+		messageBox m = new messageBox();
+		m.arg1 = this.context;
+		m.arg2 = message;
+		m.arg3 = onClickOk;
+		m.arg4 = onClickNo;
 		return m;
 	}
 	class messageBox extends RunnableWithArgs{ public void run(){
-	    Context context = (Context)this.arg1;
-	    String message = (String)this.arg2;
-	    android.content.DialogInterface.OnClickListener onClickOk = (android.content.DialogInterface.OnClickListener)this.arg3;
-	    android.content.DialogInterface.OnClickListener onClickNo = (android.content.DialogInterface.OnClickListener)this.arg4;
+		Context context = (Context)this.arg1;
+		String message = (String)this.arg2;
+		android.content.DialogInterface.OnClickListener onClickOk = (android.content.DialogInterface.OnClickListener)this.arg3;
+		android.content.DialogInterface.OnClickListener onClickNo = (android.content.DialogInterface.OnClickListener)this.arg4;
 
 		android.app.AlertDialog.Builder b = new android.app.AlertDialog.Builder(   context   );
 		b.setMessage(   message   );
@@ -697,7 +725,7 @@ public class UIHelper implements IMessageReceiver
 	//************************************************************************************************
 	private RunnableAndNotify get_RunnableAndNotify(Runnable runnable)//, Object obj
 	{
-	    RunnableAndNotify r = new RunnableAndNotify(); r.arg1 = runnable;// r.arg2 = obj; 
+		RunnableAndNotify r = new RunnableAndNotify(); r.arg1 = runnable;// r.arg2 = obj; 
 		return r;
 	}
 	class RunnableAndNotify extends RunnableWithArgs{ public void run(){

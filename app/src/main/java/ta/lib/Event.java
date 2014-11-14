@@ -35,6 +35,7 @@ public class Event<TArg,TRes>
 		return this.__eventMarker;
 	}
 
+
 	private Object __eventTypeHolder;
 	public void set_EventTypeHolder(Object eventTypeHolder)
 	{
@@ -48,6 +49,7 @@ public class Event<TArg,TRes>
 		}
 		return this.__eventTypeHolder;
 	}
+
 
 	private static String GetStrByType(Type t)
 	{
@@ -73,7 +75,7 @@ public class Event<TArg,TRes>
 		String res = null;
 		try
 		{
-		Class type = toAdd.getClass();
+		Class type = ((Object)toAdd).getClass();
 		//Class baseType = type.getSuperclass();
 		//TypeVariable [] typeArr = baseType.getTypeParameters();
 		ParameterizedType pt = (ParameterizedType)(type.getGenericSuperclass());
@@ -90,7 +92,8 @@ public class Event<TArg,TRes>
 		}
 		return res;
 	}
-	
+
+
                                   //<TArg,TRes>
 	public void Add(RunnableWithArgs            handler)
 	{
@@ -108,6 +111,14 @@ public class Event<TArg,TRes>
 			//int [] Exception = new int[]{0};    //int throW = Exception[1];
 		}
 	}
+
+    public void RunEvent()
+    {
+        for (RunnableWithArgs<TArg,TRes> item : this.listeners)
+        {
+            item.run();
+        }
+    }
 
 	public void RunEvent(TArg eventParams)
 	{

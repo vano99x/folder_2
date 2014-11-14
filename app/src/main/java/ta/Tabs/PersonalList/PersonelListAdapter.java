@@ -1,4 +1,4 @@
-package ta.timeattendance;
+package ta.Tabs.PersonalList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -48,15 +48,18 @@ public class PersonelListAdapter extends BaseAdapter
 	{
 		if (paramView == null)
 		{
-			paramView = this.mInflater.inflate(R.layout.list_item, null);
+			paramView = this.mInflater.inflate(R.layout.p_personel_list_item, null);
 			paramView.setTag(null);
 		}
 
 		try
 		{
-			TextView     textView = (TextView)    paramView.findViewById(R.id.txtName);
-			LinearLayout baseView = (LinearLayout)paramView.findViewById(R.id.item);
+			LinearLayout baseView  = (LinearLayout)paramView.findViewById(R.id.PersonelList_Item_RootId);
 			baseView.setOnClickListener(this.listener);
+			TextView     FirstName = (TextView)    paramView.findViewById(R.id.PersonelList_Item_FirstName_Id);
+			TextView     LastName  = (TextView)    paramView.findViewById(R.id.PersonelList_Item_LastName_Id);
+			TextView     ThirdName = (TextView)    paramView.findViewById(R.id.PersonelList_Item_ThirdName_Id);
+			TextView     WorkerId  = (TextView)    paramView.findViewById(R.id.PersonelList_Item_WorkerId_Id);
 
 			if (this.personelArray != null)
 			{
@@ -68,8 +71,12 @@ public class PersonelListAdapter extends BaseAdapter
 				//int aaa2 = 9-2;
 				//}
 
-				textView.setText(p.LastName + " " + p.FirstName + " " + p.ThirdName);
-				baseView.setTag(new Object[]{ R.id.PersonelListItem_Id, p});
+				FirstName.setText(p.FirstName);//p.FirstName.
+				LastName.setText(p.LastName);
+				ThirdName.setText(p.ThirdName);
+				WorkerId.setText(String.valueOf(p.Id));
+
+				baseView.setTag(new Object[]{ R.id.PersonelList_Item_TagId, p});
 			}
 			return paramView;
 		}
@@ -80,8 +87,3 @@ public class PersonelListAdapter extends BaseAdapter
 		return paramView;
 	}
 }
-
-/* Location:           C:\Users\vano99\Desktop\jd-gui-0.3.5.windows\TandAOffline_dex2jar.jar
- * Qualified Name:     com.ifree.timeattendance.PersonelListAdapter
- * JD-Core Version:    0.6.2
- */

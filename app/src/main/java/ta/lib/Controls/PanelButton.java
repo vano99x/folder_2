@@ -11,29 +11,32 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap;
 
+import ta.Tabs.SessionList.SessionMode;
 import ta.lib.*;
 import ta.lib.tabui.Tab;
 import ta.timeattendance.*;
 import ta.timeattendance.MainActivity.State;
+import ta.Tabs.SessionList.ISessionModel;
 import ta.timeattendance.R;
 
 public class PanelButton extends Tab implements View.OnClickListener
 {
 	private MainEngine _engine;
 	private UIHelper   _uiHelper;
-	//private Button _SyncBtn;
-	//private Button _CheckinListBtn;
-	//private Button _SettingsBtn;
-	//private Button _FacilityInfoBtn;
+	private ISessionModel   __sessionModel;
 
-	public PanelButton(Context mainActivity, ViewGroup rootView, int paramInt1, int paramInt2, UIHelper uiHelper)
+	public PanelButton(Context mainActivity, ViewGroup rootView, int i1, int i2, UIHelper uiHelper)
 	{
-		super( mainActivity, rootView, paramInt1, paramInt2);
+		super( mainActivity, rootView, i1, i2, 0);
+
+		//this.Hide();
+
 		this._engine   = MainEngine.getInstance();
 		this._uiHelper = uiHelper;
 		this._uiHelper.set_CurrentStateChanged(get_CurrentStateChanged());
 
-		LinearLayout _SyncBtn =    (LinearLayout)this.root.findViewById(R.id.PnBtn_SyncBtn_Id);
+		this.__sessionModel = ta.timeattendance.Models.Bootstrapper.Resolve( ISessionModel.class );
+
 		//ImageView iv =    (ImageView)this.root.findViewById(R.id.PnBtn_SyncImg_Id);
 		//try{
 		//iv.setImageResource(R.drawable._2);
@@ -41,10 +44,15 @@ public class PanelButton extends Tab implements View.OnClickListener
 		//Exception ex = e;
 		//}
 
+		LinearLayout _SyncBtn =    (LinearLayout)this.root.findViewById(R.id.PnBtn_SyncBtn_Id);
 		LinearLayout _CheckinListBtn =  (LinearLayout)this.root.findViewById(R.id.PnBtn_CheckinListBtn_Id);
 		LinearLayout _SettingsBtn =     (LinearLayout)this.root.findViewById(R.id.PnBtn_SettingsBtn_Id);
 		LinearLayout _FacilityInfoBtn = (LinearLayout)this.root.findViewById(R.id.PnBtn_FacilityInfoBtn_Id);
 		LinearLayout _ReferenceBtn    = (LinearLayout)this.root.findViewById(R.id.PnBtn_ReferenceBtn_Id);
+
+		LinearLayout ArrivalOk =          (LinearLayout)this.root.findViewById(R.id.PnBtn_ArrivalOk_Id);
+		LinearLayout DepartureOk =        (LinearLayout)this.root.findViewById(R.id.PnBtn_DepartureOk_Id);
+		LinearLayout DepartureMiss    =   (LinearLayout)this.root.findViewById(R.id.PnBtn_DepartureMiss_Id);
 
 		_SyncBtn.setOnClickListener(this);
 		_CheckinListBtn.setOnClickListener(this);
@@ -52,27 +60,49 @@ public class PanelButton extends Tab implements View.OnClickListener
 		_FacilityInfoBtn.setOnClickListener(this);
 		_ReferenceBtn.setOnClickListener(this);
 
+		ArrivalOk.setOnClickListener(this);
+		DepartureOk.setOnClickListener(this);
+		DepartureMiss.setOnClickListener(this);
+
 		_SyncBtn.setTag(        R.id.PnBtn_SyncBtn_Id);
 		_CheckinListBtn.setTag( R.id.PnBtn_CheckinListBtn_Id);
 		_SettingsBtn.setTag(    R.id.PnBtn_SettingsBtn_Id);
 		_FacilityInfoBtn.setTag(R.id.PnBtn_FacilityInfoBtn_Id);
 		_ReferenceBtn.setTag(   R.id.PnBtn_ReferenceBtn_Id);
 
+		ArrivalOk.setTag(       R.id.PnBtn_ArrivalOk_Id);
+		DepartureOk.setTag(     R.id.PnBtn_DepartureOk_Id);
+		DepartureMiss.setTag(   R.id.PnBtn_DepartureMiss_Id);
+
 		//this.Hide();
+
 		int w = 62;
 		this.ScaleBtn( _SyncBtn, w);
 		this.ScaleBtn( _CheckinListBtn, w);
 		this.ScaleBtn( _SettingsBtn, w);
 		this.ScaleBtn( _FacilityInfoBtn, w);
-		this.ScaleBtn( _ReferenceBtn, w);
+		this.ScaleBtn( _ReferenceBtn, w);/**/
+		w = 25;
+		this.ScaleBtn( ArrivalOk, w, 2);
+		this.ScaleBtn( DepartureOk, w, 2);
+		this.ScaleBtn( DepartureMiss, w, 2);
 	}
 
 
 
-	void ScaleBtn(ViewGroup v, int targetSize)
+	void ScaleBtn(ViewGroup v, int targetSize){
+		ScaleBtn(v, targetSize, 1);
+	}
+	void ScaleBtn(ViewGroup v, int targetSize, int widthFactor)
 	{
 		ImageView iv = (ImageView)v.getChildAt(0);
 		Drawable drawing = iv.getDrawable();
+		if(drawing == null)
+		{
+			drawing = iv.getBackground();
+			if(drawing == null)
+				return;
+		}
 		Bitmap bitmap = ((BitmapDrawable)drawing).getBitmap();
 		float width  = (float)bitmap.getWidth();
 		float height = (float)bitmap.getHeight();
@@ -99,9 +129,13 @@ public class PanelButton extends Tab implements View.OnClickListener
 		////newHeight = scaledBitmap.getHeight();
 
 		LayoutParams param = iv.getLayoutParams();
-		param.width =  newWidth;
+		param.width =  newWidth * widthFactor;
 		param.height = newHeight;
+		param = null;
 		//iv.setLayoutParams(param);
+		//param = v.getLayoutParams();
+		//param.width = targetSize;
+		//param.height = targetSize;
 	}
 
 
@@ -135,32 +169,43 @@ public class PanelButton extends Tab implements View.OnClickListener
 
 
 	//*********************************************************************************************
-	//       Control Handler
+	//**     Control Handler
 
-	public void onClick_sync()
-	{
+	public void sync_Click() {
 		this._engine.Sync();
 	}
 
-	public void onClick_list()
-	{
-		UIHelper.Instance().switchState(MainActivity.State.CHECKIN_LIST);
+	public void list_Click() {
+		UIHelper.Instance().switchState(State.CHECKIN_LIST);
 	}
 
-	public void onClick_Settings()
-	{
-		UIHelper.Instance().switchState(MainActivity.State.FLAG_SETTINGS);
+	public void Settings_Click() {
+		UIHelper.Instance().switchState(State.FLAG_SETTINGS);
 	}
 
-	public void onClick_FacilityInfoBtn()
-	{
-		UIHelper.Instance().switchState(MainActivity.State.FACILITY_INFO);
+	public void FacilityInfoBtn_Click() {
+		UIHelper.Instance().switchState(State.FACILITY_INFO);
 	}
 
-	public void onClick_ReferenceBtn()
-	{
-		UIHelper.Instance().switchState(MainActivity.State.REFERENCE);
+	public void ReferenceBtn_Click() {
+		UIHelper.Instance().switchState(State.REFERENCE);
 	}
+
+
+	public void ArrivalOk_Click() {
+		this.__sessionModel.set_SessionMode(SessionMode.ArrivalOk);
+		UIHelper.Instance().switchState(State.SESSION_FLAG);
+	}
+	public void DepartureOk_Click() {
+		this.__sessionModel.set_SessionMode(SessionMode.DepartureOk);
+		UIHelper.Instance().switchState(State.SESSION_FLAG);
+	}
+	public void DepartureMiss_Click() {
+		this.__sessionModel.set_SessionMode(SessionMode.DepartureMiss);
+		UIHelper.Instance().switchState(State.SESSION_FLAG);
+	}
+
+
 
 	//*********************************************************************************************
 	//**     Code behind override
@@ -174,19 +219,29 @@ public class PanelButton extends Tab implements View.OnClickListener
 			switch(integer)
 			{
 				case R.id.PnBtn_SyncBtn_Id:{
-					onClick_sync();
+					sync_Click();
 				break;}
 				case R.id.PnBtn_CheckinListBtn_Id:{
-					onClick_list();
+					list_Click();
 				break;}
 				case R.id.PnBtn_SettingsBtn_Id:{
-					onClick_Settings();
+					Settings_Click();
 				break;}
 				case R.id.PnBtn_FacilityInfoBtn_Id:{
-					onClick_FacilityInfoBtn();
+					FacilityInfoBtn_Click();
 				break;}
 				case R.id.PnBtn_ReferenceBtn_Id:{
-					onClick_ReferenceBtn();
+					ReferenceBtn_Click();
+				break;}
+
+				case R.id.PnBtn_ArrivalOk_Id:{
+					ArrivalOk_Click();
+				break;}
+				case R.id.PnBtn_DepartureOk_Id:{
+					DepartureOk_Click();
+				break;}
+				case R.id.PnBtn_DepartureMiss_Id:{
+					DepartureMiss_Click();
 				break;}
 			}
 		}

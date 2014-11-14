@@ -1,36 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LinearLayout
 	android:id="@id/PnBtn_RootId" 
-	android:orientation="horizontal"
-	android:gravity="center_vertical"
+	android:orientation="vertical"
 	android:background="@color/backW8"
 	android:layout_width="fill_parent" android:layout_height="wrap_content"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 >
-<!--// <Button android:id="@id/PnBtn_SyncBtn_Id" android:text="Синхрон" style="@style/PnBtn_Button_Style" /> //-->
-		<LinearLayout android:id="@id/PnBtn_SyncBtn_Id" style="@style/PnBtn_B2" >
+<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" >
+
 			<!--//android:id="@id/PnBtn_SyncImg_Id" //-->
+		<LinearLayout android:id="@id/PnBtn_SyncBtn_Id" style="@style/PnBtn_B2" >
 			<ImageView android:src="@drawable/_1" style="@style/PnBtn_B2_Img" />
 		</LinearLayout>
 
-		<!--//<Button android:id="@id/PnBtn_CheckinListBtn_Id"  android:text="События"  style="@style/PnBtn_Button_Style" />//-->
 		<LinearLayout android:id="@id/PnBtn_CheckinListBtn_Id" style="@style/PnBtn_B2" >
 			<ImageView android:src="@drawable/_2_a" style="@style/PnBtn_B2_Img" />
 		</LinearLayout>
-	
-		<!--//<Button android:id="@id/PnBtn_SettingsBtn_Id"     android:text="Настр"    style="@style/PnBtn_Button_Style" />//-->
+
 		<LinearLayout android:id="@id/PnBtn_SettingsBtn_Id" style="@style/PnBtn_B2" >
 			<ImageView android:src="@drawable/_3_a" style="@style/PnBtn_B2_Img" />
 		</LinearLayout>
-	
-		<!--//<Button android:id="@id/PnBtn_FacilityInfoBtn_Id" android:text="Опер Обст" style="@style/PnBtn_Button_Style" />//-->
+
 		<LinearLayout android:id="@id/PnBtn_FacilityInfoBtn_Id" style="@style/PnBtn_B2" >
 			<ImageView android:src="@drawable/_4_a" style="@style/PnBtn_B2_Img" />
 		</LinearLayout>
-	
+
 		<LinearLayout android:id="@id/PnBtn_ReferenceBtn_Id" style="@style/PnBtn_B2" >
 			<ImageView android:src="@drawable/_5_a" style="@style/PnBtn_B2_Img" />
 		</LinearLayout>
+
+</LinearLayout>
+<LinearLayout 
+	android:layout_width="match_parent" android:layout_height="wrap_content">
 	
+		<LinearLayout android:id="@id/PnBtn_ArrivalOk_Id" style="@style/PnBtn_B2" >
+			<ImageView android:background="@drawable/arrival_ok_1" style="@style/PnBtn_B2_Img" />
+		</LinearLayout>
+	
+		<LinearLayout android:id="@id/PnBtn_DepartureOk_Id" style="@style/PnBtn_B2" >
+			<ImageView android:background="@drawable/departure_ok_1" style="@style/PnBtn_B2_Img" />
+		</LinearLayout>
+	
+		<LinearLayout android:id="@id/PnBtn_DepartureMiss_Id" style="@style/PnBtn_B2" >
+			<ImageView android:background="@drawable/departure_miss_1" style="@style/PnBtn_B2_Img" />
+		</LinearLayout><!--////-->
+
+</LinearLayout>
 </LinearLayout>
 <!--android:layout_column="0"-->

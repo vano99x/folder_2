@@ -18,43 +18,52 @@ public class DbConnector
 	//private static final int DATABASE_VERSION = 1;
 	private static DbConnector instance = null;
 	private OpenHelper openHelper;
-	private SQLiteDatabase mDataBase;
+	private SQLiteDatabase _db;
 
 	private DbConnector(Context paramContext)
 	{
 		this.Clear();
 
 		OpenHelper openHelper = new OpenHelper(paramContext);
-		this.mDataBase = openHelper.getWritableDatabase();
+		this._db = openHelper.getWritableDatabase();
 
+		CheckTable(openHelper, "Point",  openHelper.PointColumnItems());
 		CheckTable(openHelper, "Checkin",  openHelper.CheckinColumnItems());
 		CheckTable(openHelper, "Personel", openHelper.PersonelColumnItems());
 		CheckTable(openHelper, "SettingSv", openHelper.SettingSvColumnItems());
 
+		CheckTable(openHelper, "CustomerObject", openHelper.CustomerObjectColumnItems());
+		CheckTable(openHelper, "Category", openHelper.CategoryColumnItems());
+		CheckTable(openHelper, "Template", openHelper.TemplateColumnItems());
+
 		int aaa = 9;
 	}
+
 	public static DbConnector getInstance()
 	{
 		return DbConnector.instance;
 	}
+
 	public static void CreateInstance(Context paramContext)
 	{
 		instance = new DbConnector(paramContext);
 	}
+
 	public static void DeleteInstance()
 	{
 		DbConnector.instance = null;
 	}
+
 	public void Clear()
 	{
-		if(this.mDataBase != null)
-		this.mDataBase.close();
+		if(this._db != null)
+		this._db.close();
 
 		if(this.openHelper != null)
 		this.openHelper.close();
 
 		this.openHelper = null;
-		this.mDataBase = null;
+		this._db = null;
 	}
 
 
@@ -63,7 +72,35 @@ public class DbConnector
 
 	public Cursor GetEntity(String paramString1, String paramString2, String[] paramArrayOfString)
 	{
-		Cursor localCursor = this.mDataBase.query(paramString1, null, paramString2 + " =?", paramArrayOfString, null, null, null);
+    /**
+     * Query the given table, returning a {@link Cursor} over the result set.
+     *
+     * @param table The table name to compile the query against.
+     * @param columns A list of which columns to return. Passing null will
+     *            return all columns, which is discouraged to prevent reading
+     *            data from storage that isn't going to be used.
+     * @param selection A filter declaring which rows to return, formatted as an
+     *            SQL WHERE clause (excluding the WHERE itself). Passing null
+     *            will return all rows for the given table.
+     * @param selectionArgs You may include ?s in selection, which will be
+     *         replaced by the values from selectionArgs, in order that they
+     *         appear in the selection. The values will be bound as Strings.
+     * @param groupBy A filter declaring how to group rows, formatted as an SQL
+     *            GROUP BY clause (excluding the GROUP BY itself). Passing null
+     *            will cause the rows to not be grouped.
+     * @param having A filter declare which row groups to include in the cursor,
+     *            if row grouping is being used, formatted as an SQL HAVING
+     *            clause (excluding the HAVING itself). Passing null will cause
+     *            all row groups to be included, and is required when row
+     *            grouping is not being used.
+     * @param orderBy How to order the rows, formatted as an SQL ORDER BY clause
+     *            (excluding the ORDER BY itself). Passing null will use the
+     *            default sort order, which may be unordered.
+     * @return A {@link Cursor} object, which is positioned before the first entry. Note that
+     * {@link Cursor}s are not synchronized, see the documentation for more details.
+     * @see Cursor
+     */
+		Cursor localCursor = this._db.query(paramString1, null, paramString2 + " =?", paramArrayOfString, null, null, null);
 		localCursor.moveToFirst();
 		return localCursor;
 	}
@@ -72,31 +109,46 @@ public class DbConnector
 	// C
 	public long insert(String str, ContentValues cv)
 	{
-		return this.mDataBase.insert(str, null, cv);
+		return this._db.insert(str, null, cv);
 	}
 	public void exec(String sql)
 	{
-		this.mDataBase.execSQL(sql);
+		this._db.execSQL(sql);
 	}
 
 	//R
 	public Cursor Select(String str, String[] strArr)
 	{
-		Cursor cursor = this.mDataBase.rawQuery(str, strArr);
-		cursor.moveToFirst();
-		return cursor;
+		Cursor cursor = this._db.rawQuery(str, strArr);
+		//if(cursor.moveToFirst())
+		    return cursor;
+        //else
+        //    return null;
 	}
 
 	//U
 
 	//D
-	public Object delete(String str1, String str2, String str3)
+	public int delete(String str1, String str2, String str3)
 	{
-		return this.mDataBase.delete(str1, str2 + " = ?", new String[] { str3 });
+		return this._db.delete(str1, str2 + " = ?", new String[] { str3 });
 	}
-	public Object delete(String str1, String str2, String[] strArr)
+	public int delete(String str1, String str2, String[] strArr)
 	{
-		return this.mDataBase.delete(str1, str2, strArr);
+/**
+     * Convenience method for deleting rows in the database.
+     *
+     * @param table the table to delete from
+     * @param whereClause the optional WHERE clause to apply when deleting.
+     *            Passing null will delete all rows.
+     * @param whereArgs You may include ?s in the where clause, which
+     *            will be replaced by the values from whereArgs. The values
+     *            will be bound as Strings.
+     * @return the number of rows affected if a whereClause is passed in, 0
+     *         otherwise. To remove all rows and get a count pass "1" as the
+     *         whereClause.
+     */
+		return this._db.delete(str1, str2, strArr);
 	}
 
 
@@ -108,23 +160,34 @@ public class DbConnector
 			super(context, "ta.db", null, 1);
 		}
 
+		public ColumnItem [] PointColumnItems() { return new ColumnItem[] {
+				new ColumnItem("Id",       "INTEGER", null),
+				new ColumnItem("ObjectId", "INTEGER", null),
+				new ColumnItem("Name",     "TEXT",    null)
+		};}
+
 		public ColumnItem [] CheckinColumnItems()
 		{
 			ColumnItem [] arr = new ColumnItem[]
 			{
-				new ColumnItem("Id",           "INTEGER", "PRIMARY KEY AUTOINCREMENT NOT NULL"),
-				new ColumnItem("SupervicerId", "INTEGER", null),
-				new ColumnItem("WorkerId",     "INTEGER", null),
-				new ColumnItem("CardId",       "INTEGER", null),
+				new ColumnItem("CheckinId",    "INTEGER", "PRIMARY KEY AUTOINCREMENT NOT NULL"),
+				new ColumnItem("SupervicerId", "INTEGER", null),									//sv
+				new ColumnItem("WorkerId",     "INTEGER", null),									//w
+				new ColumnItem("CardId",       "INTEGER", null),									//w
 			  //new ColumnItem("IsSupervisor", "INTEGER", null),
-				new ColumnItem("Mode",         "INTEGER", null),
-				new ColumnItem("PointId",      "INTEGER", null),
-				new ColumnItem("DateTime",     "TEXT",    null),
+				new ColumnItem("Mode",         "INTEGER", null),									//mode
+				new ColumnItem("PointId",      "INTEGER", null),									//p
+				new ColumnItem("DateTime",     "INTEGER",    null),									//time
+				//new ColumnItem("DateTime",     "TEXT",    null),									//time
+				new ColumnItem("CategoryId",   "INTEGER", null),
+				new ColumnItem("TemplateId",   "INTEGER", null),
+
 				new ColumnItem("IsCheckinExistOnServer",  "INTEGER", null),
 				new ColumnItem("StateCheckinOnServer",    "INTEGER", null)
 			};
 			return arr;
 		}
+
 		public ColumnItem [] PersonelColumnItems()
 		{
 			ColumnItem [] arr = new ColumnItem[]
@@ -143,12 +206,51 @@ public class DbConnector
 			};
 			return arr;
 		}
+
 		public ColumnItem [] SettingSvColumnItems()
 		{
 			ColumnItem [] arr = new ColumnItem[]
 			{
 				new ColumnItem("Id",      "INTEGER", null),
-				new ColumnItem("PointId", "INTEGER", null)
+				new ColumnItem("PointId", "INTEGER", null),
+				new ColumnItem("CategoryId", "INTEGER", null),
+				new ColumnItem("TemplateId", "INTEGER", null)
+			};
+			return arr;
+		}
+
+		public ColumnItem [] CustomerObjectColumnItems()
+		{
+			ColumnItem [] arr = new ColumnItem[]
+			{
+				new ColumnItem("Id",      "INTEGER", null),
+				new ColumnItem("Name",    "TEXT", null)
+			};
+			return arr;
+		}
+
+		public ColumnItem [] CategoryColumnItems()
+		{
+			ColumnItem [] arr = new ColumnItem[]
+			{
+				new ColumnItem("Id",      "INTEGER", null),//"PRIMARY KEY AUTOINCREMENT NOT NULL"
+				new ColumnItem("ObjectId", "INTEGER", null),
+				new ColumnItem("Name",    "TEXT", null)
+			};
+			return arr;
+		}
+
+		public ColumnItem [] TemplateColumnItems()
+		{
+			ColumnItem [] arr = new ColumnItem[]
+			{
+				new ColumnItem("Id",         "INTEGER", null),//"PRIMARY KEY AUTOINCREMENT NOT NULL"
+				//new ColumnItem("PointId",    "INTEGER", null),
+				new ColumnItem("CategoryId", "INTEGER", null),
+				//new ColumnItem("Name",       "TEXT", null)
+				new ColumnItem("StartTime", "INTEGER", null),
+				new ColumnItem("BreakTime", "INTEGER", null),
+				new ColumnItem("EndTime", "INTEGER", null),
 			};
 			return arr;
 		}
@@ -184,42 +286,33 @@ public class DbConnector
 			return sb.toString();
 		}
 
+		@Override
 		public void onCreate(SQLiteDatabase paramSQLiteDatabase)
 		{
 			int aaa = 9;
 
-//			paramSQLiteDatabase.execSQL(
-//				"CREATE TABLE Personel      (Id INTEGER, FirstName TEXT, LastName TEXT, ThirdName TEXT, IsSupervisor INT, PersonelCode INT, CardId TEXT, PhotoTimeSpan TEXT); ");
+//paramSQLiteDatabase.execSQL(
+//	"CREATE TABLE Personel      
+//(Id INTEGER, FirstName TEXT, LastName TEXT, ThirdName TEXT, IsSupervisor INT, PersonelCode INT, CardId TEXT, PhotoTimeSpan TEXT); ");
 			String strPl = CreateSql("Personel", this.PersonelColumnItems());
 			paramSQLiteDatabase.execSQL(strPl);
 
-			paramSQLiteDatabase.execSQL(
-				"CREATE TABLE Point         (Id INTEGER, Name TEXT); ");
+			//paramSQLiteDatabase.execSQL( "CREATE TABLE Point         (Id INTEGER, Name TEXT); ");
 			paramSQLiteDatabase.execSQL(
 				"CREATE TABLE PersonelPoint (PersonelId INTEGER, PointId INTEGER);");
-//            paramSQLiteDatabase.execSQL(
-//"CREATE TABLE Checkin                              "+
-//"(                                                 "+
-//"	Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+
-//"	SupervicerId INTEGER,                          "+
-//"	PersonelCode INTEGER,                          "+
-//"	CardId       INTEGER,                          "+
-//"	Mode         INTEGER,                          "+
-//"	PointId      INTEGER,                          "+
-//"	DateTime     TEXT                              "+
-//");                                                "
-//);
+
 			String strCh = CreateSql("Checkin",  this.CheckinColumnItems());
-			paramSQLiteDatabase.execSQL(strCh);
+			paramSQLiteDatabase.execSQL(strCh);/**/
 		}
 
+		@Override
 		public void onUpgrade(SQLiteDatabase paramSQLiteDatabase, int paramInt1, int paramInt2)
 		{
 			paramSQLiteDatabase.execSQL("DROP TABLE IF EXISTS Personel");
 			paramSQLiteDatabase.execSQL("DROP TABLE IF EXISTS Point");
 			paramSQLiteDatabase.execSQL("DROP TABLE IF EXISTS PersonelPoint");
 			paramSQLiteDatabase.execSQL("DROP TABLE IF EXISTS Checkin");
-			onCreate(paramSQLiteDatabase);
+			onCreate(paramSQLiteDatabase);/**/
 		}
 	}
 
@@ -260,11 +353,11 @@ public class DbConnector
 		if(IsTableExists(tableName) == false)
 		{
 			String sql = openHelper.CreateSql( tableName, entityPropArr);
-			this.mDataBase.execSQL(sql);
+			this._db.execSQL(sql);
 		}
 		else
 		{
-			Cursor dbCursor = this.mDataBase.query(tableName, null, null, null, null, null, null);
+			Cursor dbCursor = this._db.query(tableName, null, null, null, null, null, null);
 			String[] columnNames = dbCursor.getColumnNames();
 			ArrayList<String> colums = new ArrayList<String>(Arrays.asList(columnNames));
 			boolean Remove = false;
@@ -297,21 +390,21 @@ public class DbConnector
 			count = colums.size();
 			for( int i = 0; i < count; i++)
 			{
-			    String nameColum = colums.get(i);
+				String nameColum = colums.get(i);
 
-			    isConteins = entityPropNames.contains(nameColum);
-			    if(isConteins == false)
-			    {
-			        Remove = true;
+				isConteins = entityPropNames.contains(nameColum);
+				if(isConteins == false)
+				{
+					Remove = true;
 					break;
-			    }
+				}
 			}
 
 			if(Remove == true)
 			{
-				this.mDataBase.execSQL("DROP TABLE IF EXISTS " + tableName);
+				this._db.execSQL("DROP TABLE IF EXISTS " + tableName);
 				String sql = openHelper.CreateSql( tableName, entityPropArr);
-				this.mDataBase.execSQL(sql);
+				this._db.execSQL(sql);
 			}
 		}
 	}
@@ -375,8 +468,3 @@ public class DbConnector
 	}
 
 }
-
-/* Location:           C:\Users\vano99\Desktop\jd-gui-0.3.5.windows\TandAOffline_dex2jar.jar
- * Qualified Name:     com.ifree.Database.DbConnector
- * JD-Core Version:    0.6.2
- */

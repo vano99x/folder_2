@@ -14,7 +14,7 @@ import android.view.View;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
 import ta.lib.*;
-import ta.lib.tabui.*;
+import ta.timeattendance.MainActivity.State;
 import ta.Database.*;
 import ta.timeattendance.Models.*;
 
@@ -195,8 +195,9 @@ public class MainActivityProxy extends FragmentActivity
 		} else {
 			if(
 				(
-					UIHelper.Instance().currentState == MainActivity.State.WAIT_MODE ||
-					UIHelper.Instance().currentState == MainActivity.State.PERSONEL_INFO
+					UIHelper.Instance().currentState == State.WAIT_MODE ||
+					UIHelper.Instance().currentState == State.PERSONEL_INFO ||
+					UIHelper.Instance().currentState == State.ATTACH_NFC_FLAG
 				)
 				&& !this.isNfcBusy )
 			{
@@ -217,7 +218,7 @@ public class MainActivityProxy extends FragmentActivity
 	public void finish()
 	{
 		super.finish();
-		UIHelper.Instance().currentState = MainActivity.State.PIN;
+		UIHelper.Instance().currentState = State.PIN;
 	}
 	/*@Override
 	public void onWindowFocusChanged (boolean hasFocus){

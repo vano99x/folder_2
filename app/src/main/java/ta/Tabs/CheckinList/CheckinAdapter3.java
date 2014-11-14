@@ -1,83 +1,44 @@
 package ta.Tabs.CheckinList;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Filter;
 
-import java.util.Calendar;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-import ta.Database.*;
 
+import ta.lib.Common.DateTime;
+import ta.lib.Controls.AdapterBase;
+import ta.Database.*;
+import ta.lib.DatePicker.IIntervalDateTimeProvider;
 import ta.timeattendance.R;
 
-public class CheckinAdapter3 extends BaseAdapter implements Filterable
+public class CheckinAdapter3 extends AdapterBase<Checkin> //implements Filterable
 {
-	//private View.OnClickListener listener;
-	public TabCheckinList tabCheckinList;
-	private LayoutInflater mInflater;
-	public Context _context;
-
-	public List<Checkin> items;
-	public ArrayList<Checkin> original;
+	public IIntervalDateTimeProvider _intervalDateTimeProvider;
+	public Checkin[] _sourceItems;
 
 	public CheckinAdapter3(
-		Context paramContext, 
+		Context context,
 		Checkin[] checkinArr, 
-		TabCheckinList paramOnClickListener)
+		TabCheckinList onClickListener,
+		IIntervalDateTimeProvider intervalDateTimeProvider)
 	{
-		this.mInflater = ((LayoutInflater)paramContext.getSystemService("layout_inflater"));
-		this.tabCheckinList = paramOnClickListener;
-		this._context = paramContext;
-		
-		this.original = new ArrayList<Checkin>(Arrays.asList(checkinArr));
+		super(context, null, onClickListener);
 
-		//this.items.addAll(this.original);
-		this.items = CheckinAdapter3.GetCheckinListByDatesInterval(this.tabCheckinList, this.original);
-	}
-	
-	//*********************************************************************************************
-	//*      public static
-	public static List<Checkin> GetCheckinListByDatesInterval( TabCheckinList tabCheckinList, ArrayList<Checkin> original)
-	{
-		int year1  = tabCheckinList._year1;
-		int month1 = tabCheckinList._month1;
-		int day1   = tabCheckinList._day1;
-		int year2  = tabCheckinList._year2;
-		int month2 = tabCheckinList._month2;
-		int day2   = tabCheckinList._day2;
-
-		//long currentMS     = System.currentTimeMillis();
-		//Date currentDate   = new Date(currentMS);
-		Calendar selectedDate1 = Calendar.getInstance();
-		Calendar selectedDate2 = Calendar.getInstance();
-		selectedDate1.set( year1 , month1, day1,  0,  0,  0);
-		selectedDate2.set( year2 , month2, day2, 23, 59, 59);
-
-		List<Checkin> list = new ArrayList<Checkin>();
-		for (Checkin ch : original)
-		{
-			//Date checkinDate = ch.get_DateObj();
-			Calendar checkinDate = ch.get_CalendarObj();
-
-			if(checkinDate.after(selectedDate1) && checkinDate.before(selectedDate2))
-			{
-				list.add(ch);
-			}
-		}
-
-		return list;
+		this._intervalDateTimeProvider = intervalDateTimeProvider;
+		this._sourceItems = checkinArr;
+		this._items = DateTime.WhereInPeriod(this._intervalDateTimeProvider, this._sourceItems, new Checkin[0]);
 	}
 
 	private static SimpleDateFormat _dateFormat;
@@ -90,101 +51,137 @@ public class CheckinAdapter3 extends BaseAdapter implements Filterable
 		return CheckinAdapter3._dateFormat;
 	}
 
-	private static String GetTextForItem(Checkin checkin)
+
+
+	//*********************************************************************************************
+	//**     filter
+	//public List<Checkin> GetFilteredItems()
+	//{
+	//	List<Checkin> result = 
+	//		CheckinHelper.GetCheckinListByDatesInterval( this._intervalDateTimeProvider, this._items );
+	//	return result;
+	//}
+
+	//public void RefreshFilteredItems(List<Checkin> list)
+	//{
+	//	this._filteredItems.clear();
+	//	this._filteredItems.addAll(list);
+	//	this.notifyDataSetChanged();
+	//}
+
+	public void RefreshByCurrenDate()
 	{
-		long dt = Long.parseLong(checkin.DateTime);
-		Date date = new Date(dt);
-		String dateStr = get_DateFormat().format(date);
+		Checkin[] filteredItems =
+			DateTime.WhereInPeriod( this._intervalDateTimeProvider, this._sourceItems, new Checkin[0]);
 
-		Personel personel = checkin.get_Personel();
-		String nameStr = personel.FirstName;
-
-		return nameStr + " "+ dateStr;
+		this._items = filteredItems;
+		this.notifyDataSetChanged();
 	}
 
 
 	
 	//*********************************************************************************************
 	//*      Override
+
 	@Override
-	public int getCount()
+	public String GetTextFromItem(Checkin item)
 	{
-		if (this.items == null)
-		{
-			return 0;
-		}
-		return this.items.size();
+		long dt = ta.lib.Common.DateTime.GetMillisecondsFromUnixSecond(item.DateTime);
+		Date date = new Date(dt);
+		String dateStr = get_DateFormat().format(date);
+
+		Personel personel = item.get_Personel();
+		String nameStr = personel.FirstName;
+
+		return nameStr + " "+ dateStr;
 	}
 
 	@Override
-	public Object getItem(int paramInt)
+	public Integer GetListItemIdentifier()
 	{
-		return Integer.valueOf(paramInt);
+		return R.layout._4_checkin_list_item;
 	}
 
 	@Override
-	public long getItemId(int paramInt)
+	public View getView(int indexItem, View view, ViewGroup viewGroup)
 	{
-		return paramInt;
-	}
+		view = super.Inflate(view);
+		TextView currentTextView = (TextView)view.findViewById(R.id.CheckinListItem_TextId);
+		TextView stateView =       (TextView)view.findViewById(R.id.CheckinListItem_StateId);
 
-	@Override
-	public View getView(int paramInt, View paramView, ViewGroup viewGroup)
-	{
-		if( paramView == null )
+		if( this._items != null && this._items.length != 0 )
 		{
-			paramView = this.mInflater.inflate(R.layout._4_checkin_list_item, null);
-			//paramView.setTag(null);
-		}
+			Checkin checkin = this._items[indexItem];
+			String text = GetTextFromItem(checkin);
+			String state = Integer.toString(checkin.get_StateCheckinOnServer());
 
-		TextView     chView  = (TextView)paramView.findViewById(R.id.CheckinListItem_TextId);
-		TextView     stateView = (TextView)paramView.findViewById(R.id.CheckinListItem_StateId);
-		//LinearLayout baseView = (LinearLayout)paramView.findViewById(R.id.CheckinListItem_RootId);
-		//baseView.setOnClickListener(this.tabCheckinList);
-
-		if( this.items != null && this.items.size() != 0 )
-		{
-			try
+			currentTextView.setText(text);
+			switch(checkin.get_StateCheckinOnServer())
 			{
-				Checkin checkin = this.items.get(paramInt);
-				String text = GetTextForItem(checkin);
-				String state = Integer.toString(checkin.get_StateCheckinOnServer());
-
-				chView.setText(text);
-
-				switch(checkin.get_StateCheckinOnServer())
-				{
-					case -2:{
-						stateView.setBackgroundColor(0xffff0000);
-						stateView.setText(state);
-					break;}
-					case -1:{
-						stateView.setBackgroundColor(0xfff5d50b);
-						stateView.setText(state);
-					break;}
-					default :{
-						stateView.setBackgroundColor(0xff46b525);
-						stateView.setText(state);
-					}
+				case -2:{
+					stateView.setBackgroundColor(0xffff0000);
+					stateView.setText(state);
+				break;}
+				case -1:{
+					stateView.setBackgroundColor(0xfff5d50b);
+					stateView.setText(state);
+				break;}
+				default :{
+					stateView.setBackgroundColor(0xff46b525);
+					stateView.setText(state);
 				}
 			}
-			catch (Exception e)
-			{
-				Exception ex = e;
-			}
 		}
-		return paramView;
+		return view;
 	}
 
-	private Filter _filter;
-	@Override
-	public Filter getFilter()
-	{
-		if( this._filter == null )
-		{
-			this._filter = new CheckinFilter(this);
-		}
-		return this._filter;
-	}
+	//private Filter _filter;
+	//@Override
+	//public Filter getFilter()
+	//{
+	//	if( this._filter == null )
+	//	{
+	//		this._filter = new CheckinFilter(this);
+	//	}
+	//	return this._filter;
+	//}
+
+		//if( paramView == null )
+		//{
+		//	paramView = this._inflater.inflate(R.layout._4_checkin_list_item, null);
+		//}
+		//TextView     chView  = (TextView)paramView.findViewById(R.id.CheckinListItem_TextId);
+		//TextView     stateView = (TextView)paramView.findViewById(R.id.CheckinListItem_StateId);
+
+		//if( this._items != null )
+		//{
+		//	try
+		//	{
+		//		Checkin checkin = this._items.get(paramInt);
+		//		String text = GetTextForItem(checkin);
+		//		String state = Integer.toString(checkin.get_StateCheckinOnServer());
+
+		//		chView.setText(text);
+		//		switch(checkin.get_StateCheckinOnServer())
+		//		{
+		//			case -2:{
+		//				stateView.setBackgroundColor(0xffff0000);
+		//				stateView.setText(state);
+		//			break;}
+		//			case -1:{
+		//				stateView.setBackgroundColor(0xfff5d50b);
+		//				stateView.setText(state);
+		//			break;}
+		//			default :{
+		//				stateView.setBackgroundColor(0xff46b525);
+		//				stateView.setText(state);
+		//			}
+		//		}
+		//	}
+		//	catch (Exception e)
+		//	{
+		//		Exception ex = e;
+		//	}
+		//}
 
 }

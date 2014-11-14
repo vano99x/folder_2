@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	android:orientation="vertical" android:id="@id/PersonelList_RootId" 
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+>
+
+	<TextView android:text="@string/msg_enter_lastname"
+		android:layout_gravity="center_horizontal" style="@style/CommonText"/>
+
+	<LinearLayout
+		android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal"
+	>
+		<EditText 
+			android:id="@id/PersonelList_EditText_Id"
+			android:inputType="text" android:hint="первые буквы"
+			android:layout_width="230.0dip" android:layout_height="wrap_content" 
+		/>
+		<!--//<TextView
+			android:id="@id/PersonelList_EditText_Id"
+			android:layout_width="230.0dip" android:layout_height="wrap_content"
+		/>//-->
+		
+		<Button android:id="@id/SearchButton_Id" android:text="Найти"  style="@style/CommonText"
+			android:background="@drawable/button_mode" android:layout_gravity="right">
+		</Button><!--////-->
+	</LinearLayout>
+
+	<!--//<TextView 
+		android:id="@id/lable_empty_list" 
+		android:text="@string/message_empty_personel_list" 
+		android:textSize="12.0pt" android:textStyle="bold" android:textColor="#ffffff" android:gravity="center" 
+		android:layout_width="fill_parent" android:layout_height="wrap_content" 
+		android:singleLine="false" android:layout_x="0.0px" android:layout_y="250.0px" 
+	/>
+	android:background="#f00"
+	android:background="#00f"
+	//-->
+	
+	<LinearLayout android:background="#eee"
+		android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:padding="3.0dip">
+		<ListView android:background="#312f30"
+			android:id="@id/PersonelList_ListView_Id"
+			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	</LinearLayout>
+	 
+	
+</LinearLayout>

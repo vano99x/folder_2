@@ -6,6 +6,7 @@ import java.util.List;
 
 import ta.lib.*;
 import ta.lib.operator.*;
+import ta.ui.NotificationMessage.NotificationMessageService;
 
 public class Bootstrapper
 {
@@ -19,7 +20,7 @@ IPointModel - ISettingSvModel
 
 ICurrentVersionServices - ...
 
-ISendChekinService - ...
+IChekinService - ...
 
 IAppService - ...
 
@@ -32,14 +33,25 @@ ISettingSvModel - ISupervisorModel
 	}
 	private Bootstrapper()
 	{
-		_typeItems = new ArrayList<TypeItem>(9);
+		_typeItems = new ArrayList<TypeItem>(15);
 		_typeItems.add(new TypeItem("ISupervisorModel",        ta.timeattendance.Models.SupervisorModel.class, true, true));
 		_typeItems.add(new TypeItem("IPointModel",             ta.timeattendance.Models.PointModel.class,      true, false));
 		_typeItems.add(new TypeItem("ISettingSvModel",         ta.timeattendance.Models.SettingSvModel.class,  true, false));
 		_typeItems.add(new TypeItem("IAppService",             ta.timeattendance.Services.AppService.class,    true, false));
 		_typeItems.add(new TypeItem("ICurrentVersionServices", ta.Tabs.Settings.CurrentVersionServices.class,  true, false));
-		_typeItems.add(new TypeItem("ISendChekinService",      ta.Tabs.CheckinList.SendChekinService.class,    true, false));
-		
+
+		_typeItems.add(new TypeItem("IChekinService",              ta.Tabs.CheckinList.ChekinService.class,                    true, false));
+		_typeItems.add(new TypeItem("INotificationMessageService", ta.ui.NotificationMessage.NotificationMessageService.class, true, false));
+
+		_typeItems.add(new TypeItem("IPersonalService",        ta.timeattendance.Services.PersonalService.class, true, false));
+
+		_typeItems.add(new TypeItem("ICategoryModel",          ta.timeattendance.Models.CategoryModel.class,   true, false));
+		_typeItems.add(new TypeItem("ITemplateModel",          ta.timeattendance.Models.TemplateModel.class,   true, false));
+		_typeItems.add(new TypeItem("ISessionModel",           ta.Tabs.SessionList.SessionModel.class,         true, false));
+		_typeItems.add(new TypeItem("IPersonalListModel",      ta.Tabs.PersonalList.PersonalListModel.class,   true, false));
+
+		_typeItems.add(new TypeItem("INfcEventService",        ta.timeattendance.Services.NfcEventService.class, true, false));
+
 		Bootstrapper._instance = this;
 	}
 	private void RunControllers()

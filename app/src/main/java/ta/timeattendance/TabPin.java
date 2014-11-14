@@ -1,6 +1,7 @@
 package ta.timeattendance;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -26,11 +27,11 @@ public class TabPin extends Tab implements View.OnClickListener
 		this._isBisy = false;
 
 		// ctrls
-		View continue_button = this.root.findViewById(R.id.continue_button);
+		View continue_button = this.root.findViewById(R.id.Pin_ButtonOk_Id);
+		continue_button.setTag(                       R.id.Pin_ButtonOk_Id);
 		continue_button.setOnClickListener(this);
-		continue_button.setTag(R.id.continue_button);
 
-		this.mPinEditText = ((EditText)this.root.findViewById(R.id.pin_edit));
+		this.mPinEditText = ((EditText)this.root.findViewById(R.id.Pin_EditText_Id));
 		
 		// subscribe on event
 		//this._engine.Clearing.Add(get_onClearing());
@@ -54,21 +55,21 @@ public class TabPin extends Tab implements View.OnClickListener
 		UIHelper.Instance().switchState(MainActivity.State.MODE_SELECTION);
 		//}
 	}}
-	//private onClearing get_onClearing()
-	//{
-	//onClearing o = new onClearing(); o.arg1 = this; return o;
-	//}
-	//class onClearing extends RunnableWithArgs { public void run()
-	//{
-	//TabPin _this = (TabPin)this.arg1;
-	//_this.mPinEditText.setText("");
-	//}}
 
 
 	//*********************************************************************************************
 	//       Control Handler
 	private void continue_button_Click()
 	{
+		//android.media.Ringtone ringtone = 
+		//	android.media.RingtoneManager.getRingtone(
+		//		context, 
+		//		//android.provider.Settings.System.DEFAULT_RINGTONE_URI
+		//		Settings.System.DEFAULT_ALARM_ALERT_URI
+		//		);
+
+		//ringtone.play();
+
 		//int Width= this.getParent().getWidth();
 		//int Height= this.getParent().getHeight();
 
@@ -98,12 +99,12 @@ public class TabPin extends Tab implements View.OnClickListener
 
 		if( integer != null)
 		{
-		    switch(integer)
-		    {
-		        case R.id.continue_button:{
-		            continue_button_Click();
-		        break;}
-		    }
+			switch(integer)
+			{
+				case R.id.Pin_ButtonOk_Id:{
+					continue_button_Click();
+				break;}
+			}
 		}
 	}
 }

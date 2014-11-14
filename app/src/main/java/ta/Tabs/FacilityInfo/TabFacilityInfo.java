@@ -10,12 +10,11 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.DatePicker;
 import android.app.DatePickerDialog;
-import android.app.DatePickerDialog.OnDateSetListener;
+//import android.app.DatePickerDialog.OnDateSetListener;
 import android.support.v4.app.FragmentManager;
 
 
 //import java.util.Date;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -71,7 +70,7 @@ public class TabFacilityInfo extends Tab implements View.OnClickListener
 		{
 			FragmentManager fragmentManager = _mainActivity.get_FragmentManager();
 			_myDatePickerLeft = new MyDatePicker();
-			_myDatePickerLeft.Init("left",fragmentManager);
+			//_myDatePickerLeft.Init("left",fragmentManager);
 		
 			_myDatePickerLeft.SelectedDateChanged.Add(get_onSelectedDateChanged());
 		}
@@ -85,7 +84,7 @@ public class TabFacilityInfo extends Tab implements View.OnClickListener
 		{
 			FragmentManager fragmentManager = _mainActivity.get_FragmentManager();
 			_myDatePickerRight = new MyDatePicker();
-			_myDatePickerRight.Init("right",fragmentManager);
+			//_myDatePickerRight.Init("right",fragmentManager);
 		
 			_myDatePickerRight.SelectedDateChanged.Add(get_onSelectedDateChanged());
 		}
@@ -95,7 +94,7 @@ public class TabFacilityInfo extends Tab implements View.OnClickListener
 	//*********************************************************************************************
 	//*      Event Handler
 	private onSelectedDateChanged get_onSelectedDateChanged() { onSelectedDateChanged o = new onSelectedDateChanged(); o.arg1 = this; return o; }
-	class onSelectedDateChanged extends RunnableWithArgs<SelectedDateEventArgs,Boolean> { public void run()
+	class onSelectedDateChanged extends RunnableWithArgs<SelectedDateEventArgs,Object> { public void run()
 	{
 		TabFacilityInfo _this = (TabFacilityInfo)this.arg1;
 
@@ -127,7 +126,7 @@ public class TabFacilityInfo extends Tab implements View.OnClickListener
 
 	private void Load(DateTime leftDt, DateTime rightDt)
 	{
-		String pin = this.__svModel.get_CurrentSuperviser().Pin;
+		String pin = this.__svModel.get_CurrentSupervisor().Pin;
 
 		String leftTimeStr  = leftDt.ToDateString();
 		String rightTimeStr = rightDt.ToDateString();
@@ -147,9 +146,9 @@ public class TabFacilityInfo extends Tab implements View.OnClickListener
 		this._adapter = new FacilityInfoAdapter(this.context, this);
 		this._listView.setAdapter(this._adapter);
 
-		_showDateTime = DateTime.GetCurrentDateTime();
-		get_MyDatePickerLeft().set_CurrentDateTime(  _showDateTime );
-		get_MyDatePickerRight().set_CurrentDateTime( _showDateTime );
+		//_showDateTime = DateTime.GetCurrentDateTime();
+		//get_MyDatePickerLeft().set_CurrentDateTime(  _showDateTime );
+		//get_MyDatePickerRight().set_CurrentDateTime( _showDateTime );
 		
 		DateTime LeftDt = get_MyDatePickerLeft().get_CurrentDateTime();
 		DateTime RightDt = get_MyDatePickerRight().get_CurrentDateTime();

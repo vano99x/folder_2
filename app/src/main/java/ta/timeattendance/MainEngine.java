@@ -17,11 +17,14 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import ta.Tabs.FacilityInfo.TabFacilityInfo;
+import ta.Tabs.PersonalInfo.TabPersonalInfo;
 import ta.lib.*;
 import ta.Database.*;
 import ta.timeattendance.MainActivity.State;
 import ta.lib.UIHelper.Act;
 import ta.timeattendance.Models.*;
+import ta.timeattendance.Services.INfcEventService;
 
 public class MainEngine
 {
@@ -34,12 +37,13 @@ public class MainEngine
 	private int __currentPointId;
 	private ISupervisorModel __svModel;
 	private IPointModel __pointModel;
+	//private INfcEventService __nfcEventService;
 
 	//*********************************************************************************************
-	class SaveCheckinCompleteEventClass extends Event<Object,Boolean> {}
-	public SaveCheckinCompleteEventClass SaveCheckinCompleteEvent;
+	//class SaveCheckinCompleteEventClass extends Event<Object,Boolean> {}
+	//public SaveCheckinCompleteEventClass SaveCheckinCompleteEvent;
 
-	class  WorkerFoundEventClass extends Event<Personel[],Object> {}
+	public class  WorkerFoundEventClass extends Event<Personel[],Object> {}
 	public WorkerFoundEventClass WorkerFound;
 
 	//Runnable showPersonelRunnable; Runnable showScreenRunnable; Runnable serverRunnable;
@@ -51,7 +55,7 @@ public class MainEngine
 	}
 	public static void CreateInstance( Context context )
 	{
-		MainEngine._mainEngineObj = new MainEngine(context);
+		new MainEngine(context);
 	}
 	public static void DeleteEngine()
 	{
@@ -62,17 +66,18 @@ public class MainEngine
 	//       ctor
 	private MainEngine( Context context )
 	{
-		this.Nulling();
+		this.Nulling(); MainEngine._mainEngineObj = this;
 
 		this.mContext = context;
 		//this.mSettings = context.getSharedPreferences("com.ifree.timeattendance", 0);
-		this.SaveCheckinCompleteEvent    = new SaveCheckinCompleteEventClass();
+		//this.SaveCheckinCompleteEvent    = new SaveCheckinCompleteEventClass();
 		this.WorkerFound                 = new WorkerFoundEventClass();
-		this.SaveCheckinCompleteEvent.Add(get_onSaveChkn());
+		//this.SaveCheckinCompleteEvent.Add(get_onSaveChkn());
 
 		//***   Models ***
 		this.__svModel = Bootstrapper.Resolve( ISupervisorModel.class );
 		this.__pointModel = Bootstrapper.Resolve( IPointModel.class );
+		//this.__nfcEventService = Bootstrapper.Resolve( INfcEventService.class );
 	}
 	public void MainEngine_Clear()
 	{
@@ -89,7 +94,7 @@ public class MainEngine
 		//this.__isIntenetDisable = false;
 		this.__currentPointId = -1;
 
-		this.SaveCheckinCompleteEvent = null;
+		//this.SaveCheckinCompleteEvent = null;
 		this.WorkerFound = null;
 
 		//this.showPersonelRunnable = null; this.showScreenRunnable = null; this.serverRunnable = null;
@@ -104,32 +109,36 @@ public class MainEngine
 
 	//*********************************************************************************************
 	//       Event Handler
-	private onSaveChkn get_onSaveChkn() { onSaveChkn o = new onSaveChkn(); return o; }
-	class onSaveChkn extends RunnableWithArgs<Object,Boolean> { public void run()
-	{
-		if(this.result)
-		{
-			switch(UIHelper.Instance().currentState)
-			{
-				case PERSONEL_INFO:{
-					//UIHelper.Instance().switchState(State.WAIT_MODE);
-					UIHelper.Instance().tabPersonelInfo.IsShowCheckiedWorker = true;
-					UIHelper.Instance().tabPersonelInfo.UpdateData();
-				break;}
-				case WAIT_MODE:{
-					boolean result = this.result;
-					if(result)
-					{
-						UIHelper.Instance().tabPersonelInfo.IsShowCheckiedWorker = true;
-						UIHelper.Instance().switchState(State.PERSONEL_INFO);
-					}
-				break;}
-				default:{
-					// ...
-				break;}
-			}
-		}
-	}}
+	//private onSaveChkn get_onSaveChkn() { onSaveChkn o = new onSaveChkn(); return o; }
+	//class onSaveChkn extends RunnableWithArgs<Object,Boolean> { public void run()
+	//{
+	//	if(this.result)
+	//	{
+	//		switch(UIHelper.Instance().currentState)
+	//		{
+	//			case PERSONEL_INFO:{
+	//				//UIHelper.Instance().tabPersonelInfo.IsShowCheckiedWorker = true;
+	//				//UIHelper.Instance().tabPersonelInfo.UpdateData();
+	//				TabPersonalInfo pi = ((TabPersonalInfo)UIHelper.Instance().get_TabConteiner().GetByEnum(State.PERSONEL_INFO).Tab);
+	//				pi.IsShowCheckiedWorker = true;
+	//				pi.UpdateData();
+	//			break;}
+	//			case WAIT_MODE:{
+	//				boolean result = this.result;
+	//				if(result)
+	//				{
+	//					//UIHelper.Instance().tabPersonalInfo.IsShowCheckiedWorker = true;
+	//					TabPersonalInfo pi = ((TabPersonalInfo)UIHelper.Instance().get_TabConteiner().GetByEnum(State.PERSONEL_INFO).Tab);
+	//					pi.IsShowCheckiedWorker = true;
+	//					UIHelper.Instance().switchState(State.PERSONEL_INFO);
+	//				}
+	//			break;}
+	//			default:{
+	//				// ...
+	//			break;}
+	//		}
+	//	}
+	//}}
 
 
   //private void showError()
@@ -187,14 +196,14 @@ public class MainEngine
 		this.currentMode = paramInt;
 	}
 	
-	public Personel get_CurrentWorker()
-	{
-		return this.__currentWorker;
-	}
-	public void set_CurrentWorker(Personel p)
-	{
-		this.__currentWorker = p;
-	}
+	//public Personel get_WorkerAppliedNFC()
+	//{
+	//	return this.__currentWorker;
+	//}
+	//public void set_WorkerAppliedNFC(Personel p)
+	//{
+	//	this.__currentWorker = p;
+	//}
 
 	private void MsgFromBackground(Act act)
 	{
@@ -211,15 +220,25 @@ public class MainEngine
 			java.lang.IllegalStateException,
 			java.lang.NullPointerException
 	{
+		try{
+
 		Personel.sync( new Personel [] { sv }, context);
-		Personel.sync(      workers,           context);
+		Personel.sync(      sv.get_Workers(),  context);
 		Point.sync(         points,            context);
 		PersonelPoint.sync( ppoints,           context);
 
+		CustomerObject.UpdateLocalDB( sv.get_CustomerObjects());
+		Category.UpdateLocalDB(       sv.get_Categories());
+		Template.UpdateLocalDB(       sv.get_Templates());
+
 		CheckinSender.SendCheckinArray(context);
+
+		} catch( Exception e) {
+			Exception ex = e;
+		}
 	}
 
-	private static Personel LoadPersonelFromServer( String pin, Context context)
+	private static Personel LoadSvFromServer( String pin, Context context)
 		throws MalformedURLException , IOException , JSONException
 	{
 		Personel p = null;
@@ -235,8 +254,6 @@ public class MainEngine
 
 		if(!(data.isEmpty()))//"".equals(data)
 		{
-			//int aaa = 9;
-			//int aaa2 = aaa-2;
 			JSONObject json = new JSONObject(data);
 			p = Personel.FromJson( json, context);
 			if(p != null)
@@ -261,15 +278,20 @@ public class MainEngine
 		}
 	}}
 
-	class AuthenticateSVBFClass extends BackgroundFunc<Personel,Boolean> {}
+	//class AuthenticateSVBFClass extends BackgroundFunc<Personel,Boolean> {}
 	public void AuthenticateSV(final String pinStr)
 	{
 		this.mPin = pinStr;
-		BackgroundFunc.Go( new AuthenticateSVBFClass(), get_onAuthenticateSV(this.mPin), get_onBfAuth(), "-Authenticate-");
+		//BackgroundFunc.Go( new AuthenticateSVBFClass(), get_onAuthenticateSV(this.mPin), get_onBfAuth(), "-Authenticate-");
+		BackgroundFunc.Go(
+			get_onAuthenticateSV(this.mPin).Add(get_onBfAuth()), 
+			"-Authenticate-"
+		);
 	}
 
 	private onAuthSV get_onAuthenticateSV(String pinStr) { onAuthSV o = new onAuthSV(); o.arg1 = this; o.arg2 = pinStr; return o; }
-	class   onAuthSV extends RunnableWithArgs<Personel,Boolean> { public void run()
+	//class   onAuthSV extends RunnableWithArgs<Personel,Boolean> { public void run()
+	class   onAuthSV extends RunnableWithEvent<Personel,Boolean> { public void run()
 	{
 		MainEngine engine = (MainEngine)this.arg1;
 		String pinStr = (String)this.arg2;
@@ -282,11 +304,13 @@ public class MainEngine
 		{
 			try
 			{
-				sv = LoadPersonelFromServer( pinStr, engine.mContext);
+				sv = LoadSvFromServer( pinStr, engine.mContext);
 				if(sv != null)
 				{
-					Personel [] workers = sv.LoadWorkers(engine.mContext);
-					MainEngine.Synchronization( sv, workers, sv.pointArray, sv.get_PersonelPoints(), engine.mContext);
+					//Personel [] workers = sv.LoadWorkers(engine.mContext);
+					MainEngine.Synchronization( 
+						sv, null,//workers, 
+						sv.pointArray, sv.get_PersonelPoints(), engine.mContext);
 					MsgFromBackground(Act.ServerAuthOk);
 					result = true;
 				} // else { MsgFromBackground(Act.ServerAuthError); }
@@ -326,88 +350,10 @@ public class MainEngine
 
 	//************************************************************************************************
 	// 2 entering tag
-	private onClickOkMessageBox get_onClickOkMessageBox() { onClickOkMessageBox o = new onClickOkMessageBox(); o._this = this; return o; } 
-	class onClickOkMessageBox implements OnClickListener { public MainEngine _this;public void onClick(DialogInterface di, int paramAnonymousInt)
-	{
-	}}
-	public void OnNfcTagApply(final long cardId) // ---> call in bg thread
-	{
-		Personel p = Personel.SelectByCard( cardId );
-		if(p != null && p.Id != -1)
-		{
-			this.set_CurrentWorker(p);
-			SaveCheckin();
-		}
-		else
-		{
-			ta.timeattendance.MainActivity.get_RespondHandler().post(new Runnable() { public void run() {
-				MainEngine.getInstance().SaveCheckinCompleteEvent.RunEvent(null,false);
-			}});
-			UIHelper.Instance().MessageBoxInUIThread(
-				"Сотрудник не найден! \r\n " + Long.toHexString(cardId),
-				get_onClickOkMessageBox(),
-				null
-			);
-		}
-	}
 
-
-	//************************************************************************************************
-	// 3 save checkin from personel info
-	class SaveCheckinBFClass extends BackgroundFunc<Checkin,Boolean> {}
-	public void SaveCheckin() // ---> call in ui thread and bg thread
-	{
-		if((this.get_CurrentWorker() != null) && (this.get_CurrentWorker().Id != -1) )
-		{
-			BackgroundFunc.Go( new SaveCheckinBFClass(), get_onSaveCheckin(), get_onBfComplete(), "-SaveCheckin-");
-		}
-	}
-
-	private onBfComplete get_onBfComplete() { onBfComplete o = new onBfComplete(); o.arg1 = this; return o; }
-	class onBfComplete extends RunnableWithArgs<Checkin,Boolean> { public void run() // ---> call in ui thread
-	{
-		MainEngine _this = (MainEngine)this.arg1;
-		Boolean res = this.result;
-		_this.SaveCheckinCompleteEvent.RunEvent(null,res);
-	}}
-	
-	private onSaveCheckin get_onSaveCheckin() { onSaveCheckin o = new onSaveCheckin(); o.arg1 = this; return o; }
-	class onSaveCheckin extends RunnableWithArgs<Checkin,Boolean> { public void run()
-	{
-		MainEngine engine = (MainEngine)this.arg1;
-		boolean result = false;
-		Checkin ch = null;
-
-		//MsgFromBackground(Act.StartOperation);
-
-		Point p = engine.__pointModel.get_CurrentPoint();
-		Personel w = engine.get_CurrentWorker();
-		if(p == null)
-		{
-			result = false;
-			MsgFromBackground( Act.CheckpointNotSelect );
-		}
-		else //if(!w.IsDismiss)
-		{
-			ch = new Checkin(
-				engine.__svModel.get_CurrentSuperviser().Id,	// SupervicerId
-				w.Id,											// WorkerId
-				w.CardId,										// CardId
-				engine.getCurrentMode(),						// Mode
-				p.Id,											// PointId
-				String.valueOf(System.currentTimeMillis())		// DateTime
-			);
-
-			ch.IsCheckinExistOnServer = false;
-			ch.save( engine.mContext );
-			//MsgFromBackground( Act.CheckinSaveLocal );
-			result = true;
-
-		}
-
-		this.arg = ch;
-		this.result = result;
-	}}
+	//public void OnNfcTagApply(final long cardId)
+	//{
+	//}
 
 			/*if(HttpHelper.IsInternetAvailable(engine.mContext))
 			{
@@ -491,7 +437,7 @@ public class MainEngine
 
 		try
 		{
-			sv = LoadPersonelFromServer( engine.mPin, engine.mContext);
+			sv = LoadSvFromServer( engine.mPin, engine.mContext);
 			if(sv.Id != 0)
 			{
 				Personel [] workers = sv.LoadWorkers(engine.mContext);
@@ -521,12 +467,14 @@ public class MainEngine
 	}
 
 	private onGFIComplete get_onGFIComplete() { onGFIComplete o = new onGFIComplete(); o.arg1 = this; return o; }
-	class   onGFIComplete extends RunnableWithArgs<FacilityInfoEntity,Boolean> { public void run() // ---> call in ui thread
+	class   onGFIComplete extends RunnableWithArgs<FacilityInfoEntity,Boolean> { public void run()
 	{
 		boolean result = this.result;
 		if(result) {
 			FacilityInfoEntity fie = this.arg;
-			UIHelper.Instance().tabFacilityInfo.SetFacilityInfo(fie);
+			//UIHelper.Instance().tabFacilityInfo.SetFacilityInfo(fie);
+			TabFacilityInfo fi = ((TabFacilityInfo)UIHelper.Instance().get_TabConteiner().GetByEnum(State.FACILITY_INFO).Tab);
+			fi.SetFacilityInfo(fie);
 		}
 	}}
 

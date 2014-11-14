@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,28 +19,11 @@ import ta.Database.Point;
 import ta.timeattendance.MainEngine;
 import ta.lib.BackgroundFunc;
 import ta.lib.RunnableWithArgs;
+import ta.lib.Network.JsonToEntity;
 import ta.lib.*;
 
-public class Personel //extends EntityBase
+public class Personel
 {
-	//public static final String COLUMN_CARDID = "CardId";
-	//public static final String COLUMN_FIST_NAME = "FirstName";
-	//public static final String COLUMN_ID = "Id";
-	//public static final String COLUMN_IS_SUPERVISOR = "IsSupervisor";
-	//public static final String COLUMN_LAST_NAME = "LastName";
-	//public static final String COLUMN_PERSONEL_CODE = "PersonelCode";
-	//public static final String COLUMN_PHOTO_TIME = "PhotoTimeSpan";
-	//public static final String COLUMN_THIRD_NAME = "ThirdName";
-	//public static final int NUM_COLUMN_ID = 0;
-	//public static final int NUM_COLUMN_FIST_NAME = 1;
-	//public static final int NUM_COLUMN_LAST_NAME = 2;
-	//public static final int NUM_COLUMN_THIRD_NAME = 3;
-	//public static final int NUM_COLUMN_IS_SUPERVISOR = 4;
-	//public static final int NUM_COLUMN_PERSONEL_CODE = 5;
-	//public static final int NUM_COLUMN_CARDID = 6;
-	//public static final int NUM_COLUMN_PHOTO_TIME = 7;
-	//public static final String TABLE_NAME = "Personel";
-
 	public int Id;
 	public String FirstName;
 	public String LastName;
@@ -54,7 +38,12 @@ public class Personel //extends EntityBase
 	public boolean IsDeleted;
 	public boolean IsDismiss;
 	public byte[] Photo;
+
 	public Point [] pointArray;
+	private Personel [] __workerArray;
+	private Category [] __categoryArray;
+	private CustomerObject [] __customerObject;
+	private Template [] __templateArray;
 
 	public Personel()
 	{
@@ -64,51 +53,6 @@ public class Personel //extends EntityBase
 		this.pointArray   = null;
 	}
 
-	//************************************************************************************************
-	// select from sqlite by one field
-	public static Personel SelecByPin( String pinStr )
-	{
-		DbConnector db = DbConnector.getInstance();
-		Personel p = null;
-
-		//try{
-		//Cursor c = db.Select("SELECT * FROM Personel", null);
-		//ArrayList<Personel> al = getPersonelList(c);
-		//Personel[] arr = al.toArray(new Personel[0]);
-
-		Cursor cursor = db.GetEntity( "Personel", "Pin", new String[] { pinStr } );
-
-		p = Personel.FromCursor(cursor);
-
-		//int aaa = 9;
-		//int aaa2 = aaa - 2;
-
-		//} catch(Exception e) {
-		//    Exception ex = e;
-		//}
-
-		return p;
-	}
-
-	public static Personel SelectById(int id)
-	{
-		DbConnector db = DbConnector.getInstance();
-		Cursor cursor = db.Select("select * from Personel where Id=?", new String[]{ String.valueOf(id) });
-
-		return FromCursor( cursor );
-	}
-
-	public static Personel SelectByCard(long paramLong)
-	{
-		DbConnector db = DbConnector.getInstance();
-		String[] arrayOfString = new String[]{ String.valueOf(paramLong) };
-
-		Cursor cursor = db.GetEntity("Personel", "CardId", arrayOfString);
-
-		return FromCursor( cursor );
-
-		//return null;
-	}
 
 
 	//************************************************************************************************
@@ -171,6 +115,7 @@ public class Personel //extends EntityBase
 			loadComplete.run();
 		}
 	}}
+
 	private onLP get_onLP(Context context) { onLP o = new onLP(); o.arg1 = this; o.arg2 = context; return o; }
 	class onLP extends RunnableWithArgs<JSONArray,Boolean> { public void run()
 	{
@@ -203,14 +148,245 @@ public class Personel //extends EntityBase
 		}
 	}}
 
+	public Personel [] get_Workers()
+	{
+		return this.__workerArray;
+	}
+
+	public CustomerObject [] get_CustomerObjects()
+	{
+		return this.__customerObject;
+	}
+
+	private boolean isTryGetCategories = false;
+	public Category [] get_Categories()
+	{
+		if(this.__categoryArray == null && !isTryGetCategories)
+		{
+			this.__categoryArray = Category.getCategoryBySupervisor(this.Id);
+			isTryGetCategories = true;
+		}
+		return this.__categoryArray;
+	}
+	private boolean isTryGetTemplates = false;
+	public Template [] get_Templates()
+	{
+		//return this.__templateArray;
+		if(this.__templateArray == null && !isTryGetTemplates)
+		{
+			this.__templateArray = Template.getAllTemplate();
+			isTryGetTemplates = true;
+		}
+		return this.__templateArray;
+	}
+
 
 
 	//************************************************************************************************
-	// static
-	private static ArrayList<Personel> ArrayFromCursor(Cursor cursor)
+	//     Server
+
+	public static Personel[] WorkerArrayFromJson(JSONArray JsonArr, Context context)
+		throws org.json.JSONException
+	{
+		Personel[] personelArr;
+		int count = JsonArr.length();
+		personelArr = new Personel[count];
+		for (int i = 0; i < count; i++)
+		{
+			personelArr[i] = Personel.FromJson( JsonArr.getJSONObject(i), context);
+		}
+		return personelArr;
+	}
+	public static Personel[] WorkerArrayFromJson(JSONObject JsonObj, Context context)
+		throws org.json.JSONException
+	{
+		Iterator<String> iter = JsonObj.keys();
+		String personelsKey = null;
+
+		while( iter.hasNext() ){
+			String key = iter.next();
+			if(key.equals("personels"))
+			{
+				personelsKey = key;
+			}
+			if(key.equals("Personels"))
+			{
+				personelsKey = key;
+			}
+		}
+
+		Personel[] personelArr = null;
+
+		if(personelsKey != null){
+			JSONArray JsonArr = JsonObj.getJSONArray(personelsKey );
+			personelArr = Personel.WorkerArrayFromJson( JsonArr, context);
+		}
+		return personelArr;
+	}
+	public static Personel[] WorkerArrayFromJson(String serverRespond, Context context)
+		throws org.json.JSONException
+	{
+		//JSONArray JsonArr = new JSONObject(serverRespond).getJSONArray("personels");
+		JSONObject JsonObj = new JSONObject(serverRespond);
+		Personel[] personelArr = Personel.WorkerArrayFromJson( JsonObj, context);
+		return personelArr;
+	}
+
+	public static Personel FromJson(JSONObject jo, Context context)
+	{
+		Personel p = null;
+		try
+		{
+			if(jo.has("Id"))
+			{
+				p = new Personel();
+				p.Id = jo.getInt("Id");
+
+
+				if(jo.has("FirstName"))
+				p.FirstName = jo.getString("FirstName");
+
+				if(jo.has("LastName"))
+				p.LastName = jo.getString("LastName");
+
+				if(jo.has("ThirdName"))
+				p.ThirdName = jo.getString("ThirdName");
+
+				if (jo.has("IsSupervisor"))
+				{
+					p.IsSupervisor = jo.getBoolean("IsSupervisor");
+				}
+				if (jo.has("PersonelCode"))
+				{
+					p.PersonelCode = jo.getInt("PersonelCode");
+				}
+				if (jo.has("Card"))
+				{
+					p.CardId = jo.getString("Card");
+				}
+				if (jo.has("IsDeleted"))
+				{
+					p.IsDeleted = jo.getBoolean("IsDeleted");
+				}
+
+				p.IsDismiss = false;
+				if (jo.has("IsDismiss")) {
+					int isDismiss = jo.getInt("IsDismiss");
+					if(isDismiss == 1){
+						p.IsDismiss = true;
+					}
+				}
+
+				if(jo.has("Photo"))
+				{
+					p.PhotoTimeSpan = jo.getString("Photo");
+					if( !p.loadCachedPhoto(context) )
+					{
+						URL fotoUrl = new URL( HttpHelper.getPhotoAddress(p.Id) );
+						p.Photo = Base64.decode( HttpHelper.httpGet(fotoUrl), 0);
+						p.SavePhoto(context);
+					}
+				}
+
+				//add
+				if( jo.has("Points") )
+				{
+					JSONArray jsArr = jo.getJSONArray("Points");
+
+					int count = jsArr.length();
+					p.pointArray = new Point[count];
+
+					for( int i = 0; i < count; i++)
+					{
+						p.pointArray[i] = Point.Create(jsArr.getJSONObject(i));
+					}
+				}
+
+				Personel[] personelArr = Personel.WorkerArrayFromJson( jo, context);
+				if(personelArr != null){
+					p.__workerArray = personelArr;
+				}
+
+				CustomerObject[] co = 
+					JsonToEntity.JoFieldToEntityArray( CustomerObject.class, new CustomerObject[0],
+						jo,"Objects", new String[]{"Id","Name"}, context
+					);
+				if(co != null){
+					p.__customerObject = co;
+				}
+
+				Category[] catArr = 
+					JsonToEntity.JoFieldToEntityArray( Category.class, new Category[0],
+						jo,"Category", new String[]{"Id","ObjectId","Name"}, context
+					);
+				if(catArr != null){
+					p.__categoryArray = catArr;
+				}
+
+				Template[] tplArr = JsonToEntity.JoFieldToEntityArray( Template.class, new Template[0],
+						jo,"Templates", new String[]{"Id","CategoryId","StartTime","BreakTime","EndTime"}, context
+					);
+				if(tplArr != null){
+					p.__templateArray = tplArr;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			Exception ex = e;
+		}
+		return p;
+	}
+
+
+
+	//*********************************************************************************************
+	//**     Local DB
+	public static Personel[] GetAll()
+	{
+		DbConnector db = DbConnector.getInstance();
+
+		String str = "SELECT * FROM Personel WHERE IsSupervisor = 0";
+		Cursor c = db.Select(str, null);
+
+		ArrayList<Personel> al  = ArrayFromCursor(c);
+		Personel[]          arr = al.toArray(new Personel[0]);
+		return arr;
+	}
+	public static Personel SelecByPin( String pinStr )
+	{
+		DbConnector db = DbConnector.getInstance();
+		Personel p = null;
+		//try{
+		//Cursor c = db.Select("SELECT * FROM Personel", null);
+		//ArrayList<Personel> al = getPersonelList(c);
+		//Personel[] arr = al.toArray(new Personel[0]);
+		Cursor cursor = db.GetEntity( "Personel", "Pin", new String[] { pinStr } );
+		p = Personel.FromCursor(cursor);
+		//} catch(Exception e) { Exception ex = e; }
+		return p;
+	}
+	public static Personel SelectById(int id)
+	{
+		DbConnector db = DbConnector.getInstance();
+		Cursor cursor = db.Select("select * from Personel where Id=?", new String[]{ String.valueOf(id) });
+        if (cursor.moveToNext()){
+		    return FromCursor( cursor );
+        }
+        return null;
+	}
+	public static Personel SelectByCard(long paramLong)
+	{
+		DbConnector db = DbConnector.getInstance();
+		String[] arrayOfString = new String[]{ String.valueOf(paramLong) };
+		Cursor cursor = db.GetEntity("Personel", "CardId", arrayOfString);
+		return FromCursor( cursor );
+		//return null;
+	}
+	public static ArrayList<Personel> ArrayFromCursor(Cursor cursor)
 	{
 		ArrayList<Personel> list = new ArrayList<Personel>();
-		if (!cursor.isAfterLast())
+		if (cursor.moveToNext())
 		{
 			do
 			{
@@ -285,102 +461,6 @@ public class Personel //extends EntityBase
 		return p;
 	}
 
-	public static Personel[] ArrayFromJson(String serverRespond, Context context)
-	{
-		Personel[] personelArr;
-		try
-		{
-			JSONArray JsonArr = new JSONObject(serverRespond).getJSONArray("personels");
-			int count = JsonArr.length();
-			personelArr = new Personel[count];
-			for (int i = 0; i < count; i++)
-			{
-				personelArr[i] = Personel.FromJson( JsonArr.getJSONObject(i), context);
-			}
-		}
-		catch (Exception e)
-		{
-			personelArr = new Personel[0];
-		}
-		return personelArr;
-	}
-	public static Personel FromJson(JSONObject jo, Context context)
-	{
-		Personel p = null;
-		try
-		{
-			if(jo.has("Id"))
-			{
-				p = new Personel();
-				p.Id = jo.getInt("Id");
-
-
-				if(jo.has("FirstName"))
-				p.FirstName = jo.getString("FirstName");
-
-				if(jo.has("LastName"))
-				p.LastName = jo.getString("LastName");
-
-				if(jo.has("ThirdName"))
-				p.ThirdName = jo.getString("ThirdName");
-
-				if (jo.has("IsSupervisor"))
-				{
-					p.IsSupervisor = jo.getBoolean("IsSupervisor");
-				}
-				if (jo.has("PersonelCode"))
-				{
-					p.PersonelCode = jo.getInt("PersonelCode");
-				}
-				if (jo.has("Card"))
-				{
-					p.CardId = jo.getString("Card");
-				}
-				if (jo.has("IsDeleted"))
-				{
-					p.IsDeleted = jo.getBoolean("IsDeleted");
-				}
-
-				p.IsDismiss = false;
-				if (jo.has("IsDismiss")) {
-					int isDismiss = jo.getInt("IsDismiss");
-					if(isDismiss == 1){
-						p.IsDismiss = true;
-					}
-				}
-
-				if(jo.has("Photo"))
-				{
-					p.PhotoTimeSpan = jo.getString("Photo");
-					if( !p.loadCachedPhoto(context) )
-					{
-						URL fotoUrl = new URL( HttpHelper.getPhotoAddress(p.Id) );
-						p.Photo = Base64.decode( HttpHelper.httpGet(fotoUrl), 0);
-						p.SavePhoto(context);
-					}
-				}
-
-				//add
-				if( jo.has("Points") )
-				{
-					JSONArray jsArr = jo.getJSONArray("Points");
-
-					int count = jsArr.length();
-					p.pointArray = new Point[count];
-
-					for( int i = 0; i < count; i++)
-					{
-						p.pointArray[i] = Point.Create(jsArr.getJSONObject(i));
-					}
-				}
-			}
-		}
-		catch (Exception e)
-		{
-		}
-		return p;
-	}
-
 
 
 	private static long save(Personel p, Context context)
@@ -439,25 +519,42 @@ public class Personel //extends EntityBase
 	}
 
 
-	public static void sync(Personel[] arr, Context paramContext)
+	public static void sync(Personel[] arr, Context context)
 	{
-		Object result = null;
-		long resSave  = -2;
+		int numberOfRows = 0;
+		long rowID  = -1;
 		for (int i = 0; i < arr.length; i++)
 		{
-			result = Personel.delete( arr[i].Id, paramContext);
+			numberOfRows = Personel.delete( arr[i].Id, context);
 
 			if (!arr[i].IsDeleted)
 			{
-				resSave = save( arr[i], paramContext);
+				rowID = save( arr[i], context);
+				int aaa = 9;
+				int aaa2= aaa-2;
 			}
 		}
+
+        /*Personel[] test = null;
+        try{
+            //test = Personel.GetAll();
+            DbConnector db = DbConnector.getInstance();
+            String str = "SELECT * FROM Personel";
+            Cursor c = db.Select(str, null);
+
+            ArrayList<Personel> al  = ArrayFromCursor(c);
+            test = al.toArray(new Personel[0]);
+        }
+        catch(Exception e)
+        {
+            Exception ex = e;
+        }*/
 	}
 
-	public static Object delete(long paramLong, Context paramContext)
+	public static int delete(int id, Context context)
 	{
 		DbConnector db = DbConnector.getInstance();
-		return db.delete("Personel", "Id", String.valueOf(paramLong));
+		return db.delete("Personel", "Id", String.valueOf(id));
 	}
 
 
@@ -470,10 +567,10 @@ public class Personel //extends EntityBase
 
 		if( this.Pin != null )
 		{
-			String strUrl = HttpHelper.getSearchURL( this.Pin );
+			String strUrl = HttpHelper.getWorkersBySupervisor( this.Pin );
 			URL urlPersonel = new URL(strUrl);
 			String respond = HttpHelper.httpGet(urlPersonel);
-			personelArr = Personel.ArrayFromJson( respond, context);
+			personelArr = Personel.WorkerArrayFromJson( respond, context);
 		}
 
 		return personelArr;

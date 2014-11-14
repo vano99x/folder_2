@@ -1,25 +1,74 @@
 package ta.lib;
 
+import android.content.Intent;
 import android.nfc.tech.MifareClassic;
 import ta.timeattendance.MainActivity;
+import ta.timeattendance.MainActivityProxy;
 import ta.timeattendance.MainEngine;
+import ta.timeattendance.Services.NfcEventService;
 
 public class NfcThread implements Runnable
 {
 	private MainActivity ma;
-	private MainEngine   me;
+	//private MainEngine   me;
+	private NfcEventService _service;
 	private boolean      isRun;
 
 	public NfcThread(
 		MainActivity mainActivity, 
-		MainEngine   mainEngine)
+		NfcEventService   service)
 	{
 		this.ma = mainActivity;
-		this.me = mainEngine;
+		//this.me = mainEngine;
+		this._service = service;
 		this.isRun = true;
 		Thread t = new Thread(this,"--= thread checking nfc device =--");
+
+		/*
+		//MainActivityProxy maprx = mainActivity.get_FragmentActivity();
+		final MainActivityProxy faForEx = mainActivity.get_FragmentActivity();
+		t.setUncaughtExceptionHandler(
+		//new ExWithTag(maprx)
+		new Thread.UncaughtExceptionHandler()
+		{
+			@Override public void uncaughtException(Thread thread, Throwable ex)
+			{
+				//java.lang.StackTraceElement[] st = ex.getStackTrace();
+				//StackTraceElement first = st[0];
+				//String type1 = first.getClassName();
+				String msg = ex.getMessage();
+
+				Intent intent = new Intent("ru.startandroid.intent.action.showdate");
+				intent.putExtra("Message", msg );
+				faForEx.startActivity(intent);
+
+				int p = android.os.Process.myPid();
+				android.os.Process.killProcess(p);
+			}
+		}
+		);*/
+
 		t.start();
 	}
+
+	/*private static class ExWithTag implements Thread.UncaughtExceptionHandler
+	{
+		private Object _tag;
+		public ExWithTag(Object tag){ this._tag = tag; }
+		@Override public void uncaughtException(Thread thread, Throwable ex)
+		{
+			MainActivityProxy faForEx = (MainActivityProxy)this._tag;
+
+			String msg = ex.getMessage();
+
+			Intent intent = new Intent("ru.startandroid.intent.action.showdate");
+			intent.putExtra("Message", msg );
+			faForEx.startActivity(intent);
+
+			int p = android.os.Process.myPid();
+			android.os.Process.killProcess(p);
+		}
+	}*/
 
 	public void Stop()
 	{
@@ -28,6 +77,18 @@ public class NfcThread implements Runnable
 
 	public void run()
 	{
+		//Thread t = Thread.currentThread();
+		//String str = t.getName();
+		//ThreadGroup tg = t.getThreadGroup();
+		//if(tg!= null)
+		//{
+		//	if(tg == t.getUncaughtExceptionHandler())
+		//	{
+		//		MainActivityProxy maprx = this.ma.get_FragmentActivity();
+		//		t.setUncaughtExceptionHandler( new ExWithTag(maprx) );
+		//	}
+		//}
+
 		//boolean isBusy = false;
 		while( isRun )
 		{
@@ -96,6 +157,7 @@ public class NfcThread implements Runnable
 			256L * (256L * arrayOfLong[2]) + 
 			256L * (256L * (256L * arrayOfLong[3]));
 
-		me.OnNfcTagApply(l);
+		//me.OnNfcTagApply(l);
+		this._service.RunEvent(l);
 	}
 }

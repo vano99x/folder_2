@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import org.json.JSONObject;
 
-public class PersonelPoint //extends EntityBase
+public class PersonelPoint
 {
 	//public static final String COLUMN_PERSONEL_ID = "PersonelId";
 	//public static final String COLUMN_POINT_ID = "PointId";
@@ -49,12 +49,12 @@ public class PersonelPoint //extends EntityBase
 		db.delete("PersonelPoint", "PersonelId = ? and PointId = ?", arrayOfString);
 	}
 
-	private static void save(PersonelPoint paramPersonelPoint, Context paramContext)
+	private static void save(PersonelPoint pp, Context paramContext)
 	{
 		DbConnector db = DbConnector.getInstance();
 		ContentValues cv = new ContentValues();
-		cv.put("PersonelId", Integer.valueOf(paramPersonelPoint.PersonelId));
-		cv.put("PointId", Integer.valueOf(paramPersonelPoint.PointId));
+		cv.put("PersonelId", Integer.valueOf(pp.PersonelId));
+		cv.put("PointId",    Integer.valueOf(pp.PointId));
 		db.insert("PersonelPoint", cv);
 	}
 

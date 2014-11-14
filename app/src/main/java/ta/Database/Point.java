@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-public class Point extends EntityBase
+public class Point
 {
 	//public static final String COLUMN_ID = "Id";
 	//public static final String COLUMN_NAME = "Name";
@@ -16,6 +16,7 @@ public class Point extends EntityBase
 	//public static final String TABLE_NAME = "Point";
 
 	public int Id;
+    public int ObjectId;
 	public String Name;
 
 	public Point()
@@ -54,6 +55,7 @@ public class Point extends EntityBase
 		try
 		{
 			point.Id = jo.getInt("Id");
+            point.ObjectId = jo.getInt("ObjectId");
 			point.Name = jo.getString("Name");
 			return point;
 		}
@@ -63,37 +65,36 @@ public class Point extends EntityBase
 		return null;
 	}
 
-	private static void delete(int paramInt, Context paramContext)
-	{
-		DbConnector db = DbConnector.getInstance();
-		db.delete("Point", "Id", String.valueOf(paramInt));
-	}
-
 	public static Point[] getBySuperviser(int paramInt, Context paramContext)
 	{
 		DbConnector db = DbConnector.getInstance();
-		String[] arrayOfString = new String[1];
-		arrayOfString[0] = String.valueOf(paramInt);
+        String[] arrayOfString = {String.valueOf(paramInt)};
 
-		Cursor localCursor = 
+		Cursor cursor =
 			db.Select(
 				"SELECT * FROM Point p INNER JOIN PersonelPoint pp ON p.Id=pp.PointId WHERE pp.PersonelId=?", 
 				arrayOfString
 			);
 
 		ArrayList list = new ArrayList();
-		if (!localCursor.isAfterLast())
+		if (cursor.moveToNext())
 		{
 			do
 			{
-				list.add(new Point(localCursor.getInt(0), localCursor.getString(1)));
+				list.add(new Point(cursor.getInt(0), cursor.getString(1)));
 			}
-			while (localCursor.moveToNext());
+			while (cursor.moveToNext());
 		}
-		localCursor.close();
+		cursor.close();
 		return (Point[])list.toArray(new Point[0]);
 
 		//return null;
+	}
+
+	private static void delete(int paramInt, Context paramContext)
+	{
+		DbConnector db = DbConnector.getInstance();
+		db.delete("Point", "Id", String.valueOf(paramInt));
 	}
 
 	private static void save(Point paramPoint, Context paramContext)
@@ -101,21 +102,17 @@ public class Point extends EntityBase
 		DbConnector db = DbConnector.getInstance();
 		ContentValues cv = new ContentValues();
 		cv.put("Id", Integer.valueOf(paramPoint.Id));
+		cv.put("ObjectId", Integer.valueOf(paramPoint.ObjectId));
 		cv.put("Name", paramPoint.Name);
 		db.insert("Point", cv);
 	}
 
-	public static void sync(Point[] paramArrayOfPoint, Context paramContext)
+	public static void sync(Point[] pointArray, Context paramContext)
 	{
-		for (int i = 0; i < paramArrayOfPoint.length; i++)
+		for (int i = 0; i < pointArray.length; i++)
 		{
-			delete(paramArrayOfPoint[i].Id, paramContext);
-			save(paramArrayOfPoint[i], paramContext);
+			delete(pointArray[i].Id, paramContext);
+			save(pointArray[i], paramContext);
 		}
 	}
 }
-
-/* Location:           C:\Users\vano99\Desktop\jd-gui-0.3.5.windows\TandAOffline_dex2jar.jar
- * Qualified Name:     com.ifree.Database.Point
- * JD-Core Version:    0.6.2
- */

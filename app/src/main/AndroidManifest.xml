@@ -27,6 +27,18 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
+		<activity
+			android:taskAffinity="org.example.package.TASK.ExceptionDisplay"
+			android:process=":exception_process"
+			android:name="ta.timeattendance.ExceptionActivity" android:label="Date extended">
+			<intent-filter>
+				<action android:name="ru.startandroid.intent.action.showdate"></action>
+				<category android:name="android.intent.category.DEFAULT"></category>
+			</intent-filter>
+		</activity>
+		<!--////-->
+
 	</application>
 
 </manifest>

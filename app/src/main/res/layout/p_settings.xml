@@ -26,6 +26,11 @@
 		android:id="@id/Settings_PointsListBtn_Id" style="@style/WrapperButtonStyle1"
 		android:text="Контрольные точки"
 		/>
+
+	<RelativeLayout android:id="@id/Settings_AttachNFC_Btn_Id" style="@style/WrapperButtonStyle1" android:layout_marginTop="10.0dip">
+		<!--<ImageView android:src="@drawable/finish" style="@style/ImageButtonStyle1" />-->
+		<TextView android:text="Привязать чип" style="@style/CommonButtonStyle1" />
+	</RelativeLayout>
 	
 <!--//
 	<ListView

@@ -5,33 +5,62 @@ import android.os.Handler;
 
 public class BackgroundFunc<TArg,TRes> extends RunnableWithArgs<Object,Object>
 {
-	/*public BackgroundFunc()
+	public BackgroundFunc()
 	{
+		//this.BackgroundFuncComplete = this.new BackgroundFuncCompleteEventClass();
+		//this.BackgroundFuncComplete.set_EventTypeHolder(this);
 	}
 
-	public BackgroundFunc(RunnableWithArgs<TArg,TRes> targetFunc, RunnableWithArgs<TArg,TRes> completeFunc,String name)
-	{
-		this.arg1 = (RunnableWithArgs<TArg,TRes>)targetFunc;
-		this.BackgroundFuncComplete = new BackgroundFuncCompleteEventClass();
-		this.BackgroundFuncComplete.SetEventType(this);
-		this.BackgroundFuncComplete.Add(completeFunc);
-		new Thread(this,name).start();
-	}*/
-
 	public static void Go(
-		BackgroundFunc _this,
-		RunnableWithArgs targetFunc,
-		RunnableWithArgs completeFunc,
-		String name)
+		BackgroundFunc _this, RunnableWithArgs targetFunc, RunnableWithArgs completeFunc, String name)
 	{
 		int aaa = 9;
 		int aaa2 = aaa - 2;
 
 		_this.arg1 = targetFunc;
 		_this.BackgroundFuncComplete = _this.new BackgroundFuncCompleteEventClass();
-		_this.BackgroundFuncComplete.set_EventTypeHolder(_this);
+		//_this.BackgroundFuncComplete.set_EventTypeHolder(_this);
+		_this.BackgroundFuncComplete.set_EventTypeHolder(targetFunc);
 		_this.BackgroundFuncComplete.Add(completeFunc);
 		new Thread(_this,name).start();
+	}
+
+	public static void Go( RunnableWithEvent tF, String name)
+	{
+		class TempClass implements Runnable{
+			private RunnableWithEvent _tF;
+			public TempClass(RunnableWithEvent tF){
+				_tF = tF;
+			}
+			public void run()
+			{
+				final RunnableWithEvent targetFunc  = this._tF;
+
+				targetFunc.run();
+				try
+				{
+					Handler h = ta.timeattendance.MainActivity.get_RespondHandler();
+					h.post(new Runnable(){public void run(){
+						//RunnableWithEvent.this.BackgroundFuncComplete.RunEvent(targetFunc.arg,targetFunc.result);
+						targetFunc.BackgroundFuncComplete.RunEvent(targetFunc.arg,targetFunc.result);
+					}});
+				}
+				catch(Exception e)
+				{
+					Exception ex = e;
+				}
+			}
+		}
+
+		new Thread(new TempClass(tF),name).start();
+	}
+
+	public static <TArg2,TRes2> void RunEventInUiThread(Event<TArg2,TRes2> event, TArg2 arg, TRes2 res)
+	{
+		Handler h = ta.timeattendance.MainActivity.get_RespondHandler();
+		h.post(new RunnableWithArgs(event,arg,res){public void run(){
+			((Event<TArg2,TRes2>)this.arg1).RunEvent( (TArg2)this.arg2, (TRes2)this.arg3);
+		}});
 	}
 
 	public void run()
@@ -60,15 +89,11 @@ public class BackgroundFunc<TArg,TRes> extends RunnableWithArgs<Object,Object>
 		//this.result = new Object[]{message};
 		//BackgroundFuncComplete.RunEvent(new Object[]{message});
 		try {
-		Handler aaa = ta.timeattendance.MainActivity.get_RespondHandler();
-		aaa.post(new Runnable()
-		{
-			public void run()
-			{
+			Handler h = ta.timeattendance.MainActivity.get_RespondHandler();
+			h.post(new Runnable() { public void run() {
 				//Object res = targetFunc.result;
 				BackgroundFunc.this.BackgroundFuncComplete.RunEvent(targetFunc.arg,targetFunc.result);
-			}
-		});
+			}});
 		}
 		catch(Exception e)
 		{
@@ -79,24 +104,24 @@ public class BackgroundFunc<TArg,TRes> extends RunnableWithArgs<Object,Object>
 	public class  BackgroundFuncCompleteEventClass extends Event<TArg,TRes> {}
 	public BackgroundFuncCompleteEventClass BackgroundFuncComplete;
 
-	/*public static <TArg,TRes> BackgroundFunc<TArg,TRes> get_BackgroundFunc(
-		RunnableWithArgs<TArg,TRes> targetFunc, 
-		Object eventHolder //,String eventName //,Object[] paramArr
-	)
-	{
-		BackgroundFunc<TArg,TRes> bf = new BackgroundFunc<TArg,TRes>();
-		bf.BackgroundFuncComplete = bf.new BackgroundFuncCompleteEventClass();
+	//public static <TArg,TRes> BackgroundFunc<TArg,TRes> get_BackgroundFunc(
+	//	RunnableWithArgs<TArg,TRes> targetFunc, 
+	//	Object eventHolder //,String eventName //,Object[] paramArr
+	//)
+	//{
+	//	BackgroundFunc<TArg,TRes> bf = new BackgroundFunc<TArg,TRes>();
+	//	bf.BackgroundFuncComplete = bf.new BackgroundFuncCompleteEventClass();
 
-		bf.arg1 = (RunnableWithArgs<TArg,TRes>)targetFunc; //bf.arg2 = eventHolder; //bf.arg3 = eventName; //bf.arg4 = paramArr;
-		return bf;
-	}
+	//	bf.arg1 = (RunnableWithArgs<TArg,TRes>)targetFunc; //bf.arg2 = eventHolder; //bf.arg3 = eventName; //bf.arg4 = paramArr;
+	//	return bf;
+	//}
 
-	public static <TArg,TRes> void Go(RunnableWithArgs<TArg,TRes> targetFunc, RunnableWithArgs<TArg,TRes> completeFunc,String name)
-	{
-		BackgroundFunc<TArg,TRes> bf = BackgroundFunc.<TArg,TRes>get_BackgroundFunc( targetFunc, null );
-		bf.BackgroundFuncComplete.Add(completeFunc);
-		new Thread(bf,name).start();
-	}*/
+	//public static <TArg,TRes> void Go(RunnableWithArgs<TArg,TRes> targetFunc, RunnableWithArgs<TArg,TRes> completeFunc,String name)
+	//{
+	//	BackgroundFunc<TArg,TRes> bf = BackgroundFunc.<TArg,TRes>get_BackgroundFunc( targetFunc, null );
+	//	bf.BackgroundFuncComplete.Add(completeFunc);
+	//	new Thread(bf,name).start();
+	//}
 
 }
 
@@ -104,7 +129,7 @@ public class BackgroundFunc<TArg,TRes> extends RunnableWithArgs<Object,Object>
 
 
 
-			/*
+/*
 		final Object[] eventParams = (Object[])targetFunc.result;
 
 			Field eventField = eventHolder.getClass().getField(eventName);
@@ -125,7 +150,7 @@ public class BackgroundFunc<TArg,TRes> extends RunnableWithArgs<Object,Object>
 				//    method = m;
 				//    break;
 				//}
-				if(eventName == "SaveCheckinCompleteEvent")
+//				if(eventName == "SaveCheckinCompleteEvent")
 				{
 				    if( name.equals("RunEvent2") )
 				    {
@@ -158,7 +183,7 @@ public class BackgroundFunc<TArg,TRes> extends RunnableWithArgs<Object,Object>
 					final Object[] _eventParams = eventParams;
 		//UIHelper.Instance().ToastInUIThread("aaa \n before methodF.invoke", 3);
 		//UIHelper.Instance().Toast("aaa \n before methodF.invoke", 3);
-						if(eventName == "SaveCheckinCompleteEvent")
+//						if(eventName == "SaveCheckinCompleteEvent")
 						{
 						Object resinvoke = _methodF.invoke( _eventObj, new Object [] { _eventParams, "in ui thread" } );
 						}
