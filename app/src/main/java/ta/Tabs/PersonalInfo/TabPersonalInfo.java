@@ -39,7 +39,7 @@ public class TabPersonalInfo extends Tab implements View.OnClickListener
 
 	private TextView  _hex_number_card;
 
-	private Button _checkin_btn;
+	private View _checkin_btn;
 	private LinearLayout _block_exit_tracked;
 	public boolean IsShowCheckiedWorker;
 	public boolean __isResized;
@@ -70,9 +70,9 @@ public class TabPersonalInfo extends Tab implements View.OnClickListener
 		_hex_number_card = (TextView)this.root.findViewById(R.id.hex_number_card);
 		Tab.UpdateTextView( _hex_number_card, null);
 
-		_checkin_btn = (Button)this.root.findViewById(R.id.checkin_btn);
+		_checkin_btn = this.root.findViewById(R.id.PersInfo_Checkin_Btn_Id);
 		_checkin_btn.setOnClickListener(this);
-		_checkin_btn.setTag(R.id.checkin_btn);
+		_checkin_btn.setTag(R.id.PersInfo_Checkin_Btn_Id);
 
 		_block_exit_tracked = (LinearLayout)this.root.findViewById(R.id.block_exit_tracked);
 
@@ -308,7 +308,7 @@ public class TabPersonalInfo extends Tab implements View.OnClickListener
 					int aaa = 9;
 					int aaa2 = aaa-9;
 				break;}
-				case R.id.checkin_btn:{
+				case R.id.PersInfo_Checkin_Btn_Id:{
 					//engine.SaveCheckin();
 					this.__svModel.SaveWorkerCheckin(   this.__svModel.get_SelectedWorker()   );
 				break;}

@@ -7,30 +7,35 @@
 		android:background="@drawable/button_mode" android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="@string/ReferenceBtn_Text"
 		/>//-->
-	<Button
-		android:id="@id/Settings_UpdateBtn_Id" style="@style/WrapperButtonStyle1"
-		android:text="@string/UpdateBtn_Text"
-		/>
+	<RelativeLayout android:id="@id/Settings_UpdateBtn_Id" style="@style/WrapperButtonStyle1" android:layout_marginTop="10.0dip">
+		<!--<ImageView android:src="@drawable/finish" style="@style/ImageButtonStyle1" />-->
+		<TextView android:text="@string/UpdateBtn_Text" style="@style/CommonButtonStyle1" />
+	</RelativeLayout>
 	
-	<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" >
-	<TextView android:layout_marginTop="-20.0dip" android:background="#f00"
-		android:text="Версия\nприложения" android:textSize="7.0pt" android:textColor="#aaa"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" />
-	<TextView
-		android:id="@id/Settings_CurrentVersionTextView_Id" android:background="#f00"
-		android:text="-" android:textSize="9.0pt" android:textStyle="bold" android:textColor="#fff"
-		android:layout_width="wrap_content" android:layout_height="wrap_content" />
-	</LinearLayout>
-	
-	<Button
-		android:id="@id/Settings_PointsListBtn_Id" style="@style/WrapperButtonStyle1"
-		android:text="Контрольные точки"
-		/>
+	<RelativeLayout android:id="@id/Settings_PointsListBtn_Id" style="@style/WrapperButtonStyle1" android:layout_marginTop="10.0dip">
+		<!--<ImageView android:src="@drawable/finish" style="@style/ImageButtonStyle1" />-->
+		<TextView android:text="Контрольные точки" style="@style/CommonButtonStyle1" />
+	</RelativeLayout>
 
 	<RelativeLayout android:id="@id/Settings_AttachNFC_Btn_Id" style="@style/WrapperButtonStyle1" android:layout_marginTop="10.0dip">
 		<!--<ImageView android:src="@drawable/finish" style="@style/ImageButtonStyle1" />-->
 		<TextView android:text="Привязать чип" style="@style/CommonButtonStyle1" />
 	</RelativeLayout>
+
+	<!--//
+		android:background="#f00"//-->
+	<LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content" 
+		android:paddingTop="10.0dip" android:paddingRight="10.0dip" android:paddingLeft="10.0dip">
+	<TextView
+		android:layout_gravity="center_vertical"
+		android:text="Версия\nприложения" android:textSize="7.0pt" android:textColor="#aaa"
+		style="@style/Wrap" />
+	<TextView
+		android:layout_gravity="center_vertical" android:paddingLeft="10.0dip"
+		android:id="@id/Settings_CurrentVersionTextView_Id" 
+		android:text="0.0" android:textSize="9.0pt" android:textStyle="bold" android:textColor="#aaa"
+		style="@style/Wrap" />
+	</LinearLayout>
 	
 <!--//
 	<ListView

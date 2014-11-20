@@ -20,7 +20,7 @@
 
 	<TextView
 		android:id="@id/Session_EmptyList_Id"
-		android:text="Список сессий пуст"
+		android:text="Список смен пуст"
 		android:textSize="12.0pt"
 		android:textStyle="bold"
 		android:textColor="#fff"

@@ -23,19 +23,19 @@ public class TabModeSelection extends Tab implements View.OnClickListener
 		super(context, paramViewGroup, paramInt1, paramInt2);
 		this._engine = MainEngine.getInstance();
 
-		RelativeLayout start_button = (RelativeLayout)this.root.findViewById(R.id.PageModeSelection_start_button);
+		View start_button = this.root.findViewById(R.id.PageModeSelection_start_button);
 		start_button.setOnClickListener(this);
 		start_button.setTag(R.id.PageModeSelection_start_button);
 
-		RelativeLayout end_button = (RelativeLayout)this.root.findViewById(R.id.PageModeSelection_end_button);
+        View end_button = this.root.findViewById(R.id.PageModeSelection_end_button);
 		end_button.setOnClickListener(this);
 		end_button.setTag(R.id.PageModeSelection_end_button);
 
-		RelativeLayout check_button = (RelativeLayout)this.root.findViewById(R.id.PageModeSelection_check_button);
+        View check_button = this.root.findViewById(R.id.PageModeSelection_check_button);
 		check_button.setOnClickListener(this);
 		check_button.setTag(R.id.PageModeSelection_check_button);
 
-		RelativeLayout pause_button = (RelativeLayout)this.root.findViewById(R.id.PageModeSelection_pause_button);
+        View pause_button = this.root.findViewById(R.id.PageModeSelection_pause_button);
 		pause_button.setOnClickListener(this);
 		pause_button.setTag(R.id.PageModeSelection_pause_button);
 
@@ -67,8 +67,8 @@ public class TabModeSelection extends Tab implements View.OnClickListener
 
 	public void onClick_pause_button()
 	{
-		//this._engine.setCurrentMode(Mode.Pause);
-		//UIHelper.Instance().switchState(MainActivity.State.WAIT_MODE);
+		this._engine.setCurrentMode(Mode.Pause);
+		UIHelper.Instance().switchState(MainActivity.State.WAIT_MODE);
 
 		/*Checkin ch = null;
 		int dt = 0;

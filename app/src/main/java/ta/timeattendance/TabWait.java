@@ -35,7 +35,7 @@ public class TabWait extends Tab implements View.OnClickListener
 
 	public TabWait(Context paramContext, ViewGroup paramViewGroup, int paramInt1, int paramInt2)
 	{
-		super(paramContext, paramViewGroup, paramInt1, paramInt2);
+		super(paramContext, paramViewGroup, paramInt1, paramInt2);//R.drawable.style_button
 
 		ImageView imageView = (ImageView)this.root.findViewById(R.id.waves_animation);
 		this.wavesAnim = ((AnimationDrawable)imageView.getDrawable());
@@ -44,11 +44,11 @@ public class TabWait extends Tab implements View.OnClickListener
 		this._iconMode = ((ImageView)this.root.findViewById(R.id.iconMode));
 		this._labelMode = ((TextView)this.root.findViewById(R.id.mode));
 
-		Button back_button = (Button)this.root.findViewById(R.id.PageWait_back_button);
+		View back_button = this.root.findViewById(R.id.PageWait_back_button);
 		back_button.setOnClickListener(this);
 		back_button.setTag(R.id.PageWait_back_button );
 
-		Button select_button = (Button)this.root.findViewById(R.id.PageWait_select_button);
+		View select_button = this.root.findViewById(R.id.PageWait_select_button);
 		select_button.setOnClickListener(this);
 		select_button.setTag(R.id.PageWait_select_button);
 

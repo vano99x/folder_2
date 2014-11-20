@@ -185,7 +185,7 @@
 	<item type="id" name="PagePointsList_EmptyListTextView_Id" />
 	<item type="id" name="route_block" />
 	<item type="id" name="txtName" />
-	<item type="id" name="checkin_btn" />
+	<item type="id" name="PersInfo_Checkin_Btn_Id" />
 	<item type="id" name="PointsListItem_Id" />
 
 	<item type="id" name="AttachNFC_RootId" />

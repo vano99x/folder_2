@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="fill_parent">
+	android:layout_width="fill_parent" android:layout_height="fill_parent">
+<!--android:orientation="horizontal" -->
 <LinearLayout
 	android:id="@id/SvBox_RootId"
 	android:background="@color/backW8"
@@ -9,15 +10,12 @@
 >
 		<!--//
 	android:background="#f00"
-	android:layout_gravity="bottom|left"//-->
-	<LinearLayout android:id="@id/SvBox_CategoryTemplate_View_Id" 
-		android:gravity="left" android:layout_marginLeft="7.0dip" 
-		android:layout_width="wrap_content" android:layout_height="wrap_content">
-		<TextView 
-			android:id="@id/SvBox_CategoryTemplate_TextView_Id" 
-			android:text="Уорщик 14:00-20:00"
-			android:textSize="7.0pt" android:textColor="#f5c210" 
-			android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	android:layout_gravity="bottom|left"
+		android:gravity="left"//-->
+	<LinearLayout android:id="@id/SvBox_CategoryTemplate_View_Id" android:layout_marginLeft="7.0dip"
+		style="@style/WrapperButtonStyle3">
+		<TextView android:id="@id/SvBox_CategoryTemplate_TextView_Id" 
+			android:text="Уорщик 14:00-20:00" style="@style/CommonButtonStyle3" />
 	</LinearLayout>
 
 	<LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
@@ -27,7 +25,7 @@
 			android:layout_width="133.dip" 
 		android:layout_height="wrap_content"//-->
 	<TextView
-		android:gravity="left" android:background="#f00" 
+		android:gravity="left" 
 		android:id="@id/SvBox_Point" android:text="Проходная ИТ отдела"
 		android:textSize="7.0pt" 
 		android:textColor="#f5c210" 
@@ -41,7 +39,7 @@
 			android:layout_width="0dp" android:layout_height="wrap_content"
 			android:layout_weight=".50">//-->
 		<LinearLayout 
-		android:background="#0f0" android:gravity="right|bottom"
+			android:gravity="right|bottom"
 			android:orientation="vertical" android:layout_weight=".50" android:layout_width="0dp" android:layout_height="wrap_content">
 <!--//android:layout_width="wrap_content"//-->
 			<LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">

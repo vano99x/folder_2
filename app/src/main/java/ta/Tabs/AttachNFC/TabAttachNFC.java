@@ -83,7 +83,7 @@ public class TabAttachNFC extends Tab implements View.OnClickListener
 		{
 			//_this.__svModel.OnNfcTagApply(this.arg);
 			_this._currentNfcTag = this.arg;
-			String str = String.valueOf(_this._currentNfcTag);
+			String str = Long.toHexString(_this._currentNfcTag);
 			_this._nfcTagValue.setText( str);
 		}
 	}}

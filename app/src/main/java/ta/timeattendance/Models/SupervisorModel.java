@@ -9,6 +9,7 @@ import ta.lib.UIHelper.Act;
 import ta.Database.*;
 import ta.timeattendance.MainEngine;
 import ta.timeattendance.MainActivity;
+import ta.timeattendance.MainActivity.State;
 import ta.timeattendance.Services.*;
 
 public class SupervisorModel implements ISupervisorModel
@@ -86,6 +87,12 @@ public class SupervisorModel implements ISupervisorModel
 	private temp3 get_onNfcTagApply() { temp3 o = new temp3(); o.arg1 = this; return o; }
 	private static class temp3 extends RunnableWithArgs<Long,Object> { public void run()
 	{
+		// creating Chekin only in wait tab
+		boolean isWaitTab = UIHelper.Instance().currentState.equals(State.WAIT_MODE);
+		if( ! isWaitTab) {
+			return;
+		}
+
 		SupervisorModel _this = (SupervisorModel)this.arg1;
 
 		long cardId = (Long)this.arg;

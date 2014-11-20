@@ -33,15 +33,15 @@
 <LinearLayout 
 	android:layout_width="match_parent" android:layout_height="wrap_content">
 	
-		<LinearLayout android:id="@id/PnBtn_ArrivalOk_Id" style="@style/PnBtn_B2" >
+		<LinearLayout android:id="@id/PnBtn_ArrivalOk_Id" style="@style/PnBtn_B3" >
 			<ImageView android:background="@drawable/arrival_ok_1" style="@style/PnBtn_B2_Img" />
 		</LinearLayout>
 	
-		<LinearLayout android:id="@id/PnBtn_DepartureOk_Id" style="@style/PnBtn_B2" >
+		<LinearLayout android:id="@id/PnBtn_DepartureOk_Id" style="@style/PnBtn_B3" >
 			<ImageView android:background="@drawable/departure_ok_1" style="@style/PnBtn_B2_Img" />
 		</LinearLayout>
 	
-		<LinearLayout android:id="@id/PnBtn_DepartureMiss_Id" style="@style/PnBtn_B2" >
+		<LinearLayout android:id="@id/PnBtn_DepartureMiss_Id" style="@style/PnBtn_B3" >
 			<ImageView android:background="@drawable/departure_miss_1" style="@style/PnBtn_B2_Img" />
 		</LinearLayout><!--////-->
 

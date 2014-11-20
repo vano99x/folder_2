@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--<shape
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<stroke android:width="3.0dip" android:color="#f5c210" />
+    <padding android:left="15dip" android:top="5dip" android:right="15dip" android:bottom="5dip"/>
+
+
+
+</shape>-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item>
+        <shape>
+            <solid android:color="#ffffff"/>
+            <stroke android:width="5dip" android:color="#ffffff" android:dashWidth="4dp" android:dashGap="4dp" />
+            <corners android:radius="4dip" />
+            <padding android:left="5dip" android:top="5dip" android:right="5dip" android:bottom="5dip"/>
+        </shape>
+    </item>-->
+	<item
+        android:top="3.0dip"
+        android:right="15dip"
+        android:bottom="3.0dip"
+        android:left="15dip"
+        >
+		<shape>
+            <solid android:color="#01cccccc"/>
+            <stroke android:width="2.0dip" android:color="#f5c210" />
+            <!--<padding android:left="10dip" android:top="10dip" android:right="10dip" android:bottom="10dip"/>-->
+		</shape>
+	</item>
+	<!--<item>
+		<bitmap android:src="@drawable/image"/>
+	</item>-->
+</layer-list>
