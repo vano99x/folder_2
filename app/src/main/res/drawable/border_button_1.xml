@@ -18,10 +18,10 @@
         </shape>
     </item>-->
 	<item
-        android:top="3.0dip"
-        android:right="15dip"
-        android:bottom="3.0dip"
-        android:left="15dip"
+        android:top="0.0dip"
+        android:right="1.0dip"
+        android:bottom="1.0dip"
+        android:left="0.0dip"
         >
 		<shape>
             <solid android:color="#01cccccc"/>

@@ -330,6 +330,7 @@ public class Session
 
 			}
 		}
+		cursor.close();
 
 		ArrayList<Session> resultList = new ArrayList<Session>();
 

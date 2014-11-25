@@ -30,7 +30,8 @@ public class TabAttachNFC extends Tab implements View.OnClickListener
 	private TextView _thirdName;
 	private TextView _nfcTagValue;
 
-    private Personel _currentWorker;
+	private ISupervisorModel __svModel;
+	//private Personel _currentWorker;
 	private long _currentNfcTag;
 
 	private ListView listView;
@@ -64,6 +65,8 @@ public class TabAttachNFC extends Tab implements View.OnClickListener
 		//searchBtn.setOnClickListener(this);
 		//searchBtn.setTag(new Object[]{R.id.SearchButton_Id});
 
+		this.__svModel = Bootstrapper.Resolve( ISupervisorModel.class );
+
 		this.__nfcEventService = Bootstrapper.Resolve( INfcEventService.class );
 		this.__nfcEventService.add_NewTagReceived(get_onNfcTagApply());
 
@@ -93,7 +96,7 @@ public class TabAttachNFC extends Tab implements View.OnClickListener
 		TabAttachNFC _this = (TabAttachNFC)this.arg1;
 		if(_this.IsShow())
 		{
-			int updateStatus = -1;
+			int updateResultServer = -1;
 			if(this.arg != null)
 			{
 				String respond = this.arg;
@@ -101,12 +104,24 @@ public class TabAttachNFC extends Tab implements View.OnClickListener
 					JSONObject jo = new JSONObject(respond);
 					if(jo.has("Status")) {
 						String status = jo.getString("Status");
-						updateStatus = Integer.parseInt(status);
+						updateResultServer = Integer.parseInt(status);
 					}
 				} catch(JSONException jse){ } catch(NumberFormatException nfe){ }
 			}
+
+			if(updateResultServer == 1)
+			{
+				try {
+				Personel w = _this.__svModel.get_SelectedWorker();
+				w.CardId = String.valueOf(_this._currentNfcTag);
+				w.Update();
+				} catch(Exception e){
+					Exception ex = e;
+				}
+			}
+
 			String text = null;
-			if(this.result && updateStatus == 1)
+			if(this.result && updateResultServer == 1)
 			{
 				text = "Карта сотрудник обновлена! \r\n " + Long.toHexString(_this._currentNfcTag);
 			}else{
@@ -135,11 +150,17 @@ public class TabAttachNFC extends Tab implements View.OnClickListener
 	{
 		super.Show();
 
-		_currentWorker = Bootstrapper.Resolve( ISupervisorModel.class ).get_SelectedWorker();
+		//_currentWorker = Bootstrapper.Resolve( ISupervisorModel.class ).get_SelectedWorker();
+		Personel currentWorker = this.__svModel.get_SelectedWorker();
 
-		this._firstName.setText( _currentWorker.FirstName);
-		this._lastName.setText(  _currentWorker.LastName);
-		this._thirdName.setText( _currentWorker.ThirdName);
+		this._firstName.setText( currentWorker.FirstName);
+		this._lastName.setText(  currentWorker.LastName);
+		this._thirdName.setText( currentWorker.ThirdName);
+		
+		long   idLong = Long.parseLong(currentWorker.CardId);
+		String idStr  = Long.toHexString(idLong);
+
+		this._nfcTagValue.setText( idStr );
 	}
 
 
@@ -148,9 +169,10 @@ public class TabAttachNFC extends Tab implements View.OnClickListener
 	//**     Control Handler
 	private void save()
 	{
-		if(this._currentNfcTag != -1){
+		if(this._currentNfcTag != -1)
+		{
 			Personel temp = new Personel();
-			temp.Id = _currentWorker.Id;
+			temp.Id = this.__svModel.get_SelectedWorker().Id;
 			temp.CardId = String.valueOf(this._currentNfcTag);
 			this.__personalService.UpdateWorkerCardIdOnServer(temp);
 		}

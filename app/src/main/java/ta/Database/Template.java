@@ -37,7 +37,6 @@ public class Template extends EntityBase
 	public static Template[] getAllTemplate()
 	{
         ArrayList list = new ArrayList();
-		try{
 
 		DbConnector db = DbConnector.getInstance();
 
@@ -51,11 +50,7 @@ public class Template extends EntityBase
 			list.add(t);
 		}
 		cursor.close();
-		
-		} catch(Exception e) {
-			String str = e.getMessage();
-			Exception ex = e;
-		}
+
 		return (Template[])list.toArray(new Template[0]);
 	}
 

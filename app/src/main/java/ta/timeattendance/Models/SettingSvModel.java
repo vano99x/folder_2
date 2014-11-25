@@ -19,7 +19,7 @@ public class SettingSvModel implements ISettingSvModel
 
 		this.__appService = Bootstrapper.Resolve( IAppService.class );
 		this.__appService.get_Closing().Add(get_onClosing());
-		this.__appService.get_Create().Add(get_onSupervisorChanged());
+		this.__appService.add_Creating(get_onSupervisorChanged());
 		//AppService.CreateEventClass evt = this.__appService.get_Create();
 		//h1 handler = get_onSupervisorChanged();
 		//evt.Add(handler);
@@ -27,8 +27,8 @@ public class SettingSvModel implements ISettingSvModel
 		this.__svModel = Bootstrapper.Resolve( ISupervisorModel.class );
 		this.__svModel.SvChanged_EventAdd(get_onSupervisorChanged2());
 		this.__pointModel = Bootstrapper.Resolve( IPointModel.class );
-        this.__categoryModel = Bootstrapper.Resolve( ICategoryModel.class );
-        this.__templateModel = Bootstrapper.Resolve( ITemplateModel.class );
+		this.__categoryModel = Bootstrapper.Resolve( ICategoryModel.class );
+		this.__templateModel = Bootstrapper.Resolve( ITemplateModel.class );
 	}
 	public void ClearDependencies() {
 	}

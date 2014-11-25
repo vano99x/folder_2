@@ -41,9 +41,9 @@ public class TabSettings extends Tab implements View.OnClickListener
 		//referenceBtn.setOnClickListener(this);
 		//referenceBtn.setTag(new Object[]{R.id.Settings_ReferenceBtn_Id});
 		
-		View updateBtn = this.root.findViewById(R.id.Settings_UpdateBtn_Id);
-		updateBtn.setOnClickListener(this);
-		updateBtn.setTag(new Object[]{R.id.Settings_UpdateBtn_Id});
+		//View updateBtn = this.root.findViewById(R.id.Settings_UpdateBtn_Id);
+		//updateBtn.setOnClickListener(this);
+		//updateBtn.setTag(new Object[]{R.id.Settings_UpdateBtn_Id});
 		
 		View pointsListBtn = this.root.findViewById(R.id.Settings_PointsListBtn_Id);
 		pointsListBtn.setOnClickListener(this);

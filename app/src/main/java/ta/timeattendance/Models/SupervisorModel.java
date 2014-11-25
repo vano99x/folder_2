@@ -89,7 +89,8 @@ public class SupervisorModel implements ISupervisorModel
 	{
 		// creating Chekin only in wait tab
 		boolean isWaitTab = UIHelper.Instance().currentState.equals(State.WAIT_MODE);
-		if( ! isWaitTab) {
+        boolean isInfoTab = UIHelper.Instance().currentState.equals(State.PERSONEL_INFO);
+		if( !isWaitTab && !isInfoTab ) {
 			return;
 		}
 

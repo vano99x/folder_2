@@ -44,9 +44,9 @@ public class DbConnector
 		return DbConnector.instance;
 	}
 
-	public static void CreateInstance(Context paramContext)
+	public static void CreateInstance(Context c)
 	{
-		instance = new DbConnector(paramContext);
+		DbConnector.instance = new DbConnector(c);
 	}
 
 	public static void DeleteInstance()
@@ -56,8 +56,18 @@ public class DbConnector
 
 	public void Clear()
 	{
+		//try{
+
+		//boolean isMainThread = Thread.currentThread().getId() == ta.timeattendance.MainActivityProxy.ma._thread.getId();
+
 		if(this._db != null)
-		this._db.close();
+		{
+			this._db.close();
+		}
+
+		//}catch(Exception e){
+		//	Exception ex = e;
+		//}
 
 		if(this.openHelper != null)
 		this.openHelper.close();
@@ -101,7 +111,7 @@ public class DbConnector
      * @see Cursor
      */
 		Cursor localCursor = this._db.query(paramString1, null, paramString2 + " =?", paramArrayOfString, null, null, null);
-		localCursor.moveToFirst();
+		//localCursor.moveToFirst();
 		return localCursor;
 	}
 

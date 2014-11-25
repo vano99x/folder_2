@@ -36,13 +36,15 @@ public class SessionInfo extends EntityBase
 	@EntityField public String TplBreak;			//Template
 	@EntityField public String TplEnd;			//Template
 
-	private void Init()
-	{
-		Fields = EntityBase.GetFieldsArrByEntity(SessionInfo.class);
-	}
+	//private void Init()
+	//{
+	//	// for FromCursor in EntityBase
+	//	Fields = EntityBase.GetFieldsArrByEntity(SessionInfo.class);
+	//}
 	public SessionInfo()
 	{
-		Init();
+		super("SessionInfo");
+		//Init();
 	}
 
 	// for save in EntityBase

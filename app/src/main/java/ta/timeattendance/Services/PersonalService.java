@@ -96,9 +96,9 @@ public class PersonalService implements IPersonalService
 	public void run(){
 		boolean res = false;
 		try {
-            Personel tag = (Personel)this.arg2;
+			Personel tag = (Personel)this.arg2;
 			String respond = null;
-			String strUrl = "http://"+"93.153.172.26/update_worker?worker="+String.valueOf(tag.Id)+"&card="+tag.CardId;
+			String strUrl = "http://93.153.172.26/update_worker?worker="+String.valueOf(tag.Id)+"&card="+tag.CardId;
 			respond = HttpHelper.httpGet(new URL(strUrl));
 			this.arg = respond;
 			res = true;

@@ -10,11 +10,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 //import com.ifree.timeattendance.TALog;
+
 import ta.Database.Point;
 import ta.timeattendance.MainEngine;
 import ta.lib.BackgroundFunc;
@@ -22,21 +24,32 @@ import ta.lib.RunnableWithArgs;
 import ta.lib.Network.JsonToEntity;
 import ta.lib.*;
 
-public class Personel
-{
-	public int Id;
-	public String FirstName;
-	public String LastName;
-	public String ThirdName;
+import ta.lib.Common.EntityKeyField;
+import ta.lib.Common.EntityField;
 
-	public boolean IsSupervisor;
-	public String Pin;
-	public int PersonelCode;
-	public String CardId;
-	public String PhotoTimeSpan;
+//C insert
+//R select    fromCursor    fromJson    ctor
+//U 
+//   byId
+//   
+//D
+
+public class Personel extends EntityBase
+{
+	@EntityKeyField public int Id;
+	@EntityField public String FirstName;
+	@EntityField public String LastName;
+	@EntityField public String ThirdName;
+
+	@EntityField public boolean IsSupervisor;
+	@EntityField public String Pin;
+	@EntityField public int PersonelCode;
+	@EntityField public String CardId;
+	@EntityField public String PhotoTimeSpan;
+
+	@EntityField public boolean IsDismiss;
 
 	public boolean IsDeleted;
-	public boolean IsDismiss;
 	public byte[] Photo;
 
 	public Point [] pointArray;
@@ -47,6 +60,7 @@ public class Personel
 
 	public Personel()
 	{
+		super("Personel");
 		this.Id           = -1;
 		this.Pin          = null;
 		this.PersonelCode = 0;
@@ -188,14 +202,18 @@ public class Personel
 	public static Personel[] WorkerArrayFromJson(JSONArray JsonArr, Context context)
 		throws org.json.JSONException
 	{
-		Personel[] personelArr;
+		HashMap<Integer,Personel> list = new HashMap<Integer,Personel>();
+
 		int count = JsonArr.length();
-		personelArr = new Personel[count];
 		for (int i = 0; i < count; i++)
 		{
-			personelArr[i] = Personel.FromJson( JsonArr.getJSONObject(i), context);
+			Personel p = Personel.FromJson( JsonArr.getJSONObject(i), context);
+			if(list.get(p.Id) == null)
+			{
+				list.put(p.Id,p);
+			}
 		}
-		return personelArr;
+		return list.values().toArray(new Personel[0]);
 	}
 	public static Personel[] WorkerArrayFromJson(JSONObject JsonObj, Context context)
 		throws org.json.JSONException
@@ -342,7 +360,7 @@ public class Personel
 
 	//*********************************************************************************************
 	//**     Local DB
-	public static Personel[] GetAll()
+	public static Personel[] GetAll() throws Exception
 	{
 		DbConnector db = DbConnector.getInstance();
 
@@ -353,154 +371,69 @@ public class Personel
 		Personel[]          arr = al.toArray(new Personel[0]);
 		return arr;
 	}
-	public static Personel SelecByPin( String pinStr )
+	public static Personel SelecByPin( String pinStr ) throws Exception
 	{
 		DbConnector db = DbConnector.getInstance();
 		Personel p = null;
-		//try{
 		//Cursor c = db.Select("SELECT * FROM Personel", null);
 		//ArrayList<Personel> al = getPersonelList(c);
 		//Personel[] arr = al.toArray(new Personel[0]);
 		Cursor cursor = db.GetEntity( "Personel", "Pin", new String[] { pinStr } );
-		p = Personel.FromCursor(cursor);
-		//} catch(Exception e) { Exception ex = e; }
+
+		if(cursor.moveToNext()) {
+			//p = FromCursor( cursor );
+			p = new Personel();
+			p.FromCursor( Personel.class, cursor);
+		} cursor.close();
+
 		return p;
 	}
-	public static Personel SelectById(int id)
+	public static Personel SelectById(int id) //throws Exception
 	{
-		DbConnector db = DbConnector.getInstance();
-		Cursor cursor = db.Select("select * from Personel where Id=?", new String[]{ String.valueOf(id) });
-        if (cursor.moveToNext()){
-		    return FromCursor( cursor );
-        }
-        return null;
-	}
+        Personel p = null;
+            DbConnector db = DbConnector.getInstance();
+            Cursor cursor = db.Select("select * from Personel where Id=?", new String[]{ String.valueOf(id) });
+
+            if (cursor.moveToNext()) {
+                //return FromCursor( cursor );
+                p = new Personel();
+                p.FromCursor( Personel.class, cursor);
+            } cursor.close();
+
+            return p;
+    }
 	public static Personel SelectByCard(long paramLong)
 	{
+        Personel p = null;
+
 		DbConnector db = DbConnector.getInstance();
 		String[] arrayOfString = new String[]{ String.valueOf(paramLong) };
 		Cursor cursor = db.GetEntity("Personel", "CardId", arrayOfString);
-		return FromCursor( cursor );
-		//return null;
+
+		if(cursor.moveToNext()) {
+			//p = FromCursor( cursor );
+			p = new Personel();
+			p.FromCursor( Personel.class, cursor);
+		} cursor.close();
+
+		return p;
 	}
 	public static ArrayList<Personel> ArrayFromCursor(Cursor cursor)
 	{
 		ArrayList<Personel> list = new ArrayList<Personel>();
-		if (cursor.moveToNext())
-		{
-			do
-			{
-				list.add(   FromCursor(cursor)   );
-			}
-			while( cursor.moveToNext() );
-		}
+
+		while( cursor.moveToNext() ) {
+			Personel p = new Personel();
+			p.FromCursor( Personel.class, cursor);
+			//list.add(   FromCursor(cursor)   );
+			list.add(   p   );
+		} cursor.close();
+
 		return list;
 	}
-	public static Personel FromCursor(Cursor cursor)
-	{
-		if(cursor.isAfterLast())
-			return null;
-
-		Personel p = null;
-		int index = -1;
-		//String[] columnNames = cursor.getColumnNames();
-		//String strFirstName = cursor.getString(1);
-		//String columnName_1 = cursor.getColumnName(1);
-
-		index = cursor.getColumnIndex("Id");
-		if(index != -1)
-		{
-			p = new Personel();
-
-			p.Id            = cursor.getInt(index);
-
-			index = cursor.getColumnIndex("FirstName");
-			if(index != -1)
-			p.FirstName     = cursor.getString(index);
-
-			index = cursor.getColumnIndex("LastName");
-			if(index != -1)
-			p.LastName      = cursor.getString(index);
-
-			index = cursor.getColumnIndex("ThirdName");
-			if(index != -1)
-			p.ThirdName     = cursor.getString(index);
-
-			index = cursor.getColumnIndex("IsSupervisor");
-			if(index != -1){
-				int i = cursor.getInt(index);
-				boolean isSv = i > 0? true: false;
-				p.IsSupervisor  = isSv;
-			}
-			index = cursor.getColumnIndex("IsDismiss");
-			if(index != -1){
-				int i = cursor.getInt(index);
-				if(i == 1){
-					p.IsDismiss = true;
-				}else{
-					p.IsDismiss = false;
-				}
-			}
-
-			index = cursor.getColumnIndex("Pin");
-			if(index != -1)
-			p.Pin           = cursor.getString(index);
-
-			index = cursor.getColumnIndex("PersonelCode");
-			if(index != -1)
-			p.PersonelCode  = cursor.getInt(index);
-
-			index = cursor.getColumnIndex("CardId");
-			if(index != -1)
-			p.CardId        = cursor.getString(index);
-
-			index = cursor.getColumnIndex("PhotoTimeSpan");
-			if(index != -1)
-			p.PhotoTimeSpan = cursor.getString(index);
-		}
-		return p;
-	}
 
 
-
-	private static long save(Personel p, Context context)
-	{
-		DbConnector db = DbConnector.getInstance();
-		ContentValues cv = new ContentValues();
-
-		cv.put("Id", Integer.valueOf(p.Id));
-		cv.put("FirstName",           p.FirstName);
-		cv.put("LastName",           p.LastName);
-		cv.put("ThirdName",          p.ThirdName);
-
-		if(p.pointArray != null) {
-			cv.put("IsSupervisor",  Boolean.valueOf(true));
-		} else {
-			cv.put("IsSupervisor",  Boolean.valueOf(p.IsSupervisor));
-		}
-
-		if(p.Pin != null) {
-			//cv.put("Pin", Integer.valueOf(p.Pin));
-			cv.put("Pin", p.Pin);
-		}
-
-		if(p.PersonelCode != 0) {
-			cv.put("PersonelCode",  Integer.valueOf(p.PersonelCode));
-		}
-		if(p.CardId != null) {
-			cv.put("CardId",        String.valueOf( p.CardId));
-		}
-		if(p.PhotoTimeSpan != null) {
-			cv.put("PhotoTimeSpan",                 p.PhotoTimeSpan);
-		}
-
-		cv.put("IsDismiss",  Boolean.valueOf(p.IsDismiss));
-
-		return db.insert("Personel", cv);
-	}
-
-
-	public static Personel[] search(String paramString, Context context)
+	public static Personel[] search(String paramString, Context context) throws Exception
 	{
 		DbConnector db = DbConnector.getInstance();
 		String upperStr = paramString.toUpperCase();
@@ -516,45 +449,6 @@ public class Personel
 		Personel[] arr = al.toArray(new Personel[0]);
 
 		return arr;
-	}
-
-
-	public static void sync(Personel[] arr, Context context)
-	{
-		int numberOfRows = 0;
-		long rowID  = -1;
-		for (int i = 0; i < arr.length; i++)
-		{
-			numberOfRows = Personel.delete( arr[i].Id, context);
-
-			if (!arr[i].IsDeleted)
-			{
-				rowID = save( arr[i], context);
-				int aaa = 9;
-				int aaa2= aaa-2;
-			}
-		}
-
-        /*Personel[] test = null;
-        try{
-            //test = Personel.GetAll();
-            DbConnector db = DbConnector.getInstance();
-            String str = "SELECT * FROM Personel";
-            Cursor c = db.Select(str, null);
-
-            ArrayList<Personel> al  = ArrayFromCursor(c);
-            test = al.toArray(new Personel[0]);
-        }
-        catch(Exception e)
-        {
-            Exception ex = e;
-        }*/
-	}
-
-	public static int delete(int id, Context context)
-	{
-		DbConnector db = DbConnector.getInstance();
-		return db.delete("Personel", "Id", String.valueOf(id));
 	}
 
 
@@ -642,8 +536,144 @@ public class Personel
 		return Integer.toString(this.Id) + "_";
 	}
 }
+	/*public static Personel FromCursor(Cursor cursor)
+	{
+		if(cursor.isAfterLast())
+			return null;
 
-/* Location:           C:\Decompile\dex2jar-0.0.9.13\TandAOffline_dex2jar.jar
- * Qualified Name:     com.ifree.Database.Personel
- * JD-Core Version:    0.6.2
- */
+		Personel p = null;
+		int index = -1;
+		//String[] columnNames = cursor.getColumnNames();
+		//String strFirstName = cursor.getString(1);
+		//String columnName_1 = cursor.getColumnName(1);
+
+		index = cursor.getColumnIndex("Id");
+		if(index != -1)
+		{
+			p = new Personel();
+
+			p.Id            = cursor.getInt(index);
+
+			index = cursor.getColumnIndex("FirstName");
+			if(index != -1)
+			p.FirstName     = cursor.getString(index);
+
+			index = cursor.getColumnIndex("LastName");
+			if(index != -1)
+			p.LastName      = cursor.getString(index);
+
+			index = cursor.getColumnIndex("ThirdName");
+			if(index != -1)
+			p.ThirdName     = cursor.getString(index);
+
+			index = cursor.getColumnIndex("IsSupervisor");
+			if(index != -1){
+				int i = cursor.getInt(index);
+				boolean isSv = i > 0? true: false;
+				p.IsSupervisor  = isSv;
+			}
+			index = cursor.getColumnIndex("IsDismiss");
+			if(index != -1){
+				int i = cursor.getInt(index);
+				if(i == 1){
+					p.IsDismiss = true;
+				}else{
+					p.IsDismiss = false;
+				}
+			}
+
+			index = cursor.getColumnIndex("Pin");
+			if(index != -1)
+			p.Pin           = cursor.getString(index);
+
+			index = cursor.getColumnIndex("PersonelCode");
+			if(index != -1)
+			p.PersonelCode  = cursor.getInt(index);
+
+			index = cursor.getColumnIndex("CardId");
+			if(index != -1)
+			p.CardId        = cursor.getString(index);
+
+			index = cursor.getColumnIndex("PhotoTimeSpan");
+			if(index != -1)
+			p.PhotoTimeSpan = cursor.getString(index);
+		}
+		return p;
+	}*/
+
+
+
+	//private static long save(Personel p, Context context)
+	//{
+	//	DbConnector db = DbConnector.getInstance();
+	//	ContentValues cv = new ContentValues();
+
+	//	cv.put("Id", Integer.valueOf(p.Id));
+	//	cv.put("FirstName",           p.FirstName);
+	//	cv.put("LastName",           p.LastName);
+	//	cv.put("ThirdName",          p.ThirdName);
+
+	//	if(p.pointArray != null) {
+	//		cv.put("IsSupervisor",  Boolean.valueOf(true));
+	//	} else {
+	//		cv.put("IsSupervisor",  Boolean.valueOf(p.IsSupervisor));
+	//	}
+
+	//	if(p.Pin != null) {
+	//		//cv.put("Pin", Integer.valueOf(p.Pin));
+	//		cv.put("Pin", p.Pin);
+	//	}
+
+	//	if(p.PersonelCode != 0) {
+	//		cv.put("PersonelCode",  Integer.valueOf(p.PersonelCode));
+	//	}
+	//	if(p.CardId != null) {
+	//		cv.put("CardId",        String.valueOf( p.CardId));
+	//	}
+	//	if(p.PhotoTimeSpan != null) {
+	//		cv.put("PhotoTimeSpan",                 p.PhotoTimeSpan);
+	//	}
+
+	//	cv.put("IsDismiss",  Boolean.valueOf(p.IsDismiss));
+
+	//	return db.insert("Personel", cv);
+	//}
+
+
+	/*public static void sync(Personel[] arr, Context context)
+	{
+		int numberOfRows = 0;
+		long rowID  = -1;
+		for (int i = 0; i < arr.length; i++)
+		{
+			numberOfRows = Personel.delete( arr[i].Id, context);
+
+			if (!arr[i].IsDeleted)
+			{
+				rowID = save( arr[i], context);
+				int aaa = 9;
+				int aaa2= aaa-2;
+			}
+		}
+
+        //Personel[] test = null;
+        //try{
+        //    //test = Personel.GetAll();
+        //    DbConnector db = DbConnector.getInstance();
+        //    String str = "SELECT * FROM Personel";
+        //    Cursor c = db.Select(str, null);
+
+        //    ArrayList<Personel> al  = ArrayFromCursor(c);
+        //    test = al.toArray(new Personel[0]);
+        //}
+        //catch(Exception e)
+        //{
+        //    Exception ex = e;
+        //}
+	}*/
+
+	//public static int delete(int id, Context context)
+	//{
+	//	DbConnector db = DbConnector.getInstance();
+	//	return db.delete("Personel", "Id", String.valueOf(id));
+	//}

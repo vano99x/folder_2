@@ -101,7 +101,7 @@ public class TabModeSelection extends Tab implements View.OnClickListener
 			dt,			// DateTime
 			32, 15232
 		);
-		long res1 = ch.Save();
+		long res1 = ch.Insert();
 
 
 		dt = ta.lib.Common.DateTime.GetCurrentDateTime().AddDays(1).ToUnixSeconds();

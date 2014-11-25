@@ -31,7 +31,7 @@ public class NotificationMessageService implements INotificationMessageService
 
 	public NotificationMessageService()
 	{
-		this._service = new BackgroundService(   get_Task().Add(get_Task_Completed())   );
+		this._service = new BackgroundService(   get_Task().Add(get_Task_Completed())   ,"Message");
 		handler = new Handler();
 		ringtone = 
 			android.media.RingtoneManager.getRingtone(

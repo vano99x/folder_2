@@ -47,7 +47,6 @@ public class SettingSv
 		DbConnector db = DbConnector.getInstance();
 		Category p = null;
 		Cursor cursor = null;
-		try{
 
 String str = 
 //"select p.Id,p.Name from SettingSv s inner join Category         p  on s.CategoryId = p.Id       where s.Id=?",
@@ -79,9 +78,6 @@ String str1 =  "select * from SettingSv s where s.Id=?";
 		}
 		cursor.close();
 
-		} catch(Exception e){
-			Exception ex = e;
-		}
 		return p;
 	}
 
@@ -90,7 +86,6 @@ String str1 =  "select * from SettingSv s where s.Id=?";
 		DbConnector db = DbConnector.getInstance();
 		Template p = null;
 		Cursor cursor = null;
-		try{
 
 		cursor = db.Select(
 "select t.Id  as Id, "+
@@ -113,9 +108,6 @@ String str1 =  "select * from SettingSv s where s.Id=?";
 		}
 		cursor.close();
 
-		} catch(Exception e){
-			Exception ex = e;
-		}
 		return p;
 	}
 

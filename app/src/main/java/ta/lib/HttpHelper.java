@@ -218,7 +218,9 @@ public class HttpHelper
 		"&cardId="		+ paramCheckin.CardId +
 		"&status="		+ paramCheckin.Mode + 
 		"&pointId="		+ paramCheckin.PointId + 
-		"&date="		+ paramCheckin.DateTime;
+		"&date="		+ paramCheckin.DateTime + 
+		"&categoryId="	+ paramCheckin.CategoryId + 
+		"&templateId="	+ paramCheckin.TemplateId;
 
 		return str;
 	}

@@ -30,10 +30,10 @@
 		android:gravity="center_vertical"
 	/>//-->
 	<RelativeLayout android:id="@id/PageModeSelection_start_button"
-        style="@style/WrapperButtonStyle1">
+		style="@style/WrapperButtonStyle1">
 		<ImageView android:src="@drawable/start" style="@style/ImageButtonStyle1" />
 		<TextView android:text="@string/lable_start_work" style="@style/CommonButtonStyle1"
-            />
+			/>
 	</RelativeLayout>
 	
 	<RelativeLayout android:id="@id/PageModeSelection_end_button" style="@style/WrapperButtonStyle1" android:layout_marginTop="10.0dip">

@@ -10,7 +10,7 @@ public class AppService implements IAppService
 	public AppService()
 	{
 		this.isLogin = false;
-		this.Create = new CreateEventClass();
+		this.CreateEvent = new CreateEventClass();
 		this.Closing = new ClosingEventClass();
 		this.Running = new RunningEventClass();
 		this.Logout = new LogoutEventClass();
@@ -32,13 +32,19 @@ public class AppService implements IAppService
 
 
 
-	public class CreateEventClass extends Event<Object,Object> {}
-	private CreateEventClass Create;
-	public CreateEventClass get_Create(){ return this.Create; }
-	public void CreateRunEvent()
-	{
-		this.Create.RunEvent( null );
-	}
+	//public class CreateEventClass extends Event<Object,Object> {}
+	//private CreateEventClass Create;
+	//public CreateEventClass get_Create(){ return this.Create; }
+	//public void CreateRunEvent()
+	//{
+	//	this.Create.RunEvent( null );
+	//}
+	private static class CreateEventClass extends Event<Object,Object> {}
+	private CreateEventClass CreateEvent;
+	public void add_Creating(RunnableWithArgs r) { this.CreateEvent.Add(r); }
+	public void     CreatingRunEvent()           { this.CreateEvent.RunEvent();    }
+
+
 
 	public class ClosingEventClass extends Event<Object,Object> {}
 	private ClosingEventClass Closing;

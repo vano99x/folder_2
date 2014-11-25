@@ -42,6 +42,7 @@ public class MainActivity
 	private NfcManager __nfcManager;
 
 	private ta.lib.BroadcastReceiver.UpdateReceiver _updateReceiver;
+    public Thread _thread;
 
 	void _1()
 	{
@@ -177,14 +178,16 @@ public class MainActivity
 	//       ctor
 	public MainActivity(MainActivityProxy fa)
 	{
-        MainActivityProxy.ma = this;
+		MainActivityProxy.ma = this;
 		this.Nulling();
 
 		final MainActivityProxy faForEx = fa;
 		//Thread.setDefaultUncaughtExceptionHandler(
 		//java.lang.Process.this.
 
-		Thread.currentThread().setUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler()
+		this._thread = Thread.currentThread();
+
+		this._thread.setUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler()
 		//Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler()
 		{
 			@Override public void uncaughtException(Thread thread, Throwable ex)
@@ -192,7 +195,7 @@ public class MainActivity
 				//java.lang.StackTraceElement[] st = ex.getStackTrace();
 				//StackTraceElement first = st[0];
 				//String type1 = first.getClassName();
-				String msg = ex.getMessage();
+				String msg = ta.lib.Common.CommonHelper.TextForException(ex);//ex.getMessage();
 
 				Intent intent = new Intent("ru.startandroid.intent.action.showdate");
 				intent.putExtra("Message", msg );
@@ -235,7 +238,7 @@ public class MainActivity
 		this.__appService = Bootstrapper.Resolve( IAppService.class );
 		this.__svModel = Bootstrapper.Resolve( ISupervisorModel.class );
 
-		this.__appService.CreateRunEvent();
+		this.__appService.CreatingRunEvent();
 		//_2();
 	}
 	public void MainActivity_Clear()

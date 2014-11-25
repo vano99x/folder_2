@@ -20,7 +20,10 @@ public class CheckinSender
 			java.lang.IndexOutOfBoundsException,
 			java.lang.IllegalAccessError,
 			java.lang.IllegalStateException,
-			java.lang.NullPointerException/**/
+			java.lang.NullPointerException,
+    java.lang.NoSuchFieldException,
+    java.lang.IllegalAccessException,
+    java.lang.NoSuchMethodException
 	{
 		if( CheckinSender._lock.tryLock() )
 		{
@@ -41,13 +44,15 @@ public class CheckinSender
 						{
 							item.IsCheckinExistOnServer = true;
 							item.set_StateCheckinOnServer(respond);
-							Checkin.Update( item, context );
+							//Checkin.UpdateLocalDB( item );
+							item.Update();
 						}
 						else
 						{
 							item.IsCheckinExistOnServer = false;
 							item.set_StateCheckinOnServer(-2);
-							Checkin.Update( item, context );
+							//Checkin.UpdateLocalDB( item );
+							item.Update();
 						}
 					}
 					CheckinSender._isBusy = false;

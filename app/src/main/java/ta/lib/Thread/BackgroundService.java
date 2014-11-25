@@ -27,8 +27,17 @@ public class BackgroundService
 	private boolean __isShowErrorMsb;
 	protected RunnableWithEvent __targetFunc;
 
+	private String _ownerName;
+
+
 	public BackgroundService(RunnableWithEvent tF)
 	{
+		this(tF,null);
+	}
+
+	public BackgroundService(RunnableWithEvent tF, String ownerName)
+	{
+		this._ownerName = ownerName;
 		this._scheduled = null;
 		this._lock = new ReentrantLock();
 
@@ -37,49 +46,82 @@ public class BackgroundService
 		this.__appService = Bootstrapper.Resolve( IAppService.class );
 		this.__appService.get_Closing().Add(get_onClosing());
 		this.__appService.get_Running().Add(get_onRunning());
-		this.__appService.add_Logout(get_onLogout());
 
-		_scheduled = Executors.newScheduledThreadPool(1);
+		this.__appService.add_Logout(get_onClearBgService());
+		this.__appService.add_Clearing(get_onClearBgService());
 
 		this.__targetFunc = tF;
-		final BackgroundService service = this;
-		Runnable task = new Runnable()
-		{
-			private BackgroundService _service = service;
-			@Override
-			public void run() {
-				_service.Execute();
-			}
-		};
-		_scheduled.scheduleAtFixedRate(task, 3L, 150L, TimeUnit.SECONDS);
+
+		this.RunInternalService();
 	}
 
-	//protected void SetTargetFuncAndRunService()
-	//{
-	//}
+	private void RunInternalService()
+	{
+		CloseInternalService();
+
+		_scheduled = Executors.newScheduledThreadPool(1);
+		//final BackgroundService service = this;
+		Runnable task = new RunnableWithArgs<Object,Object>(this)
+		{
+			//private BackgroundService _service = service;
+			@Override
+			public void run() {
+				//_service.Execute();
+				((BackgroundService)this.arg1).Execute();
+			}
+		};
+		_scheduled.scheduleAtFixedRate(task, 3L, 10L, TimeUnit.SECONDS);
+			String m = "Message";
+			if(m.equals(this._ownerName))
+			{
+				int aaa = 9;
+				int aaa2 = aaa-2;
+			}
+	}
+
+	private void CloseInternalService()
+	{
+		if(this._scheduled != null)
+		{
+			this._scheduled.shutdown();
+			String m = "Message";
+			if(m.equals(this._ownerName))
+			{
+				int aaa = 9;
+				int aaa2 = aaa-2;
+			}
+		}
+		this._scheduled = null;
+	}
 
 
 
 	//*********************************************************************************************
 	//**     Event Handler
-	private       onCls get_onClosing() { onCls o = new onCls(); o.arg1 = this; return o; }
-	private class onCls extends RunnableWithArgs<Object,Object> { public void run()
+	private              temp1 get_onCreateBgService() { temp1 o = new temp1(); o.arg1 = this; return o; }
+	private static class temp1 extends RunnableWithArgs<Object,Object> { public void run()
+	{
+		BackgroundService _this = (BackgroundService)this.arg1;
+		_this.RunInternalService();
+	}}
+	private              temp2 get_onClearBgService() { temp2 o = new temp2(); o.arg1 = this; return o; }
+	private static class temp2 extends RunnableWithArgs<Object,Object> { public void run()
+	{
+		BackgroundService _this = (BackgroundService)this.arg1;
+		_this.CloseInternalService();
+	}}
+
+	private              onCls get_onClosing() { onCls o = new onCls(); o.arg1 = this; return o; }
+	private static class onCls extends RunnableWithArgs<Object,Object> { public void run()
 	{
 		BackgroundService _this = (BackgroundService)this.arg1;
 		_this.__isShowErrorMsb = false;
 	}}
-	private       onRn get_onRunning() { onRn o = new onRn(); o.arg1 = this; return o; }
-	private class onRn extends RunnableWithArgs<Object,Object> { public void run()
+	private              onRn get_onRunning() { onRn o = new onRn(); o.arg1 = this; return o; }
+	private static class onRn extends RunnableWithArgs<Object,Object> { public void run()
 	{
 		BackgroundService _this = (BackgroundService)this.arg1;
 		_this.__isShowErrorMsb = true;
-	}}
-	private       onLg get_onLogout() { onLg o = new onLg(); o.arg1 = this; return o; }
-	private class onLg extends RunnableWithArgs<Object,Object> { public void run()
-	{
-		BackgroundService _this = (BackgroundService)this.arg1;
-		_this._scheduled.shutdown();
-		_this._scheduled = null;
 	}}
 
 

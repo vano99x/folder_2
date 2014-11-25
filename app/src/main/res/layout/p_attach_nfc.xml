@@ -24,7 +24,7 @@
 		style="@style/CommonText" />
 	
 	<TextView android:id="@id/AttachNFC_NfcTagValue_Id" 
-		android:text="444231477" 
+		android:text="a0a1a2a3" 
 		android:layout_gravity="center_horizontal"
 		style="@style/CommonText" />
 

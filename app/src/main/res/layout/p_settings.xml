@@ -2,15 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@id/Settings_RootId"
 	android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent">
-	<!--//<Button
-		android:id="@id/Settings_ReferenceBtn_Id"
-		android:background="@drawable/button_mode" android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:text="@string/ReferenceBtn_Text"
-		/>//-->
-	<RelativeLayout android:id="@id/Settings_UpdateBtn_Id" style="@style/WrapperButtonStyle1" android:layout_marginTop="10.0dip">
-		<!--<ImageView android:src="@drawable/finish" style="@style/ImageButtonStyle1" />-->
+	
+	<!--//<RelativeLayout android:id="@id/Settings_UpdateBtn_Id" style="@style/WrapperButtonStyle1" android:layout_marginTop="10.0dip">
 		<TextView android:text="@string/UpdateBtn_Text" style="@style/CommonButtonStyle1" />
-	</RelativeLayout>
+	</RelativeLayout>//-->
 	
 	<RelativeLayout android:id="@id/Settings_PointsListBtn_Id" style="@style/WrapperButtonStyle1" android:layout_marginTop="10.0dip">
 		<!--<ImageView android:src="@drawable/finish" style="@style/ImageButtonStyle1" />-->

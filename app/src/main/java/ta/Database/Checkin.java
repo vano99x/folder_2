@@ -61,14 +61,16 @@ public class Checkin extends EntityBase implements IDateSortable2
 		Init();
 	}
 
-	private void Init()
-	{
-		TableName = "Checkin";
-		KeyField = "CheckinId";
-		Fields = new String[]{						 "SupervicerId","WorkerId","CardId","Mode","PointId","DateTime","CategoryId","TemplateId"};
+	public Object[] get_Values(){return new Object[]{
+ CheckinId,  SupervicerId,  WorkerId,  CardId,  Mode,  PointId,  DateTime,  CategoryId,  TemplateId,  IsCheckinExistOnServer };} private void f(){ Fields = new String[]{
+"CheckinId","SupervicerId","WorkerId","CardId","Mode","PointId","DateTime","CategoryId","TemplateId","IsCheckinExistOnServer"};
 	}
-	public Object[] get_Values(){return new Object[]{ SupervicerId,  WorkerId,  CardId,  Mode,  PointId,  DateTime,  CategoryId,  TemplateId };}
-	public Object   get_KeyValue(){return			  CheckinId;}
+
+	public Object   get_KeyValue(){return CheckinId;}
+	private void Init() {     KeyField = "CheckinId";
+		f();
+		TableName = "Checkin";
+	}
 
 
 
@@ -129,16 +131,16 @@ public class Checkin extends EntityBase implements IDateSortable2
 		return count;
 	}
 
-	public static void Update(Checkin ch, Context context)
-	{
-		Object result = null;
-		long resSave  = -2;
+	//public static void Update(Checkin ch, Context context)
+	//{
+	//	Object result = null;
+	//	long resSave  = -2;
 
-		result  = Checkin.delete( ch.CheckinId, context);
-		resSave = ch.save(  );
+	//	result  = Checkin.delete( ch.CheckinId, context);
+	//	resSave = ch.save(  );
 
-		int aaa = 9;
-	}
+	//	int aaa = 9;
+	//}
 
 
 
@@ -157,7 +159,7 @@ public class Checkin extends EntityBase implements IDateSortable2
 		Checkin ch = new Checkin();
 		int index = -2;
 		
-		index = cursor.getColumnIndex("Id");
+		index = cursor.getColumnIndex("CheckinId");
 		if(index != -1)
 		ch.CheckinId = cursor.getInt(index);
 
@@ -205,14 +207,18 @@ public class Checkin extends EntityBase implements IDateSortable2
 	{
 		ArrayList list = new ArrayList();
 		//if (!cursor.isAfterLast())
-		if(cursor.moveToNext())
+        int i = 0;
+		while (cursor.moveToNext())
 		{
-			do
-			{
-				list.add(FromCursor(cursor));
-			}
-			while (cursor.moveToNext());
+			list.add(FromCursor(cursor));
+            if(i == 11500)
+            {
+                int aaa = 9;
+                int aaa2 = aaa-2;
+            }
+            i++;
 		}
+		cursor.close();
 		return list;
 	}
 

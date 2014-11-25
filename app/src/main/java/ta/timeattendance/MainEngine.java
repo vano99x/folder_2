@@ -222,14 +222,17 @@ public class MainEngine
 	{
 		try{
 
-		Personel.sync( new Personel [] { sv }, context);
-		Personel.sync(      sv.get_Workers(),  context);
+		//Personel.sync( new Personel [] { sv }, context);
+		//Personel.sync(      sv.get_Workers(),  context);
+		//Personel.UpdateArray( new Personel [] { sv });
+		long rowId = sv.Update();
+		Personel.UpdateArray(       sv.get_Workers());
 		Point.sync(         points,            context);
 		PersonelPoint.sync( ppoints,           context);
 
-		CustomerObject.UpdateLocalDB( sv.get_CustomerObjects());
-		Category.UpdateLocalDB(       sv.get_Categories());
-		Template.UpdateLocalDB(       sv.get_Templates());
+		CustomerObject.UpdateArray( sv.get_CustomerObjects());
+		Category.UpdateArray(       sv.get_Categories());
+		Template.UpdateArray(       sv.get_Templates());
 
 		CheckinSender.SendCheckinArray(context);
 
@@ -399,14 +402,14 @@ public class MainEngine
 
 	//************************************************************************************************
 	// 4 search worker
-	public void searchPersonel(final String paramString)
-	{
-		final Personel[] arrayOfPersonel = Personel.search(paramString, this.mContext);
-		if( arrayOfPersonel != null )
-		{
-			WorkerFound.RunEvent(arrayOfPersonel);
-		}
-	}
+	//public void searchPersonel(final String paramString)
+	//{
+	//	final Personel[] arrayOfPersonel = Personel.search(paramString, this.mContext);
+	//	if( arrayOfPersonel != null )
+	//	{
+	//		WorkerFound.RunEvent(arrayOfPersonel);
+	//	}
+	//}
 
 	//************************************************************************************************
 	// 5 Sync

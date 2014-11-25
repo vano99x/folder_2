@@ -4,41 +4,26 @@ import android.content.Context;
 import android.content.ContentValues;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.ArrayList;
+
 import ta.lib.operator;
 import ta.lib.operator.*;
-import java.util.ArrayList;
+import ta.lib.Common.EntityKeyField;
+import ta.lib.Common.EntityField;
 
 public class CustomerObject extends EntityBase
 {
-	public int Id;
-	public String Name;
+	@EntityKeyField public int Id;
+	@EntityField public String Name;
 
 	public CustomerObject()
 	{
-		TableName = "CustomerObject";
-		KeyField = "Id";
-		Fields = new String[]{						 "Id","Name"};
+		super("CustomerObject");
+		//TableName = "CustomerObject";
+		//KeyField = "Id";
+		//Fields = new String[]{						 "Id","Name"};
 	}
-	public Object[] get_Values(){return new Object[]{ Id,  Name };}
-	public Object   get_KeyValue(){return			  Id;}
-
-
-
-	//*********************************************************************************************
-	//**     Local DB
-
-	/*public static void UpdateLocalDB(EntityBase [] array)
-		throws java.lang.NoSuchFieldException,
-			   java.lang.IllegalAccessException, 	java.lang.NoSuchMethodException
-	{
-		int numberOfRows = 0;
-
-	}*/
-
-
-
-
-	//*********************************************************************************************
-	//**     Server
+	//public Object[] get_Values(){return new Object[]{ Id, Name };}
+	//public Object   get_KeyValue(){return			  Id;}
 
 }
