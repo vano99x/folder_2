@@ -49,6 +49,16 @@ public class PersonalService implements IPersonalService
 
 		//String str = "SELECT * FROM Personel WHERE UPPER(LastName) LIKE '%" + upperStr + "%'";
 		//String str = "SELECT * FROM Personel";
+
+		str = str.trim();
+		String empty = "";
+		if(!str.equals(empty))
+		{
+			char[] stringArray = str.toCharArray();
+			stringArray[0] = Character.toUpperCase(stringArray[0]);
+			str = new String(stringArray);
+		}
+
 		String sql = "SELECT * FROM Personel WHERE LastName LIKE '%" + str + "%'";
 
 		Cursor c = db.Select(sql, null);

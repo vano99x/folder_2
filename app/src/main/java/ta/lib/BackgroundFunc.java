@@ -1,7 +1,11 @@
 package ta.lib;
 
 import java.lang.reflect.*;
+
+import android.content.Intent;
 import android.os.Handler;
+
+import ta.timeattendance.MainActivity;
 
 public class BackgroundFunc<TArg,TRes> extends RunnableWithArgs<Object,Object>
 {
@@ -52,7 +56,26 @@ public class BackgroundFunc<TArg,TRes> extends RunnableWithArgs<Object,Object>
 			}
 		}
 
-		new Thread(new TempClass(tF),name).start();
+		Thread t = new Thread(new TempClass(tF),name);
+		t.setUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler()
+		//Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler()
+		{
+			@Override public void uncaughtException(Thread thread, Throwable ex)
+			{
+				//java.lang.StackTraceElement[] st = ex.getStackTrace();
+				//StackTraceElement first = st[0];
+				//String type1 = first.getClassName();
+				String msg = ta.lib.Common.CommonHelper.TextForException(ex);//ex.getMessage();
+
+				Intent intent = new Intent("ru.startandroid.intent.action.showdate");
+				intent.putExtra("Message", msg );
+                MainActivity.get_FragmentActivityStatic().startActivity(intent);
+
+				int p = android.os.Process.myPid();
+				android.os.Process.killProcess(p);
+			}
+		});
+		t.start();
 	}
 
 	public static <TArg2,TRes2> void RunEventInUiThread(Event<TArg2,TRes2> event, TArg2 arg, TRes2 res)

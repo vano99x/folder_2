@@ -36,6 +36,9 @@ public class CommonHelper
 	public static String TextForException(Throwable thr)
 	{
 		Throwable e = thr.getCause();
+        if(e==null){
+            e = thr;
+        }
 		StackTraceElement[] arr = e.getStackTrace();
 		int count = 0;
 		if(arr.length < 5)
