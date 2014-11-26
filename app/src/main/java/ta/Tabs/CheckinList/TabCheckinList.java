@@ -72,8 +72,22 @@ public class TabCheckinList extends Tab implements View.OnClickListener
 	class onDateCh extends RunnableWithArgs<SelectedDateEventArgs,Object> { public void run()
 	{
 		TabCheckinList _this = (TabCheckinList)this.arg1;
-		_this._listAdapter.RefreshByCurrenDate();
+		//_this._listAdapter.RefreshByCurrenDate();
+		Checkin [] checkinArr = _this.GetCheckinArrByPeriod();
+		_this._listAdapter.Refresh(checkinArr);
 	}}
+
+
+	private Checkin [] GetCheckinArrByPeriod()
+	{
+			DateTime dt1 = this._doubleDatePicker.GetDateTimeLeft().ToZeroTime();
+			DateTime dt2 = this._doubleDatePicker.GetDateTimeRight().ToMinuteBeforeMidnight();
+			String s1 = String.valueOf(dt1.ToUnixSeconds());
+			String s2 = String.valueOf(dt2.ToUnixSeconds());
+			String where = s1 + " < DateTime and DateTime < " + s2;
+			Checkin [] checkinArr = (Checkin[])Checkin.SelectWhere(Checkin.class, where);
+		return checkinArr;
+	}
 
 
 	//*********************************************************************************************
@@ -85,7 +99,8 @@ public class TabCheckinList extends Tab implements View.OnClickListener
 
 		if (engine != null)
 		{
-			Checkin [] checkinArr = Checkin.GetAllCheckin( this.context);
+			//Checkin [] checkinArr = Checkin.GetAllCheckin( this.context);
+			Checkin [] checkinArr = this.GetCheckinArrByPeriod();
 
 			if (this._listAdapter != null)
 			{

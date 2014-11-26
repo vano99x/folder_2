@@ -42,7 +42,7 @@ public class TabSessionList extends Tab implements View.OnClickListener
 		this._doubleDatePicker = 
 			new DoubleDatePicker(
 				context,
-				DateTime.GetCurrentDateTime().AddDays(-15),
+				DateTime.GetCurrentDateTime(),//.AddDays(-15)
 				DateTime.GetCurrentDateTime()
 			);
 		this._doubleDatePicker.set_SelectedDateChanged(get_onSelectedDateChanged());

@@ -214,10 +214,10 @@ public class Session
 //        int str = cursor1.getInt(0);
 
 
-		DateTime dt1 = provider.GetDateTimeLeft();
-		DateTime dt2 = provider.GetDateTimeRight().AddDays(1);
+		DateTime dt1 = provider.GetDateTimeLeft().ToZeroTime();
+		DateTime dt2 = provider.GetDateTimeRight().ToMinuteBeforeMidnight();//.AddDays(1)
 		int start = dt1.ToUnixSeconds();
-		int end   = dt2.MinuteBeforeMidnight().ToUnixSeconds();
+		int end   = dt2.ToMinuteBeforeMidnight().ToUnixSeconds();
 		String startStr = String.valueOf(start);
 		String endStr   = String.valueOf(end);
 

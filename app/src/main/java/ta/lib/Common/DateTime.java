@@ -124,7 +124,14 @@ public class DateTime
 		Init( this, c);
 		return this;
 	}
-	public DateTime MinuteBeforeMidnight()
+	public DateTime ToZeroTime()
+	{
+		Hour = 0;
+		Minute = 0;
+		Second = 0;
+		return this;
+	}
+	public DateTime ToMinuteBeforeMidnight()
 	{
 		Hour = 23;
 		Minute = 59;

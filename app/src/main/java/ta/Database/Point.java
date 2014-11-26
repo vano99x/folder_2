@@ -24,10 +24,10 @@ public class Point
 		this.Id = -1;
 		this.Name = null;
 	}
-	private Point(int paramInt, String paramString)
+	private Point(int id, int obj, String name)
 	{
-	this.Id = paramInt;
-	this.Name = paramString;
+	this.Id = id;    this.ObjectId = obj;
+	this.Name = name;
 	}
 
 	public static Point[] CreateArray(JSONArray jsonArr)
@@ -81,7 +81,7 @@ public class Point
 		{
 			do
 			{
-				list.add(new Point(cursor.getInt(0), cursor.getString(1)));
+				list.add(new Point(cursor.getInt(0), cursor.getInt(1),cursor.getString(2)));
 			}
 			while (cursor.moveToNext());
 		}

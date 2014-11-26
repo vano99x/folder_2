@@ -2,6 +2,7 @@ package ta.Database;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Array;
 import android.content.ContentValues;
 import android.database.Cursor;
 
@@ -247,6 +248,35 @@ public abstract class EntityBase
 	}
 
 	// Read
+	public static EntityBase [] SelectWhere(Class type, String where )
+	{
+		EntityBase [] arr = null;
+        String TableName = ta.lib.Common.CommonHelper.ClassFromFullName(type.getName());
+		//Class type = this.getClass();
+		try{
+		String sql = 
+"select * from " + TableName + " " +
+"where " + where;
+		ArrayList<EntityBase> list = new ArrayList<EntityBase>();
+
+		Cursor cursor = db().Select(sql, null);
+		while (cursor.moveToNext())
+		{
+			EntityBase obj = (EntityBase)type.newInstance();// IllegalAccessException InstantiationException
+			obj.FromCursor( type, cursor);
+			list.add(obj);
+		}
+		cursor.close();
+
+		EntityBase [] emptyArr = (EntityBase[])Array.newInstance(type, 0);//NullPointerException NegativeArraySizeException
+		arr = list.toArray(emptyArr); //ArrayStoreException
+
+		} catch(Exception e) {
+			Exception ex = e;
+		}
+
+		return arr;
+	}
 	public void FromCursor( Class type, Cursor cursor ) //throws java.lang.NoSuchFieldException, //java.lang.IllegalAccessException
 	{
 		String[] propertyArr = this.Fields;

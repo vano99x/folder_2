@@ -20,11 +20,11 @@ public class ListPointsAdapter extends BaseAdapter
 
 	public ListPointsAdapter(
 		Context paramContext, 
-		Point[] paramArrayOfPoint, 
+		Point[] pointArr,
 		View.OnClickListener paramOnClickListener)
 	{
 		this.mInflater = ((LayoutInflater)paramContext.getSystemService("layout_inflater"));
-		this.items = paramArrayOfPoint;
+		this.items = pointArr;
 		this.listener = paramOnClickListener;
 	}
 

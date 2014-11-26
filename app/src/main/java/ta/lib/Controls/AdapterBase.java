@@ -55,12 +55,11 @@ public abstract class AdapterBase<T> extends BaseAdapter
 		return i;
 	}
 
-	protected View Inflate(View view)
+	protected View GetOrCreateView(View view)
 	{
-		Integer identifier = GetListItemIdentifier();
-
 		if( view == null )
 		{
+			Integer identifier = GetListItemIdentifier();
 			view = this._inflater.inflate(identifier, null);
 		}
 		return view;
@@ -69,27 +68,28 @@ public abstract class AdapterBase<T> extends BaseAdapter
 	@Override
 	public View getView(int paramInt, View view, ViewGroup paramViewGroup)
 	{
-		view = Inflate(view);
-		TextView currentTextView = (TextView)view.findViewById(R.id.txtName);
+		view = GetOrCreateView(view);
 
-		LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.item);
-		linearLayout.setOnClickListener(this._listener);
-		Integer identifier = GetListItemIdentifier();
-		if( this._items != null )
-		{
+		TextView     text = (TextView)view.findViewById(R.id.txtName);
+		LinearLayout root = (LinearLayout)view.findViewById(R.id.item);
+		root.setOnClickListener(this._listener);
+
+		//if( this._items != null )
+		//{
 			//try
 			//{
 				T item = this._items[paramInt];
-				currentTextView.setText(GetTextFromItem(item));
 
-				linearLayout.setTag(new Object[]{ identifier, item});
-				return view;
+				text.setText(GetTextFromItem(item));
+
+				Integer identifier = GetListItemIdentifier();
+				root.setTag(new Object[]{ identifier, item});
 			//}
 			//catch (Exception e)
 			//{
 			//	Exception ex = e;
 			//}
-		}
+		//}
 		return view;
 	}
 }

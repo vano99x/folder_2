@@ -80,7 +80,7 @@ public class DbConnector
 
 
 
-	public Cursor GetEntity(String paramString1, String paramString2, String[] paramArrayOfString)
+	public Cursor GetEntity(String paramString1, String paramString2, String[] strArr)
 	{
     /**
      * Query the given table, returning a {@link Cursor} over the result set.
@@ -110,7 +110,7 @@ public class DbConnector
      * {@link Cursor}s are not synchronized, see the documentation for more details.
      * @see Cursor
      */
-		Cursor localCursor = this._db.query(paramString1, null, paramString2 + " =?", paramArrayOfString, null, null, null);
+		Cursor localCursor = this._db.query(paramString1, null, paramString2 + " =?", strArr, null, null, null);
 		//localCursor.moveToFirst();
 		return localCursor;
 	}

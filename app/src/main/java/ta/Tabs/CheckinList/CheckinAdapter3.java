@@ -25,7 +25,7 @@ import ta.timeattendance.R;
 
 public class CheckinAdapter3 extends AdapterBase<Checkin> //implements Filterable
 {
-	public IIntervalDateTimeProvider _intervalDateTimeProvider;
+	//public IIntervalDateTimeProvider _intervalDateTimeProvider;
 	public Checkin[] _sourceItems;
 
 	public CheckinAdapter3(
@@ -36,9 +36,10 @@ public class CheckinAdapter3 extends AdapterBase<Checkin> //implements Filterabl
 	{
 		super(context, null, onClickListener);
 
-		this._intervalDateTimeProvider = intervalDateTimeProvider;
-		this._sourceItems = checkinArr;
-		this._items = DateTime.WhereInPeriod(this._intervalDateTimeProvider, this._sourceItems, new Checkin[0]);
+		//this._intervalDateTimeProvider = intervalDateTimeProvider;
+		//this._sourceItems = checkinArr;
+		//this._items = DateTime.WhereInPeriod(this._intervalDateTimeProvider, this._sourceItems, new Checkin[0]);
+		this._items = checkinArr;
 	}
 
 	private static SimpleDateFormat _dateFormat;
@@ -51,29 +52,16 @@ public class CheckinAdapter3 extends AdapterBase<Checkin> //implements Filterabl
 		return CheckinAdapter3._dateFormat;
 	}
 
-
-
-	//*********************************************************************************************
-	//**     filter
-	//public List<Checkin> GetFilteredItems()
+	//public void RefreshByCurrenDate()
 	//{
-	//	List<Checkin> result = 
-	//		CheckinHelper.GetCheckinListByDatesInterval( this._intervalDateTimeProvider, this._items );
-	//	return result;
-	//}
+	//	Checkin[] filteredItems =
+	//		DateTime.WhereInPeriod( this._intervalDateTimeProvider, this._sourceItems, new Checkin[0]);
 
-	//public void RefreshFilteredItems(List<Checkin> list)
-	//{
-	//	this._filteredItems.clear();
-	//	this._filteredItems.addAll(list);
+	//	this._items = filteredItems;
 	//	this.notifyDataSetChanged();
 	//}
-
-	public void RefreshByCurrenDate()
+	public void Refresh(Checkin[] filteredItems)
 	{
-		Checkin[] filteredItems =
-			DateTime.WhereInPeriod( this._intervalDateTimeProvider, this._sourceItems, new Checkin[0]);
-
 		this._items = filteredItems;
 		this.notifyDataSetChanged();
 	}
@@ -105,7 +93,8 @@ public class CheckinAdapter3 extends AdapterBase<Checkin> //implements Filterabl
 	@Override
 	public View getView(int indexItem, View view, ViewGroup viewGroup)
 	{
-		view = super.Inflate(view);
+		view = super.GetOrCreateView(view);
+
 		TextView currentTextView = (TextView)view.findViewById(R.id.CheckinListItem_TextId);
 		TextView stateView =       (TextView)view.findViewById(R.id.CheckinListItem_StateId);
 
@@ -134,6 +123,8 @@ public class CheckinAdapter3 extends AdapterBase<Checkin> //implements Filterabl
 		}
 		return view;
 	}
+
+}
 
 	//private Filter _filter;
 	//@Override
@@ -184,4 +175,20 @@ public class CheckinAdapter3 extends AdapterBase<Checkin> //implements Filterabl
 		//	}
 		//}
 
-}
+
+
+	//*********************************************************************************************
+	//**     filter
+	//public List<Checkin> GetFilteredItems()
+	//{
+	//	List<Checkin> result = 
+	//		CheckinHelper.GetCheckinListByDatesInterval( this._intervalDateTimeProvider, this._items );
+	//	return result;
+	//}
+
+	//public void RefreshFilteredItems(List<Checkin> list)
+	//{
+	//	this._filteredItems.clear();
+	//	this._filteredItems.addAll(list);
+	//	this.notifyDataSetChanged();
+	//}

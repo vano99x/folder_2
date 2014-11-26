@@ -79,7 +79,7 @@ public class ListSessionAdapter extends AdapterBase<Session>
 	@Override
 	public View getView(int indexItem, View view, ViewGroup viewGroup)
 	{
-		view = super.Inflate(view);
+		view = super.GetOrCreateView(view);
 		//TextView date =      (TextView)view.findViewById(R.id.Session_ListItem_Date_Id);
 
 		TextView firstName = (TextView)view.findViewById(R.id.Session_ListItem_FirstName_Id);
